@@ -25,8 +25,10 @@
     <column name="EAN" defaultValue="" nullable="true" domain="DomPrdNumber" migrationDefault=" " />
     <column name="NewState" defaultValue="" nullable="true" domain="DomPrdState" migrationDefault=" " />
     <column name="PiecesPerSmallestUnitForBasePrice" defaultValue="" nullable="true" domain="DomPrdPiecesPerUnit" migrationDefault=" " />
-    <column name="GroupId" defaultValue="" nullable="true" domain="DomId" migrationDefault=" " />
-    <column name="GroupText" defaultValue="" nullable="true" domain="DomText" migrationDefault=" " />
+    <column name="GroupSortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <column name="SortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <column name="GroupId" defaultValue="" nullable="true" domain="DomId" migrationDefault=" " /> <!-- Re-ordered to here -->
+    <column name="GroupText" defaultValue="" nullable="true" domain="DomText" migrationDefault=" " /> <!-- Re-ordered to here -->
     <column name="Category" defaultValue="" nullable="true" domain="DomPrdCategory" migrationDefault=" " />
     <column name="PrdType" defaultValue="" nullable="true" domain="DomPrdType" migrationDefault=" " />
     <column name="PromotionPKey" defaultValue="' '" nullable="true" domain="DomPKey" migrationDefault=" " />
@@ -42,8 +44,8 @@
     <column name="DefaultValue" defaultValue="' '" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="MaxValue" defaultValue="" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="IsDeleted" defaultValue="" nullable="true" domain="DomBool" migrationDefault="0" />
-    <column name="GroupSortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
-    <column name="SortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <!-- <column name="GroupSortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <column name="SortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " /> -->
     <column name="Suggested" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
     <column name="Distributed" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
     <column name="SellingPriority" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
