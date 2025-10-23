@@ -8,13 +8,15 @@
     <Attribute name="groupShortText" table="ProductGroup" column="Short_Description_#Language#__c" />
     <Attribute name="eAN" table="Product2" column="GTIN__c" />
     <Attribute name="category" table="Product2" column="Category__c" />
+    <Attribute name="groupSortOrder" table="ProductGroup" column="Sort_Order__c" />
+    <Attribute name="sortOrder" table="Product2" column="Sort_Order__c" />
   </Attributes>
   <Entities>
     <Entity name="Product2" alias="" idAttribute="Id" />
     <Entity name="Product2" alias="ProductGroup">
       <Join Type="left outer">
         <SimpleJoin>
-          <Condition leftSideValue="Product2.Criterion_3_Product__c" comparator="eq" rightSideType="Attribute" rightSideValue="ProductGroup.Id" />
+          <Condition leftSideValue="Product2.Criterion_4_Product__c" comparator="eq" rightSideType="Attribute" rightSideValue="ProductGroup.Id" />
           <Condition leftSideValue="ProductGroup.Sales_Org__c" comparator="eq" rightSideType="Parameter" rightSideValue="'#SalesOrg#'" />
         </SimpleJoin>
       </Join>

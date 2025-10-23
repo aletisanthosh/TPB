@@ -46,6 +46,9 @@
     <Attribute name="outOfStockRate" table="Visit" column="OOS_Rate_All__c" />
     <Attribute name="outOfStockIssue" table="Visit" column="OOS_Issues__c" />
     <Attribute name="kpiRelevant" table="Visit_Template__c" column="KPI_Relevant__c" />
+    <Attribute name="isInProgress" table="Visit" column="TPB_InProgress__c" />
+    <Attribute name="isDistributionCaptured" table="Visit" column="TPB_Distribution_Captured__c" />
+    <Attribute name="visitType" table="Visit" column="TPB_Visit_Type__c" />
   </Attributes>
   <Entities>
     <Entity name="Visit" idAttribute="Id" />
@@ -112,6 +115,9 @@
         sqlStmt += "Visit.Distribution_Issues__c AS distributionIssue, ";
         sqlStmt += "Visit.OOS_Rate_All__c AS outOfStockRate, ";
         sqlStmt += "Visit.OOS_Issues__c AS outOfStockIssue, ";
+        sqlStmt += "Visit.TPB_InProgress__c AS isInProgress, ";
+        sqlStmt += "Visit.TPB_Distribution_Captured__c AS isDistributionCaptured, ";
+        sqlStmt += "Visit.TPB_Visit_Type__C AS visitType, ";
         sqlStmt += "Visit_Template__c.KPI_Relevant__c AS kpiRelevant, ";
         sqlStmt += "Visit.PlaceId AS placeId ";
         sqlStmt += "FROM Visit ";
@@ -192,6 +198,9 @@
         sqlStmt += "'0' AS distributionIssue, ";
         sqlStmt += "0 AS outOfStockRate, ";
         sqlStmt += "'0' AS outOfStockIssue, ";
+        sqlStmt += "false AS isInProgress, ";
+        sqlStmt += "false AS isDistributionCaptured, ";
+        sqlStmt += "' ' AS visitType, ";
         sqlStmt += "' ' AS kpiRelevant, ";
         sqlStmt += "' ' AS placeId ";
         sqlStmt += "FROM Event ";

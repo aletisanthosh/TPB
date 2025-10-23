@@ -19,6 +19,7 @@
     <DerivedAttribute name="distanceUnit" value="CASE WHEN Sales_Organization__c.Distance_Unit__c = 'km' THEN 'kilometers' ELSE Sales_Organization__c.Distance_Unit__c END " />
     <Attribute name="sfId" table="User" column="Id" />
     <DerivedAttribute name="sfLanguagePostfix" value="CASE WHEN Sales_Organization__c.Language_1__c = User.LanguageLocaleKey Then 'Language_1' WHEN Sales_Organization__c.Language_2__c = User.LanguageLocaleKey Then 'Language_2' WHEN Sales_Organization__c.Language_3__c = User.LanguageLocaleKey Then 'Language_3' WHEN Sales_Organization__c.Language_4__c = User.LanguageLocaleKey Then 'Language_4' WHEN Sales_Organization__c.Language_1__c = 'en' AND User.LanguageLocaleKey = 'en_US' Then 'Language_1' WHEN Sales_Organization__c.Language_2__c = 'en' AND User.LanguageLocaleKey = 'en_US' Then 'Language_2' WHEN Sales_Organization__c.Language_3__c = 'en' AND User.LanguageLocaleKey = 'en_US' Then 'Language_3' WHEN Sales_Organization__c.Language_4__c = 'en' AND User.LanguageLocaleKey = 'en_US' Then 'Language_4' ELSE 'Language_1'  END " />
+    <Attribute name="profileName" table="User" column="TPB_ProfileName__c" />
   </Attributes>
   <Entities>
     <Entity name="User" alias="" idAttribute="Id" />

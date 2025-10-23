@@ -34,5 +34,7 @@
     <SimpleProperty name="mapIcon" type="DomText" />
     <SimpleProperty name="isButtonVisible" type="DomBool" />
     <SimpleProperty name="visibleInMap" type="DomBool" />
+    <SimpleProperty name="status" type="DomBpaStatus" dataSourceProperty="status" />
+    <SimpleProperty name="recordTypeName" type="DomText" dataSourceProperty="recordTypeName" />
   </SimpleProperties>
 </ListItem>

@@ -98,6 +98,7 @@
     sqlStmt += "Order__c.Delivery_Date__c AS deliveryDate, ";
     sqlStmt += "Order__c.Responsible__c AS responsiblePKey, "; 
     sqlStmt += "Order__c.Gross_Total_Value__c AS grossTotalValue, ";
+    sqlStmt += "Order__c.Total_Value__c AS totalValue, ";
     sqlStmt += "Order__c.Payment_Method__c AS paymentMethod, ";
     sqlStmt += "Order__c.Paid_Amount__c AS paidAmount, ";
     sqlStmt += "Order__c.Document_Transaction_Type__c AS docTaType, ";
@@ -140,6 +141,7 @@
     sqlStmt += "Order__c.Delivery_Date__c AS deliveryDate, "; 
     sqlStmt += "Order__c.Responsible__c AS responsiblePKey, "; 
     sqlStmt += "Order__c.Gross_Total_Value__c AS grossTotalValue, ";
+    sqlStmt += "Order__c.Total_Value__c AS totalValue, ";
     sqlStmt += "Order__c.Payment_Method__c AS paymentMethod, ";
     sqlStmt += "Order__c.Paid_Amount__c AS paidAmount, ";
     sqlStmt += "Order__c.Document_Transaction_Type__c AS docTaType, ";
@@ -180,6 +182,7 @@
 
     sqlStmt += "SELECT Order__c.Id AS pKey, Order__c.Order_Id__c AS id, Order__c.Phase__c AS phase, Order__c.Order_Date__c AS commitDate, Order__c.CreatedById AS initiatorPKey, ";
     sqlStmt += "Order__c.Delivery_Date__c AS deliveryDate, Order__c.Responsible__c AS responsiblePKey, Order__c.Gross_Total_Value__c AS grossTotalValue, ";
+    sqlStmt += "Order__c.Total_Value__c AS totalValue, ";
     sqlStmt += "Order__c.Payment_Method__c AS paymentMethod, ";
     sqlStmt += "Order__c.Paid_Amount__c AS paidAmount, ";
     sqlStmt += "Order__c.Document_Transaction_Type__c AS docTaType, ";

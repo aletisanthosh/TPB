@@ -189,9 +189,16 @@
                     sqlStmt    += "INNER JOIN Visit ON Visit.Id = Visit_Job__c.Visit__c ";
                     sqlStmt    += "INNER JOIN Account on Visit.AccountId = Account.Id ";
                     sqlStmt    += "WHERE Visit.AccountId IN (" + accountIds.sql + ") ";
+                    sqlStmt    += "UNION ";
+					//#####################################################
+                    //## Account (get attachment for visit)     TPB      ##
+                    //##################;##################################
+                    // 1642 275 fetch attachment
+                    sqlStmt    += "SELECT Account.Id as Id FROM Account ";
+                    sqlStmt    += "WHERE Id IN (" + accountIds.sql + ") ";
 
                     //list is used twice --> IDs must be doubled in the params
-                    return {sql: sqlStmt, params: accountIds.params.concat(accountIds.params)};
+                    return {sql: sqlStmt, params: accountIds.params.concat(accountIds.params).concat(accountIds.params)};
 
       ]]></VisitAttachments>
       <!-- On demand data request, the below query fetches the ids for which the attachment header data needs to be downloaded. The attachment blob will be downloaded when the user tries to access the attachment. -->
@@ -273,9 +280,11 @@
                     return Utils.replaceMacrosParam(sqlStmt, sqlParams);
       ]]></RelevantCustomerContracts>
       <ParentAccounts><![CDATA[
-      				var sqlParams = {};           			
-                    var sqlStmt = "SELECT DISTINCT Account_Trade_Org_Hierarchy__c.Parent_Account__c as AccountId ";
-        			sqlStmt    += "FROM Account_Trade_Org_Hierarchy__c ";
+      				var sqlParams = {};
+                    // 1641 275 Fetch Attachment
+                    var sqlStmt = "SELECT DISTINCT Account.ParentId as AccountId ";
+                    sqlStmt    += "FROM Account ";
+                    sqlStmt    += "WHERE ParentId != ' ' ";
                     return Utils.replaceMacrosParam(sqlStmt, sqlParams);
       ]]></ParentAccounts>
       <PromotionsReferencedByOrderItems><![CDATA[

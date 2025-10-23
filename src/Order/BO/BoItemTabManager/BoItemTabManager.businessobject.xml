@@ -37,6 +37,9 @@
     <SimpleProperty name="modReasonDict" type="Object" storable="false" dataSourceProperty="empty" />
     <SimpleProperty name="boCallCache" type="Object" storable="false" dataSourceProperty="empty" />
     <SimpleProperty name="sloganOfSelectablePromotion" type="Object" storable="false" dataSourceProperty="empty" />
+    <SimpleProperty name="backupOrderItem" type="Object" storable="false" dataSourceProperty="none" />
+    <SimpleProperty name="orderItemMetaCond" type="Object" storable="false" dataSourceProperty="none" />
+    <SimpleProperty name="cloneProduct_ItemMeta" type="Object" storable="false" dataSourceProperty="none" />
   </SimpleProperties>
   <ListObjects>
     <!-- These list objects are loaded on demand if the order is configured with ItemListOption="Hierarchy" -->
@@ -78,5 +81,12 @@
     <Method name="getReasonCodesForItemMeta" />
     <Method name="filterSelectablePromotionItems" />
     <Method name="updateShowInBasket" />
+    <Method name="myAddProduct" />
+    <Method name="myAddProducts" />
+    <Method name="myUpdateItemOrderItemTemplate" />
+    <Method name="myBeforeUpdateItemOrderItemTemplate" />
+    <Method name="myUpdateShowInSuggested" />
+    <Method name="replaceOnItemFilterSelected" />
+    <Method name="replaceGetDefaultUoMForProduct" />
   </Methods>
 </BusinessObject>

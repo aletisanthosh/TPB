@@ -1,4 +1,4 @@
-<Process name="Order::ItemListTabProcess" defaultAction="IsOrderReleasedOrCanceled" schemaVersion="0.0.0.5">
+<Process name="Order::ItemListTabProcess" defaultAction="GenerateMassPrebook" schemaVersion="0.0.0.5">
   <Entry>
     <ProcessContext>
       <Declarations>
@@ -31,9 +31,25 @@
         <Declaration name="CurrentlyRunningProcess" type="String" />
         <Declaration name="TriggeredByFastOrderScreen" type="String" />
         <Declaration name="PromotionChanged" type="DomBool" />
+        <Declaration name="ProductPKeys" type="Object" />
+        <Declaration name="LookupCurrentItem_WholesalerProductId" type="DomId" />
+        <Declaration name="LookupCurrentItem_WholesalerProductSKU" type="DomText" />
+        <Declaration name="LookupCurrentItem_WholesalerId" type="DomId" />
+        <Declaration name="LookupCurrentItem_WholesalerName" type="DomText" />
+        <Declaration name="LookupCurrentItem_SupplierId" type="DomId" />
+        <Declaration name="wholesalersList" type="LoMyOrderItemExtra" />
+        <Declaration name="CurrentOrderItemTemplatePKey" type="DomPKey" />
+        <Declaration name="OrderItemMetaLookup_ButtonPressed" type="String" />
+        <Declaration name="OrderItemMetaLookupPKey" type="DomPKey" />
+        <Declaration name="luOrderItemMeta" type="LuOrderItemMeta" />
+        <Declaration name="CloneProductButtonProcess" type="String" />
+        <Declaration name="CloneProductItemMetaPKey" type="DomPKey" />
+        <Declaration name="IsChangeItemTypeProcess" type="DomBool" />
+        <Declaration name="ChangeItemType__MainItem" type="LiOrderItem" />
       </Declarations>
       <Parameters>
         <Input name="MainBO" type="BoOrder" />
+        <Input name="ShowInvoice" type="String" />
       </Parameters>
     </ProcessContext>
     <EntryActions>
@@ -62,10 +78,20 @@
         </Parameters>
         <Return name="ProcessContext::ScanProcessCompleted" />
       </Action>
+      <Action name="LoadProductForAdd" actionType="LOGIC" call="ProcessContext::MainBO.loadProductForAdd"></Action>
     </EntryActions>
   </Entry>
   <Body>
     <Actions>
+      <!-- Sorting NoSelectable -->
+      <!-- Sorting ClearFilter -->
+      <!-- Sorting Selectable -->
+      <Action name="GenerateMassPrebook" actionType="LOGIC" call="ProcessContext::MainBO.loItems.myGenerateMassPrebookItems">
+        <TransitionTo action="InitializeItemWholesaler" />
+      </Action>
+      <Action name="InitializeItemWholesaler" actionType="LOGIC" call="ProcessContext::MainBO.myInitializeItemWholesaler">
+        <TransitionTo action="IsOrderReleasedOrCanceled" />
+      </Action>
       <Action name="IsOrderReleasedOrCanceled" actionType="DECISION" parameter="ProcessContext::MainBO.phase">
         <Case value="Released" action="SetGroupingAttribute_NoSelectablePromotion" />
         <Case value="Canceled" action="SetGroupingAttribute_NoSelectablePromotion" />
@@ -87,17 +113,16 @@
         <Return name="ProcessContext::GroupingAttribute" />
         <TransitionTo action="SetSortingAttribute_NoSelectablePromotion" />
       </Action>
-      <!-- Sorting NoSelectable -->
       <Action name="SetSortingAttribute_NoSelectablePromotion" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingAttribute" value="groupId" />
+          <Input name="SortingAttribute" value="groupSortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingAttribute" />
         <TransitionTo action="SetSortingInsideAttribute_NoSelectablePromotion" />
       </Action>
       <Action name="SetSortingInsideAttribute_NoSelectablePromotion" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingInsideAttribute" value="prdId" />
+          <Input name="SortingInsideAttribute" value="sortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingInsideAttribute" />
         <TransitionTo action="SetLastItemFilter_Decision" />
@@ -124,17 +149,16 @@
         <Return name="ProcessContext::GroupingAttribute" />
         <TransitionTo action="SetSortingAttribute_ClearFilter" />
       </Action>
-      <!-- Sorting ClearFilter -->
       <Action name="SetSortingAttribute_ClearFilter" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingAttribute" value="groupId" />
+          <Input name="SortingAttribute" value="groupSortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingAttribute" />
         <TransitionTo action="SetSortingInsideAttribute_ClearFilter" />
       </Action>
       <Action name="SetSortingInsideAttribute_ClearFilter" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingInsideAttribute" value="prdId" />
+          <Input name="SortingInsideAttribute" value="sortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingInsideAttribute" />
         <TransitionTo action="SetCurrentlySelectedPromotion" />
@@ -149,22 +173,21 @@
       </Action>
       <Action name="SetGroupingAttribute_SelectablePromotion" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="GroupingAttribute" value="groupName" />
+          <Input name="GroupingAttribute" value="groupText" />
         </Parameters>
         <Return name="ProcessContext::GroupingAttribute" />
         <TransitionTo action="SetSortingAttribute_SelectablePromotion" />
       </Action>
-      <!-- Sorting Selectable -->
       <Action name="SetSortingAttribute_SelectablePromotion" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingAttribute" value="groupIdSort" />
+          <Input name="SortingAttribute" value="groupSortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingAttribute" />
         <TransitionTo action="SetSortingInsideAttribute_SelectablePromotion" />
       </Action>
       <Action name="SetSortingInsideAttribute_SelectablePromotion" actionType="LOGIC" call="Utils.identity">
         <Parameters>
-          <Input name="SortingInsideAttribute" value="groupSort" />
+          <Input name="SortingInsideAttribute" value="sortOrder" />
         </Parameters>
         <Return name="ProcessContext::SortingInsideAttribute" />
         <TransitionTo action="FilterHurdlesAndRewards" />
@@ -175,6 +198,10 @@
       </Action>
       <Action name="ShowUI_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.documentType">
         <Case value="Replenishment" action="ShowReplenishmentItemList" />
+        <CaseElse action="ShowInvoice_Decision" />
+      </Action>
+      <Action name="ShowInvoice_Decision" actionType="DECISION" parameter="ProcessContext::ShowInvoice">
+        <Case value="Yes" action="GenerateInvoiceProcess" />
         <CaseElse action="ShowItemList" />
       </Action>
       <Action name="ShowItemList" actionType="VIEW">
@@ -197,10 +224,26 @@
           <Event name="openRewards" action="OpenRewards" />
           <Event name="registerQuickFilterOpeningEvent" action="ResetPromotionFlagOnRegisterButtonPressed" />
           <Event name="registerQuickFilterSelectedEvent" action="FilterByGroupName" />
-          <Event name="categoryQuickFilterOpeningEvent" action="ResetPromotionFlagOnCategoryButtonPressed" />
+          <Event name="categoryQuickFilterOpeningEvent" action="CategorySetLastItemFilter_Decision" />
           <Event name="categoryQuickFilterSelectedEvent" action="FilterByCategory" />
           <Event name="openFastOrder" action="PrepareFastOrderProducts" />
+          <Event name="reviewOrder" action="StartHeaderProcess" />
+          <Event name="generateInvoice" action="GenerateInvoiceProcess" />
+          <Event name="OpenOrderItemTemplateLookup" action="BeforeCloneProductForChangingItemType" />
+          <Event name="openWholesalerLookup" action="OpenWholesalerLookup" />
+          <Event name="cloneProduct" action="CloneProductCurrentCheck" />
         </Events>
+      </Action>
+      <Action actionType="END" name="StartHeaderProcess">
+        <ReturnValues>
+          <Return name="NavigateTo" value="HeaderTab" />
+        </ReturnValues>
+      </Action>
+      <Action actionType="END" name="GenerateInvoiceProcess">
+        <ReturnValues>
+          <Return name="NavigateTo" value="HeaderTab" />
+          <Return name="NavigateAction" value="generateInvoice" />
+        </ReturnValues>
       </Action>
       <Action name="ShowReplenishmentItemList" actionType="VIEW">
         <UIDescription>Order::ReplenishmentItemListTabUI</UIDescription>
@@ -234,6 +277,208 @@
           <Return name="ProcessContext::ApplyFastOrderState" value="buttonPressed" />
         </ReturnValues>
         <TransitionTo action="SetFastOrderScreenFlag" />
+      </Action>
+      <Action name="BeforeCloneProductForChangingItemType" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="1" />
+        </Parameters>
+        <Return name="ProcessContext::IsChangeItemTypeProcess" />
+        <TransitionTo action="ChangeItemTypeSetMainItem" />
+      </Action>
+      <Action name="ChangeItemTypeSetMainItem" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="ProcessContext::MainBO.LoItems.current" />
+        </Parameters>
+        <Return name="ProcessContext::ChangeItemType__MainItem" />
+        <TransitionTo action="CloneProductCurrentCheck" />
+      </Action>
+      <Action name="CloneProductCurrentCheck" actionType="DECISION" parameter="ProcessContext::MainBO.LoItems.current">
+        <CaseEmpty action="ChangeItemType_ShowUI_Prework" />
+        <CaseElse action="CloneProductProcess" />
+      </Action>
+      <Action name="CloneProductProcess" actionType="PROCESS" process="Order::MyCloneProductProcess">
+        <Parameters>
+          <Input name="MainBO" value="ProcessContext::MainBO" />
+        </Parameters>
+        <ReturnValues>
+          <Return name="ProcessContext::CloneProductItemMetaPKey" value="cloneProductItemMetaPKey" />
+          <Return name="ProcessContext::AddProduct_PrdMainPKey" value="cloneProductItemPKey" />
+          <Return name="ProcessContext::CloneProductButtonProcess" value="cloneProductButtonProcess" />
+        </ReturnValues>
+        <TransitionTo action="CloneProduct_ResetActiveFilterAfterItemMetaLookup" />
+      </Action>
+      <Action name="CloneProduct_ResetActiveFilterAfterItemMetaLookup" actionType="LOGIC" call="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas.resetFilter">
+        <Parameters>
+          <Input name="field" value="active" type="Literal" />
+        </Parameters>
+        <TransitionTo action="CloneProduct_ResetActiveFilterAfterItemMetaLookup2" />
+      </Action>
+      <Action name="CloneProduct_ResetActiveFilterAfterItemMetaLookup2" actionType="LOGIC" call="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas.resetFilter">
+        <Parameters>
+          <Input name="field" value="id" type="Literal" />
+        </Parameters>
+        <TransitionTo action="CloneProductProcessDecision" />
+      </Action>
+      <Action name="CloneProductProcessDecision" actionType="DECISION" parameter="ProcessContext::CloneProductButtonProcess">
+        <Case value="clone" action="CloneProductSetItemMeta" />
+        <CaseElse action="ChangeItemType_ShowUI_Prework" />
+      </Action>
+      <Action name="CloneProductSetItemMeta" actionType="LOGIC" call="ProcessContext::MainBO.myGetItemMetaForCloneProduct">
+        <Parameters>
+          <Input name="itemMeta" value="ProcessContext::CloneProductItemMetaPKey" />
+        </Parameters>
+        <TransitionTo action="CloneProductGetUoMListForAdd" />
+      </Action>
+      <Action name="CloneProductGetUoMListForAdd" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.getAvailableUoMForProduct">
+        <Return name="ProcessContext::ProductAddUoMList" />
+        <TransitionTo action="CloneProductGetDefaultUoMForAdd" />
+        <Parameters>
+          <Input name="itemPKey" value="ProcessContext::AddProduct_PrdMainPKey" />
+          <Input name="itemTemplate" value="ProcessContext::MainBO.boItemTabManager.cloneProduct_ItemMeta" />
+        </Parameters>
+      </Action>
+      <Action name="CloneProductGetDefaultUoMForAdd" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.getDefaultUoMForProduct">
+        <Return name="ProcessContext::AddProduct_UoM" />
+        <TransitionTo action="CloneProductGetPiecesPerSmallestUnitForResult" />
+        <Parameters>
+          <Input name="availableUnits" value="ProcessContext::ProductAddUoMList" />
+          <Input name="itemTemplate" value="ProcessContext::MainBO.boItemTabManager.cloneProduct_ItemMeta" />
+        </Parameters>
+      </Action>
+      <Action name="CloneProductGetPiecesPerSmallestUnitForResult" actionType="LOGIC" call="ProcessContext::ProductAddUoMList.getPiecesPerSmallestUnitByUnit">
+        <Return name="ProcessContext::AddProduct_PiecesPerSmallestUnit" />
+        <TransitionTo action="CloneProductSetItemFilterToAll" />
+        <Parameters>
+          <Input name="unitType" value="ProcessContext::AddProduct_UoM" />
+        </Parameters>
+      </Action>
+      <Action name="CloneProductSetItemFilterToAll" actionType="LOGIC" call="ProcessContext::MainBO.resetCurrentItemFilter">
+        <TransitionTo action="CloneProductAddSelectedProductsToItemList" />
+      </Action>
+      <Action name="CloneProductAddSelectedProductsToItemList" actionType="LOGIC" call="ProcessContext::MainBO.LoItems.addItemFromObject">
+        <Return name="ProcessContext::MainBO.boItemTabManager.addProductResult" />
+        <TransitionTo action="AfterCloneProductForChangingItemTypeDecision" />
+        <Parameters>
+          <Input name="ProductsForAdd" value="ProcessContext::MainBO.loProductForAdd" />
+          <Input name="ProductPKey" value="ProcessContext::AddProduct_PrdMainPKey" />
+          <Input name="SdoMainPKey" value="ProcessContext::MainBO.pKey" />
+          <Input name="CustomerPKey" value="ProcessContext::MainBO.ordererPKey" />
+          <Input name="promotionPkey" value="ProcessContext::MainBO.selectedPromotionPKey" />
+          <Input name="considerSelectablePromotion" value="ProcessContext::MainBO.boOrderMeta.considerSelectablePromotion" />
+          <Input name="CommitDate" value="ProcessContext::MainBO.commitDate" />
+          <Input name="itemTemplate" value="ProcessContext::MainBO.boItemTabManager.cloneProduct_ItemMeta" />
+          <Input name="clbMainPKey" value="ProcessContext::MainBO.clbMainPKey" />
+          <Input name="criterionAttribute" value="ProcessContext::MainBO.boItemTabManager.addProduct_CriterionAttribute" />
+          <Input name="barcodeScanBehavior" value="ProcessContext::MainBO.boOrderMeta.barcodeScanBehavior" />
+          <Input name="scanIncrementQuantity" value="ProcessContext::MainBO.boItemTabManager.addProduct_ScanIncrementQuantity" />
+          <Input name="mode" value="ProcessContext::CloneProductButtonProcess" />
+          <Input name="uoM" value="ProcessContext::AddProduct_UoM" />
+          <Input name="piecesPerSmallestUnit" value="ProcessContext::AddProduct_PiecesPerSmallestUnit" />
+          <Input name="orderMeta" value="ProcessContext::MainBO.boOrderMeta" />
+          <Input name="loSuggestedQuantity" value="ProcessContext::MainBO.loSuggestedQuantity" />
+        </Parameters>
+      </Action>
+      <Action name="AfterCloneProductForChangingItemTypeDecision" actionType="DECISION" parameter="ProcessContext::IsChangeItemTypeProcess">
+        <Case value="1" action="RemoveCartItem" />
+        <CaseEmpty action="FilterProductsAfterAdd" />
+        <CaseElse action="FilterProductsAfterAdd" />
+      </Action>
+      <Action name="RemoveCartItem" actionType="LOGIC" call="ProcessContext::MainBO.myRemoveCartItem">
+        <Parameters>
+          <Input name="mainItem" value="ProcessContext::ChangeItemType__MainItem" />
+          <Input name="newItem" value="ProcessContext::MainBO.boItemTabManager.addProductResult.unitOfMeasureItem" />
+        </Parameters>
+        <TransitionTo action="AfterCloneProductForChangingItemType" />
+      </Action>
+      <Action name="AfterCloneProductForChangingItemType" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="0" type="DomBool" />
+        </Parameters>
+        <Return name="ProcessContext::IsChangeItemTypeProcess" />
+        <TransitionTo action="FilterProductsAfterAdd" />
+      </Action>
+      <Action name="OpenWholesalerLookup" actionType="PROCESS" process="Order::MyItemWholesalerLookupProcess">
+        <Parameters>
+          <Input name="prdMainPKey" value="ProcessContext::MainBO.LoItems.current.prdMainPKey" />
+          <Input name="customerPKey" value="ProcessContext::MainBO.ordererPKey" />
+          <Input name="orderItemType" value="ProcessContext::MainBO.LoItems.current.type" />
+        </Parameters>
+        <ReturnValues>
+          <Return name="ProcessContext::LookupCurrentItem_WholesalerProductId" value="wpId" />
+          <Return name="ProcessContext::LookupCurrentItem_WholesalerProductSKU" value="wpSKU" />
+          <Return name="ProcessContext::LookupCurrentItem_WholesalerId" value="wId" />
+          <Return name="ProcessContext::LookupCurrentItem_WholesalerName" value="wName" />
+          <Return name="ProcessContext::LookupCurrentItem_SupplierId" value="supplierId" />
+        </ReturnValues>
+        <TransitionTo action="WholesalerLookupResultDecision" />
+      </Action>
+      <Action name="WholesalerLookupResultDecision" actionType="DECISION" parameter="ProcessContext::LookupCurrentItem_WholesalerId">
+        <CaseEmpty action="ShowUI_Decision" />
+        <!-- CAUTION: Need to reset filter otherwise the Filter UI will broken with no reason -->
+        <CaseElse action="SetWholesalerInfo" />
+      </Action>
+      <Action name="SetWholesalerInfo" actionType="LOGIC" call="ProcessContext::MainBO.LoItems.mySetWholesalerInfo">
+        <Parameters>
+          <Input name="mainItem" value="ProcessContext::MainBO.LoItems.current" />
+          <Input name="wsProductId" value="ProcessContext::LookupCurrentItem_WholesalerProductId" />
+          <Input name="wsId" value="ProcessContext::LookupCurrentItem_WholesalerId" />
+          <Input name="wsName" value="ProcessContext::LookupCurrentItem_WholesalerName" />
+          <Input name="wsSku" value="ProcessContext::LookupCurrentItem_WholesalerProductSKU" />
+          <Input name="supplierId" value="ProcessContext::LookupCurrentItem_SupplierId" />
+        </Parameters>
+        <TransitionTo action="ShowUI_Decision" />
+      </Action>
+      <Action name="BeforeEditOrderItemTemplate" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.myBeforeUpdateItemOrderItemTemplate">
+        <TransitionTo action="SetActiveFilterBeforeOrderMetaLookup" />
+        <Parameters>
+          <Input name="orderItem" value="ProcessContext::MainBO.LoItems.current" />
+        </Parameters>
+      </Action>
+      <Action name="SetActiveFilterBeforeOrderMetaLookup" actionType="LOGIC" call="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas.filterInvalidOrderItemMetas">
+        <TransitionTo action="OpenOrderItemTemplateLookup" />
+        <Parameters>
+          <Input name="moreCond" value="ProcessContext::MainBO.boItemTabManager.orderItemMetaCond" />
+        </Parameters>
+      </Action>
+      <Action name="OpenOrderItemTemplateLookup" actionType="PROCESS" process="Order::OrderItemMetaLookupProcess">
+        <Parameters>
+          <Input name="OrderItemMetaList" value="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas" />
+          <!--<Input name="orderItemMetaPKey" value="ProcessContext::boItemSettings.luOrderItemMeta.pKey" />-->
+        </Parameters>
+        <ReturnValues>
+          <Return name="ProcessContext::OrderItemMetaLookupPKey" value="orderItemMetaPKey" />
+          <Return name="ProcessContext::OrderItemMetaLookup_ButtonPressed" value="buttonPressed" />
+        </ReturnValues>
+        <TransitionTo action="ResetActiveFilterAfterItemMetaLookup" />
+      </Action>
+      <Action name="ResetActiveFilterAfterItemMetaLookup" actionType="LOGIC" call="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas.resetFilter">
+        <Parameters>
+          <Input name="field" value="active" type="Literal" />
+        </Parameters>
+        <TransitionTo action="ResetActiveFilterAfterItemMetaLookup2" />
+      </Action>
+      <Action name="ResetActiveFilterAfterItemMetaLookup2" actionType="LOGIC" call="ProcessContext::MainBO.boOrderMeta.loOrderItemMetas.resetFilter">
+        <Parameters>
+          <Input name="field" value="id" type="Literal" />
+        </Parameters>
+        <TransitionTo action="LoadOrderItemMetaLookup_Decision" />
+      </Action>
+      <Action name="LoadOrderItemMetaLookup_Decision" actionType="DECISION" parameter="ProcessContext::OrderItemMetaLookup_ButtonPressed">
+        <Case value="done" action="LoadOrderItemMetaLookup" />
+        <CaseElse action="ShowItemList" />
+      </Action>
+      <Action actionType="LOAD" name="LoadOrderItemMetaLookup" type="LuOrderItemMeta">
+        <Parameters>
+          <Input name="pKey" value="ProcessContext::OrderItemMetaLookupPKey" />
+        </Parameters>
+        <Return name="ProcessContext::luOrderItemMeta" />
+        <TransitionTo action="UpdateItemOrderItemTemplate" />
+      </Action>
+      <Action actionType="LOGIC" name="UpdateItemOrderItemTemplate" call="ProcessContext::MainBO.boItemTabManager.myUpdateItemOrderItemTemplate">
+        <Parameters>
+          <Input name="CurrentOrderItemMeta" value="ProcessContext::luOrderItemMeta" />
+        </Parameters>
+        <TransitionTo action="InitializeItemWholesalerAfterAddProduct" />
       </Action>
       <Action name="SetFastOrderScreenFlag" actionType="LOGIC" call="Utils.identity">
         <Return name="ProcessContext::TriggeredByFastOrderScreen" />
@@ -286,6 +531,10 @@
         </Parameters>
         <Return name="ProcessContext::FilterValue" />
       </Action>
+      <Action name="CategorySetLastItemFilter_Decision" actionType="DECISION" parameter="ProcessContext::CurrentItemFilterId">
+        <CaseElse action="ResetPromotionFlagOnCategoryButtonPressed" />
+        <CaseEmpty action="FilterItemsByLastItemFilter" />
+      </Action>
       <Action name="ResetPromotionFlagOnCategoryButtonPressed" actionType="LOGIC" call="Utils.identity">
         <Return name="ProcessContext::PromotionChanged" />
         <Parameters>
@@ -297,14 +546,16 @@
         <Parameters>
           <Input name="filterValue" value="ProcessContext::FilterValue" />
           <Input name="promotion" value="ProcessContext::PromotionChanged" />
+          <Input name="filterCode" value="ProcessContext::CurrentItemFilterId" />
         </Parameters>
         <TransitionTo action="SetDropdownOpening" />
       </Action>
       <Action name="FilterByCategory" actionType="LOGIC" call="ProcessContext::MainBO.filterProductsByQuickFilter">
         <Parameters>
-          <Input name="filterBy" type="Literal" value="Category" />
+          <Input name="filterBy" type="Literal" value="groupText" />
           <Input name="items" value="Event.items" />
           <Input name="filterValue" value="ProcessContext::FilterValue" />
+          <Input name="filterCode" value="ProcessContext::CurrentItemFilterId" />
         </Parameters>
         <Return name="ProcessContext::FilterValue" />
       </Action>
@@ -326,6 +577,9 @@
         <Parameters>
           <Input name="reset" type="Literal" value="1" />
         </Parameters>
+        <TransitionTo action="SetEARightsAfterAddRewards" />
+      </Action>
+      <Action name="SetEARightsAfterAddRewards" actionType="LOGIC" call="ProcessContext::MainBO.setEARight">
         <TransitionTo action="ShowItemList" />
       </Action>
       <Action name="ShowCategories" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.showCategories" />
@@ -344,13 +598,22 @@
         </Parameters>
       </Action>
       <Action name="SelectItemByPKey" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.selectItemByPKey">
-        <TransitionTo action="NavigateBackToHierarchyLevel_Decision" />
+        <TransitionTo action="GetWholesalers" />
         <Parameters>
           <Input name="pKey" value="Event.pKey" />
           <Input name="itemPKeys" value="Event.pKeys" />
           <Input name="startIndex" value="Event.startIndex" />
           <Input name="refPKey" value="Event.refPKey" />
         </Parameters>
+      </Action>
+      <Action actionType="LOAD" name="GetWholesalers" type="LoMyOrderItemExtra">
+        <Parameters>
+          <Input name="prdMainPKey" value="ProcessContext::MainBO.LoItems.current.prdMainPKey" />
+          <Input name="customerPKey" value="ProcessContext::MainBO.ordererPKey" />
+          <Input name="onlyRelated" value="1" type="Literal" />
+        </Parameters>
+        <Return name="ProcessContext::WholesalersList" />
+        <TransitionTo action="NavigateBackToHierarchyLevel_Decision" />
       </Action>
       <Action name="NavigateBackToHierarchyLevel_Decision" actionType="DECISION" parameter="ProcessContext::NavigateToLastLevelActive">
         <Case value="1" action="NavigateBackToHierarchyLevel" />
@@ -561,13 +824,23 @@
         </Parameters>
       </Action>
       <Action name="GetProductListForAddProduct" actionType="LOGIC" call="ProcessContext::MainBO.loadProductForAdd">
-        <TransitionTo action="ResetAddProductListFilter" />
+        <TransitionTo action="AddProductViaLookup" />
       </Action>
       <Action name="SetPromotionPKey" actionType="LOGIC" call="ProcessContext::MainBO.setSelectedPromotionPKey">
         <Parameters>
           <Input name="value" value="Event.promotionPKey" />
         </Parameters>
-        <TransitionTo action="ClearFilterSelected_Decision" />
+        <TransitionTo action="PromotionPKey_Decision" />
+      </Action>
+      <Action name="PromotionPKey_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.selectedPromotionPKey">
+        <CaseEmpty action="SetGroupingAttribute_ClearFilter" />
+        <CaseElse action="SetPromotionItemFilter" />
+      </Action>
+      <Action name="SetPromotionItemFilter" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.setCurrentItemFilterId">
+        <Parameters>
+          <Input name="value" value="Promotion" />
+        </Parameters>
+        <TransitionTo action="SetGroupingAttribute_SelectablePromotion" />
       </Action>
       <Action name="ClearFilterSelected_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.selectedPromotionPKey">
         <CaseEmpty action="SetGroupingAttribute_ClearFilter" />
@@ -663,9 +936,6 @@
         </Parameters>
         <TransitionTo action="ShowUI_Decision" />
       </Action>
-      <Action name="ResetAddProductListFilter" actionType="LOGIC" call="ProcessContext::MainBO.loProductForAdd.resetAllFilters">
-        <TransitionTo action="AddProductViaLookup" />
-      </Action>
       <Action name="LoadSuggestedQuantity" actionType="LOAD" type="LoSuggestedQuantity">
         <Parameters>
           <Input name="ordererPKey" value="ProcessContext::MainBO.ordererPKey" />
@@ -711,7 +981,24 @@
         <Return name="ProcessContext::CurrentlyRunningProcess" />
         <TransitionTo action="CheckCurrentItemFilter" />
       </Action>
-      <Action name="AddProductViaLookup" actionType="PROCESS" process="Order::AddProductProcess">
+      <Action name="AddProductViaLookup" actionType="PROCESS" process="Order::MyAddProductsProcess">
+        <Parameters>
+          <Input name="ProductList" value="ProcessContext::MainBO.loProductForAdd" />
+          <Input name="FilterByBpaAssortment" value="ProcessContext::MainBO.boOrderMeta.filterByBpaAssortment" />
+          <Input name="CurrentItemTemplate" value="ProcessContext::MainBO.boItemTabManager.addProduct_ItemMeta" />
+          <Input name="Listing" value="ProcessContext::MainBO.boOrderMeta.listing" />
+          <Input name="ListingWithModules" value="ProcessContext::MainBO.boOrderMeta.listingWithModules" />
+          <Input name="HitClosedListing" value="ProcessContext::MainBO.luOrderer.hitClosedListing" />
+          <Input name="CollectClosedListing" value="ProcessContext::MainBO.luOrderer.collectClosedListing" />
+          <Input name="ConsiderListing" value="ProcessContext::MainBO.boOrderMeta.considerListing" />
+        </Parameters>
+        <TransitionTo action="AddProducts_Result_Decision" />
+        <ReturnValues>
+          <Return name="ProcessContext::AddProduct_ButtonPressed" value="buttonPressed" />
+          <Return name="ProcessContext::ProductPKeys" value="ProductPKeys" />
+        </ReturnValues>
+      </Action>
+      <Action name="AddProductViaLookupOld" actionType="PROCESS" process="Order::AddProductProcess">
         <Parameters>
           <Input name="ProductList" value="ProcessContext::MainBO.loProductForAdd" />
           <Input name="FilterByBpaAssortment" value="ProcessContext::MainBO.boOrderMeta.filterByBpaAssortment" />
@@ -728,9 +1015,21 @@
           <Return name="ProcessContext::AddProduct_ButtonPressed" value="buttonPressed" />
         </ReturnValues>
       </Action>
+      <Action name="AddProducts_Result_Decision" actionType="DECISION" parameter="ProcessContext::ProductPKeys">
+        <CaseEmpty action="ShowUI_Decision" />
+        <CaseElse action="AddProducts" />
+      </Action>
       <Action name="AddProductViaLookupWizard_Result_Decision" actionType="DECISION" parameter="ProcessContext::AddProduct_ButtonPressed">
         <Case value="addProduct" action="GetUoMListForAdd" />
         <CaseElse action="ShowUI_Decision" />
+      </Action>
+      <Action name="AddProducts" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.myAddProducts">
+        <TransitionTo action="InitializeItemWholesalerAfterAddProduct" />
+        <Parameters>
+          <Input name="productPKeys" value="ProcessContext::ProductPKeys" />
+          <Input name="mode" value="ProcessContext::AddProduct_ButtonPressed" />
+          <Input name="itemTemplate" value="ProcessContext::MainBO.boItemTabManager.addProduct_ItemMeta" />
+        </Parameters>
       </Action>
       <Action name="GetUoMListForAdd" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.getAvailableUoMForProduct">
         <Return name="ProcessContext::ProductAddUoMList" />
@@ -793,12 +1092,19 @@
       <Action name="AddProduct_Hierarchy_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.boItemTabManager.isShowCategories">
         <Case value="0" action="AddProduct_Hierarchy_Decision_BasketMode" />
         <Case value="1" action="Navigate_To_Hierarchy_Level" />
-        <CaseElse action="ShowUI_Decision" />
+        <CaseElse action="ChangeItemType_ShowUI_Prework" />
       </Action>
       <Action name="AddProduct_Hierarchy_Decision_BasketMode" actionType="DECISION" parameter="ProcessContext::MainBO.boItemTabManager.isShowCategoriesBasketMode">
         <Case value="0" action="UpdateItemFilterCountAfterAdd" />
         <Case value="1" action="Navigate_To_Hierarchy_Level" />
-        <CaseElse action="ShowUI_Decision" />
+        <CaseElse action="ChangeItemType_ShowUI_Prework" />
+      </Action>
+      <Action name="ChangeItemType_ShowUI_Prework" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="0" type="DomBool" />
+        </Parameters>
+        <Return name="ProcessContext::IsChangeItemTypeProcess" />
+        <TransitionTo action="ShowUI_Decision" />
       </Action>
       <Action name="Navigate_To_Hierarchy_Level" actionType="LOGIC" call="ProcessContext::MainBO.boItemTabManager.navigateToAddHierarchyLevel">
         <Parameters>
@@ -821,7 +1127,9 @@
           <Input name="barcodeScanBehavior" value="ProcessContext::MainBO.boOrderMeta.barcodeScanBehavior" />
           <Input name="mode" value="ProcessContext::AddProduct_ButtonPressed" />
         </Parameters>
+        <TransitionTo action="InitializeItemWholesalerAfterAddProduct" />
       </Action>
+      <Action name="InitializeItemWholesalerAfterAddProduct" actionType="LOGIC" call="ProcessContext::MainBO.myInitializeItemWholesaler"></Action>
       <Action name="End" actionType="END">
         <ReturnValues>
           <Return name="currentItemFilterId" value="ProcessContext::CurrentItemFilterId" />

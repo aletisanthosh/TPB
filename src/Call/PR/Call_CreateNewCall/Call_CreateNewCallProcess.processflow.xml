@@ -19,6 +19,7 @@
         <Input name="Mode" type="String" />
         <Input name="fromCockpitUI" type="String" />
         <Input name="BoSfReplicationCallbacks" type="BoSfReplicationCallbacks" />
+        <Input name="visitType" type="String" />
       </Parameters>
     </ProcessContext>
     <EntryActions>
@@ -38,6 +39,7 @@
           <Input name="isSubstituted" value="ProcessContext::IsSubstituted" />
           <Input name="Mode" value="ProcessContext::Mode" />
           <Input name="LocationsList" value="ProcessContext::LocationsList" />
+          <Input name="visitType" value="ProcessContext::visitType" />
         </Parameters>
         <Return name="ProcessContext::CallBO" />
       </Action>

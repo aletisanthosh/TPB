@@ -53,5 +53,14 @@
     <SimpleProperty name="fileType" type="DomFileType" dataSourceProperty="fileType" />
     <SimpleProperty name="isProductAddedManually" type="DomBool" />
     <SimpleProperty name="isSurveyInitializedByManualPrdAdd" type="DomBool" />
+    <SimpleProperty name="prdGroupItemId" type="DomText" storable="false" dataSourceProperty="prdGroupItemId" />
+    <SimpleProperty name="validFrom" type="DomDate" dataSourceProperty="validFrom" />
+    <SimpleProperty name="validThru" type="DomValidThru" dataSourceProperty="validThru" />
+    <SimpleProperty name="prdStateType" type="DomPrdStatusType" dataSourceProperty="prdStateType" />
+    <SimpleProperty name="state" type="DomPrdState" dataSourceProperty="state" />
+    <SimpleProperty name="shortId" type="DomText" storable="false" dataSourceProperty="shortId" />
+    <SimpleProperty name="basePrice" type="DomSmallInteger" storable="false" dataSourceProperty="basePrice" />
+    <SimpleProperty name="prdType" type="DomPrdType" storable="false" dataSourceProperty="prdType" />
+    <SimpleProperty name="taxClassification" type="DomTaxClassification" dataSourceProperty="taxClassification" />
   </SimpleProperties>
 </ListItem>

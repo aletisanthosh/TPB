@@ -189,7 +189,7 @@
               <Binding target="OrderDate" type="Date" binding=".commitDate" bindingMode="ONE_WAY" />
               <Binding target="DeliveryDate" type="Date" binding=".deliveryDate" bindingMode="ONE_WAY" />
               <Binding target="Responsible" type="Text" binding=".responsibleName" bindingMode="ONE_WAY" />
-              <Binding target="GrossTotalValue" type="Decimal" formatV2="10.2" binding=".grossTotalValue" bindingMode="ONE_WAY" />
+              <Binding target="GrossTotalValue" type="Decimal" formatV2="10.2" binding=".totalValue" bindingMode="ONE_WAY" />
               <Binding target="CustomerName" type="Text" binding=".customerName" bindingMode="ONE_WAY" />
               <Binding target="SyncStatusIcon" type="Image" imageType=".svg" binding=".syncStatusIcon" bindingMode="ONE_WAY" />
               <Resource target="OrderDateLabel" type="Label" id="orderDateId" defaultLabel="Order Date" />

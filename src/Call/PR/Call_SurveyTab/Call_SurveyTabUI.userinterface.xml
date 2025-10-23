@@ -6,6 +6,20 @@
         <!-- CW-REQUIRED: remove title binding -->
       </Bindings>
       <MenuItems>
+        <MenuItem directlyVisible="true" itemId="addProduct">
+          <Bindings>
+            <Resource target="Text" type="Label" id="addProductId" defaultLabel="Add Product" />
+            <Resource target="Icon" type="Image" id="PlusDarkGrey24" defaultImage="PlusDarkGrey24.png" />
+            <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.getButtonVisibility">
+              <Parameters>
+                <Input name="token" type="Literal" value="btnSurveyAddProduct" />
+              </Parameters>
+            </Binding>
+          </Bindings>
+          <Events>
+            <ButtonPressedEvent event="addProduct" />
+          </Events>
+        </MenuItem>
         <MenuItem directlyVisible="true" itemId="scanProduct">
           <Bindings>
             <Resource target="Text" type="Label" id="scanProductId" defaultLabel="Scan Product" />
@@ -65,50 +79,8 @@
         </ImageSelector>
       </Area>
       <Area areaName="viewArea" areaPattern="SingleElementArea">
-        <MenuItems>
-          <MenuItem directlyVisible="false" itemId="addProduct">
-            <Bindings>
-              <Resource target="Text" type="Label" id="addProductId" defaultLabel="Add Product" />
-              <Resource target="Icon" type="Image" id="PlusDarkGrey24" defaultImage="PlusDarkGrey24.png" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.getButtonVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="btnSurveyAddProduct" />
-                </Parameters>
-              </Binding>
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="addProduct" />
-            </Events>
-          </MenuItem>
-          <MenuItem directlyVisible="false" itemId="PromotedProducts">
-            <Bindings>
-              <Resource target="Icon" type="Image" id="FilterDarkGrey24" defaultImage="FilterDarkGrey24" />
-              <Resource target="Text" type="Label" id="promotedProductsId" defaultLabel="Promoted" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="showAllPromotedProducts" />
-            </Events>
-          </MenuItem>
-          <MenuItem directlyVisible="false" itemId="ProductDiscrepancies">
-            <Bindings>
-              <Resource target="Icon" type="Image" id="FilterDarkGrey24" defaultImage="FilterDarkGrey24" />
-              <Resource target="Text" type="Label" id="productDiscrepanciesId" defaultLabel="Discrepancies" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="showProductDiscrepancies" />
-            </Events>
-          </MenuItem>
-          <MenuItem directlyVisible="false" itemId="AllProducts">
-            <Bindings>
-              <Resource target="Icon" type="Image" id="FilterDarkGrey24" defaultImage="FilterDarkGrey24" />
-              <Resource target="Text" type="Label" id="allProductsId" defaultLabel="All Products" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="showAllProducts" />
-            </Events>
-          </MenuItem>
-        </MenuItems>
-        <GroupedList master="true" name="SurveyProductsList" searchBarPlacement="HeaderLine" searchable="true" groupBy="prdGroupText" sortBy="prdGroupId" dataSource="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Items[]">
+        <MenuItems />
+        <GroupedList master="true" name="SurveyProductsList" searchBarPlacement="HeaderLine" searchable="true" groupBy="prdGroupText" sortBy="prdGroupId" dataSource="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Items[]" sortInsideGroupBy="prdGroupItemId" sortDirectionInGroup="ASC">
           <SearchAttributes>
             <SearchAttribute name="text1" />
             <SearchAttribute name="eAN" />
@@ -117,165 +89,13 @@
           <Items name="Items" itemPattern="SurveyPattern">
             <Bindings>
               <Binding target="Product" type="Text" binding=".text1" bindingMode="ONE_WAY" />
-              <Binding target="surveyCol1" type="Text" binding=".svyFacings" bindingMode="TWO_WAY" />
-              <Binding target="surveyCol2" type="Decimal" formatV2="10.2" binding=".svyPrice" bindingMode="TWO_WAY" />
               <Binding target="surveyCol3" type="Combo" binding=".svyDistributed" toggleId="PrdDistributed" bindingMode="TWO_WAY" />
-              <Binding target="surveyCol4" type="Text" binding=".svyPosFacings" bindingMode="TWO_WAY" />
-              <Binding target="surveyCol5" type="Decimal" formatV2="10.2" binding=".svyPosPrice" bindingMode="TWO_WAY" />
-              <Binding target="surveyCol6" type="Combo" binding=".svyPosDistributed" toggleId="PrdDistributed" bindingMode="TWO_WAY" />
-              <Binding target="listedPlannedImage" type="Image" binding=".listedPlanned.imageId" toggleId="PrdListedPromoted" bindingMode="ONE_WAY" />
               <Binding target="MediaPath" type="Blob" binding=".mediaPath" fileTypeBinding=".fileType" roundedEdge="true" />
               <!-- Header Labels -->
               <Resource target="prdIcon" type="Label" id="ClbSurveyHeaderColumnIcon" defaultLabel="Icon" />
               <Resource target="prdNameHeader" type="Label" id="ClbSurveyHeaderColumnProduct" defaultLabel="Product" />
-              <Resource target="listedPlannedHeader" type="Label" id="ClbSurveyHeaderColumnListedPlanned" defaultLabel="P/L" />
-              <Resource target="surveyCol1Header" type="Label" id="ClbSurveyHeaderColumn1" defaultLabel="F" />
-              <Resource target="surveyCol2Header" type="Label" id="ClbSurveyHeaderColumn2" defaultLabel="Price" />
               <Resource target="surveyCol3Header" type="Label" id="ClbSurveyHeaderColumn3" defaultLabel="Distrib." />
-              <Resource target="surveyCol4Header" type="Label" id="ClbSurveyHeaderColumn4" defaultLabel="F" />
-              <Resource target="surveyCol5Header" type="Label" id="ClbSurveyHeaderColumn5" defaultLabel="Price" />
-              <Resource target="surveyCol6Header" type="Label" id="ClbSurveyHeaderColumn6" defaultLabel="Distrib." />
-              <Resource target="surveyCol1PhoneHeader" type="Label" id="surveyCol1PhoneHeader" defaultLabel="F" />
-              <Resource target="surveyCol2PhoneHeader" type="Label" id="surveyCol2PhoneHeader" defaultLabel="Price" />
-              <Resource target="surveyCol4PhoneHeader" type="Label" id="surveyCol4PhoneHeader" defaultLabel="F" />
-              <Resource target="surveyCol5PhoneHeader" type="Label" id="surveyCol5PhoneHeader" defaultLabel="Price" />
             </Bindings>
-            <ItemListLayout>
-              <Default>
-                <Header>
-                  <Col bindingId="prdIcon" align="left" />
-                  <Col bindingId="prdNameHeader" align="left" />
-                  <Col bindingId="listedPlannedHeader" align="left" />
-                  <Col bindingId="surveyCol1Header" align="left" />
-                  <Col bindingId="surveyCol2Header" align="left" />
-                  <Col bindingId="surveyCol3Header" align="left" />
-                  <Col bindingId="surveyCol4Header" align="left" />
-                  <Col bindingId="surveyCol5Header" align="left" />
-                  <Col bindingId="surveyCol6Header" align="left" />
-                </Header>
-                <Col width="3em">
-                  <Row>
-                    <Col width="3em" layoutType="Image" bindingId="MediaPath" />
-                  </Row>
-                </Col>
-                <Col layoutType="itemName" bindingId="Product" />
-                <Col width="3em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol1" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol2" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol4" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol5" />
-                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol6" />
-              </Default>
-              <Tablet>
-                <Default>
-                  <Header>
-                    <Col bindingId="prdIcon" align="left" />
-                    <Col bindingId="prdNameHeader" align="left" />
-                    <Col bindingId="listedPlannedHeader" align="center" />
-                    <Col bindingId="surveyCol1Header" align="left" />
-                    <Col bindingId="surveyCol2Header" align="left" />
-                    <Col bindingId="surveyCol3Header" align="left" />
-                    <Col bindingId="surveyCol4Header" align="left" />
-                    <Col bindingId="surveyCol5Header" align="left" />
-                    <Col bindingId="surveyCol6Header" align="left" />
-                  </Header>
-                  <Col width="3em">
-                    <Row>
-                      <Col width="3em" layoutType="Image" bindingId="MediaPath" />
-                    </Row>
-                  </Col>
-                  <Col layoutType="itemName" bindingId="Product" />
-                  <Col width="1.5em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol1" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol2" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol4" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol5" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol6" />
-                </Default>
-                <Apple>
-                  <Header>
-                    <Col bindingId="prdIcon" align="left" />
-                    <Col bindingId="prdNameHeader" align="left" />
-                    <Col bindingId="listedPlannedHeader" align="center" />
-                    <Col bindingId="surveyCol1Header" align="left" />
-                    <Col bindingId="surveyCol2Header" align="left" />
-                    <Col bindingId="surveyCol3Header" align="left" />
-                    <Col bindingId="surveyCol4Header" align="left" />
-                    <Col bindingId="surveyCol5Header" align="left" />
-                    <Col bindingId="surveyCol6Header" align="left" />
-                  </Header>
-                  <Col width="3em">
-                    <Row>
-                      <Col width="3em" layoutType="Image" bindingId="MediaPath" />
-                    </Row>
-                  </Col>
-                  <Col layoutType="itemName" bindingId="Product" />
-                  <Col width="1.5em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol1" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol2" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol4" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol5" />
-                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol6" />
-                </Apple>
-              </Tablet>
-              <Phone>
-                <Default>
-                  <Header>
-                    <Col bindingId="prdIcon" align="left" />
-                    <Col bindingId="prdNameHeader" align="left" />
-                    <Col bindingId="listedPlannedHeader" align="center" />
-                    <Col bindingId="surveyCol1Header" align="left" />
-                    <Col bindingId="surveyCol2Header" align="left" />
-                    <Col bindingId="surveyCol4Header" align="left" />
-                    <Col bindingId="surveyCol5Header" align="left" />
-                    <Col bindingId="surveyCol3Header" align="left" />
-                    <Col bindingId="surveyCol6Header" align="left" />
-                  </Header>
-                  <Col width="2em">
-                    <Row>
-                      <Col width="2em" layoutType="Image" bindingId="MediaPath" />
-                    </Row>
-                  </Col>
-                  <Col flex="1" layoutType="itemName" bindingId="Product" />
-                  <Col width="1.7em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />
-                  <Col width="1.4em" layoutType="itemNameSecondary" bindingId="surveyCol1" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol2" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol4" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol5" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol6" />
-                </Default>
-                <Apple>
-                  <Header>
-                    <Col bindingId="prdIcon" align="left" />
-                    <Col bindingId="prdNameHeader" align="left" />
-                    <Col bindingId="listedPlannedHeader" align="center" />
-                    <Col bindingId="surveyCol1Header" align="left" />
-                    <Col bindingId="surveyCol2Header" align="left" />
-                    <Col bindingId="surveyCol4Header" align="left" />
-                    <Col bindingId="surveyCol5Header" align="left" />
-                    <Col bindingId="surveyCol3Header" align="left" />
-                    <Col bindingId="surveyCol6Header" align="left" />
-                  </Header>
-                  <Col width="2em">
-                    <Row>
-                      <Col width="2em" layoutType="Image" bindingId="MediaPath" />
-                    </Row>
-                  </Col>
-                  <Col layoutType="itemName" bindingId="Product" />
-                  <Col width="1.7em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />
-                  <Col width="1.4em" layoutType="itemNameSecondary" bindingId="surveyCol1" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol2" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol4" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol5" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
-                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol6" />
-                </Apple>
-              </Phone>
-            </ItemListLayout>
             <ContextMenu>
               <Bindings>
                 <Binding target="DataSource" binding="ProcessContext::ContextMenuList.Items[]" bindingMode="ONE_WAY" />
@@ -289,6 +109,142 @@
                 </Bindings>
               </Items>
             </ContextMenu>
+            <ItemListLayout>
+              <Default>
+                <Header>
+                  <Col bindingId="prdIcon" align="left" />
+                  <Col bindingId="prdNameHeader" align="left" />
+                  <!--<Col bindingId="listedPlannedHeader" align="left" />-->
+                  <!-- <Col bindingId="surveyCol1Header" align="left" /> -->
+                  <!--<Col bindingId="surveyCol2Header" align="left" />-->
+                  <Col bindingId="surveyCol3Header" align="left" />
+                  <!-- <Col bindingId="surveyCol4Header" align="left" /> -->
+                  <!--<Col bindingId="surveyCol5Header" align="left" />-->
+                  <!--<Col bindingId="surveyCol6Header" align="left" />-->
+                </Header>
+                <Col width="3em">
+                  <Row>
+                    <Col width="3em" layoutType="Image" bindingId="MediaPath" />
+                  </Row>
+                </Col>
+                <Col layoutType="itemName" bindingId="Product" />
+                <!--<Col width="3em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />-->
+                <!-- <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol1" /> -->
+                <!--<Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol2" />-->
+                <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
+                <!-- <Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol4" /> -->
+                <!--<Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol5" />-->
+                <!--<Col width="3em" layoutType="itemNameSecondary" bindingId="surveyCol6" />-->
+              </Default>
+              <Tablet>
+                <Default>
+                  <Header>
+                    <Col bindingId="prdIcon" align="left" />
+                    <Col bindingId="prdNameHeader" align="left" />
+                    <!--<Col bindingId="listedPlannedHeader" align="center" />-->
+                    <!-- <Col bindingId="surveyCol1Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol2Header" align="left" />-->
+                    <Col bindingId="surveyCol3Header" align="left" />
+                    <!-- <Col bindingId="surveyCol4Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol5Header" align="left" />-->
+                    <!--<Col bindingId="surveyCol6Header" align="left" />-->
+                  </Header>
+                  <Col width="3em">
+                    <Row>
+                      <Col width="3em" layoutType="Image" bindingId="MediaPath" />
+                    </Row>
+                  </Col>
+                  <Col layoutType="itemName" bindingId="Product" />
+                  <!--<Col width="1.5em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />-->
+                  <!-- <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol1" /> -->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol2" />-->
+                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
+                  <!-- <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol4" /> -->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol5" />-->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol6" />-->
+                </Default>
+                <Apple>
+                  <Header>
+                    <Col bindingId="prdIcon" align="left" />
+                    <Col bindingId="prdNameHeader" align="left" />
+                    <!--<Col bindingId="surveyColChangeHeader" align="center" />-->
+                    <!-- <Col bindingId="surveyCol1Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol2Header" align="left" />-->
+                    <Col bindingId="surveyCol3Header" align="left" />
+                    <!-- <Col bindingId="surveyCol4Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol5Header" align="left" />-->
+                    <!--<Col bindingId="surveyCol6Header" align="left" />-->
+                  </Header>
+                  <Col width="3em">
+                    <Row>
+                      <Col width="3em" layoutType="Image" bindingId="MediaPath" />
+                    </Row>
+                  </Col>
+                  <Col layoutType="itemName" bindingId="Product" />
+                  <!--<Col width="1.5em" height="1.4em" layoutType="itemNameSecondary" bindingId="surveyColChanged" />-->
+                  <!-- <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol1" /> -->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol2" />-->
+                  <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
+                  <!-- <Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol4" /> -->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol5" />-->
+                  <!--<Col width="2.5em" layoutType="itemNameSecondary" bindingId="surveyCol6" />-->
+                </Apple>
+              </Tablet>
+              <Phone>
+                <Default>
+                  <Header>
+                    <Col bindingId="prdIcon" align="left" />
+                    <Col bindingId="prdNameHeader" align="left" />
+                    <!--<Col bindingId="listedPlannedHeader" align="center" />-->
+                    <!-- <Col bindingId="surveyCol1Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol2Header" align="left" />-->
+                    <!-- <Col bindingId="surveyCol4Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol5Header" align="left" />-->
+                    <Col bindingId="surveyCol3Header" align="left" />
+                    <!--<Col bindingId="surveyCol6Header" align="left" />-->
+                  </Header>
+                  <Col width="2em">
+                    <Row>
+                      <Col width="2em" layoutType="Image" bindingId="MediaPath" />
+                    </Row>
+                  </Col>
+                  <Col flex="1" layoutType="itemName" bindingId="Product" />
+                  <!--<Col width="1.7em" height="1.4em" layoutType="Image" bindingId="listedPlannedImage" />-->
+                  <!-- <Col width="1.4em" layoutType="itemNameSecondary" bindingId="surveyCol1" /> -->
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol2" />-->
+                  <!-- <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol4" /> -->
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol5" />-->
+                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol6" />-->
+                </Default>
+                <Apple>
+                  <Header>
+                    <Col bindingId="prdIcon" align="left" />
+                    <Col bindingId="prdNameHeader" align="left" />
+                    <!--<Col bindingId="surveyColChangeHeader" align="center" />-->
+                    <!-- <Col bindingId="surveyCol1Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol2Header" align="left" />-->
+                    <!-- <Col bindingId="surveyCol4Header" align="left" /> -->
+                    <!--<Col bindingId="surveyCol5Header" align="left" />-->
+                    <Col bindingId="surveyCol3Header" align="left" />
+                    <!--<Col bindingId="surveyCol6Header" align="left" />-->
+                  </Header>
+                  <Col width="2em">
+                    <Row>
+                      <Col width="2em" layoutType="Image" bindingId="MediaPath" />
+                    </Row>
+                  </Col>
+                  <Col layoutType="itemName" bindingId="Product" />
+                  <!--<Col width="1.7em" height="1.4em" layoutType="itemNameSecondary" bindingId="surveyColChanged" />-->
+                  <!-- <Col width="1.4em" layoutType="itemNameSecondary" bindingId="surveyCol1" /> -->
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol2" />-->
+                  <!-- <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol4" /> -->
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol5" />-->
+                  <Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol3" />
+                  <!--<Col width="1.75em" layoutType="itemNameSecondary" bindingId="surveyCol6" />-->
+                </Apple>
+              </Phone>
+            </ItemListLayout>
           </Items>
           <Events>
             <ItemSelectedEvent event="itemSelected">
@@ -319,31 +275,52 @@
       </Area>
     </Section>
     <Section sectionName="detailSection" sectionPattern="SingleAreaSection">
-      <Area areaName="mainArea" areaPattern="SingleElementArea">
-        <GroupElement>
+      <Area areaName="listArea" areaPattern="SingleElementArea">
+        <EmbeddedList name="WholesalerDetails" dataSource="ProcessContext::wholesalersList.Items[]">
           <Bindings>
-            <Binding target="Title" binding="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.shortText" bindingMode="ONE_WAY" />
+            <Resource target="Title" type="Label" id="WholesalerDetailsId" defaultLabel="Wholesaler Details" />
           </Bindings>
-          <!-- Id -->
-          <InputArea name="Id" disabled="true">
+          <Items name="wholesalerItems" itemPattern="wholesalerItem">
+            <ItemListLayout>
+              <Default>
+                <Col>
+                  <Row layoutType="itemLabel" bindingId="Name" />
+                  <Row>
+                    <Col width="12em" layoutType="itemLabel" bindingId="SKULabel" />
+                    <Col layoutType="itemLabel" bindingId="Number" />
+                  </Row>
+                </Col>
+                <Col layoutType="Image" width="1em" bindingId="Flag" />
+              </Default>
+            </ItemListLayout>
             <Bindings>
-              <Resource target="Label" type="Label" defaultLabel="Product Number" id="IdId" />
-              <Binding target="Value" binding="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.prdId" bindingMode="ONE_WAY" />
+              <Binding target="Name" type="Text" binding=".wholesaler" bindingMode="ONE_WAY" />
+              <Binding target="Number" type="Text" binding=".sku" bindingMode="ONE_WAY" />
+              <Binding target="Flag" type="Image" binding=".wholesalerClear" bindingMode="ONE_WAY" />
+              <Resource target="SKULabel" type="Label" id="WholesaleNumberId" defaultLabel="Wholesale Order Code" />
             </Bindings>
-          </InputArea>
-          <InputArea name="GTIN" disabled="true">
+          </Items>
+        </EmbeddedList>
+        <GroupElement name="ImageGroup">
+          <Bindings>
+            <Resource target="Title" type="Label" id="Attachments" defaultLabel="Attachments" />
+          </Bindings>
+          <MediaControl name="#name#">
             <Bindings>
-              <Resource target="Label" type="Label" id="GTINId" defaultLabel="GTIN" />
-              <Binding target="Value" binding="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.eAN" bindingMode="ONE_WAY" />
+              <Binding target="MediaPath" type="Text" binding="#binding1#" bindingMode="ONE_WAY" />
+              <Binding target="ThumbnailPath" type="Text" binding="#binding2#" bindingMode="ONE_WAY" />
+              <Binding target="Type" type="Text" binding="#binding3#" bindingMode="ONE_WAY" />
             </Bindings>
-          </InputArea>
-          <InputArea name="Category" disabled="true">
-            <Bindings>
-              <Resource target="Label" type="Label" id="CategoryId" defaultLabel="Category" />
-              <Binding target="Value" binding="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.category.text" bindingMode="ONE_WAY" />
-            </Bindings>
-          </InputArea>
+          </MediaControl>
         </GroupElement>
+        <MediaListControl name="PrdAttachments" dataSource="ProcessContext::MainBO.boJobManager.loPrdAttachments.Items[]">
+          <Bindings>
+            <Binding bindingMode="ONE_WAY" binding=".mediaPath" type="Text" target="MediaPath" />
+            <Binding bindingMode="ONE_WAY" binding=".description" type="Text" target="Description" />
+            <Binding bindingMode="ONE_WAY" binding=".fileType" type="Text" target="Type" />
+          </Bindings>
+          <Events></Events>
+        </MediaListControl>
         <GroupedList name="SurveyQuestionsList" searchable="false" groupBy="jobDefinitionListText" sortBy="groupSort" hasBorder="true" sortInsideGroupBy="sort" sortDirectionInGroup="ASC" dataSource="ProcessContext::MainBO.boJobManager.loCurrentSurveys.Items[]">
           <Items name="Items" itemPattern="SurveyQuestionListItem">
             <ItemListLayout>
@@ -353,7 +330,7 @@
             </ItemListLayout>
             <Bindings>
               <Binding target="suveyText" type="Text" binding=".surveyText" bindingMode="ONE_WAY" />
-              <Binding target="surveyvalue" type="Dynamic" allowInitialValueEmpty="true" binding=".value" typeField="dataType" minBinding="minValue" maxBinding="maxValue" stepSizeBinding="stepSize" stepperEnabledBinding="useStepper" toggleId="toggleId" bindingMode="TWO_WAY" />
+              <Binding target="surveyvalue" type="Dynamic" binding=".value" typeField="dataType" minBinding="minValue" maxBinding="maxValue" stepSizeBinding="stepSize" stepperEnabledBinding="useStepper" toggleId="toggleId" bindingMode="TWO_WAY" />
               <Binding target="mandatoryIcon" type="Image" binding=".mandatoryImageId" bindingMode="ONE_WAY" />
             </Bindings>
           </Items>

@@ -48,5 +48,15 @@
     <SimpleProperty name="pricingInfo8" type="DomDecimal" dataSourceProperty="pricingInfo8" />
     <SimpleProperty name="pricingInfo9" type="DomDecimal" dataSourceProperty="pricingInfo9" />
     <SimpleProperty name="pricingInfo10" type="DomDecimal" dataSourceProperty="pricingInfo10" />
+    <SimpleProperty name="promotionWavePKey" type="DomPKey" dataSourceProperty="promotionWavePKey" />
+    <SimpleProperty name="promotionWaveName" type="DomText" dataSourceProperty="promotionWaveName" />
+    <SimpleProperty name="resale" type="DomBool" dataSourceProperty="resale" />
+    <SimpleProperty name="wholesalerProduct" type="DomId" dataSourceProperty="wholesalerProduct" />
+    <SimpleProperty name="tpbSku" type="DomText" dataSourceProperty="tpbSku" />
+    <SimpleProperty name="wsName" type="DomText" dataSourceProperty="wsName" />
+    <SimpleProperty name="supplierId" type="DomText" storable="false" dataSourceProperty="supplierId" />
+    <SimpleProperty name="wholesalerProductSKU" type="DomString" storable="false" dataSourceProperty="wholesalerProductSKU" />
+    <SimpleProperty name="wholesalerId" type="DomId" storable="false" dataSourceProperty="wholesalerId" />
+    <SimpleProperty name="wholesalerName" type="DomString" storable="false" dataSourceProperty="wholesalerName" />
   </SimpleProperties>
 </ListItem>

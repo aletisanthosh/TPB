@@ -56,14 +56,25 @@
   var sqlStmt = "";
   sqlStmt += "SELECT ";
   sqlStmt += "products.Product__c AS prdMainPKey, ";
+	//230126
+  sqlStmt += "Product2.Product_Short_Code__c AS shortId, ";
+  sqlStmt += "Product_Condition__c.Value__c AS basePrice, ";
+  sqlStmt += "Product2.Product_Type__c AS prdType, ";
+  sqlStmt += "Product2.Tax_Classification__c AS taxClassification, ";
+  //aqlStmt += "Product2.Competitive_Product__c AS foreignProduct, ";
+  sqlStmt += "PrdGroupText.Short_Description_#Language#__c  as prdGroupText, ";  
   sqlStmt += "Product2.Short_Description_#Language#__c AS shortText, ";
+  //sqlStmt += "Product2.Name AS shortText, ";
   sqlStmt += "Product2.Description_1_#Language#__c AS text1, ";
-  sqlStmt += "PrdGroupText.Short_Description_#Language#__c  as prdGroupText, ";
-  sqlStmt += "PrdGroupText.Consumer_Goods_Product_Code__c as prdGroupId, ";
+  //sqlStmt += "Product2.Consumer_Goods_Product_Code__c AS prdId, ";
+  sqlStmt += "Product2.Item_ID__C AS prdId, ";
+  sqlStmt += "PrdGroupText.Sort_Order__c as prdGroupId, ";
+  sqlStmt += "Product2.Sort_Order__c as prdGroupItemId, ";
   sqlStmt += "GROUP_CONCAT(products.jobdefinitionlistpkey, ',') AS jDLPKeys, ";
   sqlStmt += "#posId# AS posId, ";
   sqlStmt += "max(planned) AS planned, ";
   sqlStmt += "'0' AS hasDiscrepance, ";
+  sqlStmt += "' ' AS hasChanged, ";
   sqlStmt += "max(fromJobPrdRel) || max(fromListing) AS listedPlanned, ";
   sqlStmt += "max(fromHistory) AS historical, ";          
   sqlStmt += "max(Presetting1) AS presetting1, ";
@@ -79,7 +90,7 @@
   sqlStmt += "cast(max(manualProduct) as TEXT) AS manualProduct, ";
   sqlStmt += "cast(max(surveysExist) as TEXT) AS surveysExist, ";
   sqlStmt += "cast(Product2.Competitive_Product__c as TEXT) AS foreignProduct, ";
-  sqlStmt += "Product2.Consumer_Goods_Product_Code__c AS prdId, ";
+  
   sqlStmt += "Product2.GTIN__c AS eAN, ";
   sqlStmt += "Product2.Category__c AS category, ";
   sqlStmt += "'0' AS svyFacings, ";
@@ -350,14 +361,15 @@
   sqlStmt += "			WHERE ";
   sqlStmt += "			Visit__c = #clbMainPKey# ";
   sqlStmt += "			AND Product__c<>' ' ";
+  sqlStmt += "			AND Visit_Job__c.IsDeleted <> '1' ";
 
   sqlStmt += "	) products 	LEFT JOIN Product2 ON products.Product__c = Product2.Id AND Product2.Sales_Org__c = '#SalesOrg#' ";
-  sqlStmt += "	LEFT JOIN Product2 AS PrdGroupText ON PrdGroupText.id = Product2.Criterion_3_Product__c AND PrdGroupText.Sales_Org__c = '#SalesOrg#' ";
-  sqlStmt += "	LEFT OUTER JOIN (SF_FileLink ";
-  sqlStmt += "	INNER JOIN SF_File ON SF_FileLink.FileId = SF_File.Id  ";
-  sqlStmt += "  AND SF_File.Usage__c = 'Icon' ";
+  sqlStmt += "	LEFT JOIN Product2 AS PrdGroupText ON PrdGroupText.id = Product2.Criterion_4_Product__c AND PrdGroupText.Sales_Org__c = '#SalesOrg#' ";
+  sqlStmt += "	LEFT JOIN Product_Condition__c ON products.Product__c = Product_Condition__c.Product__c ";
+  sqlStmt += "	LEFT OUTER JOIN SF_FileLink ON SF_FileLink.ParentId = products.Product__c ";
+  sqlStmt += "	LEFT OUTER JOIN SF_File ON SF_FileLink.FileId = SF_File.Id  ";
+  sqlStmt += "  AND SF_file.Usage__c = 'Icon' ";
   sqlStmt += "  AND SF_File.IsDeleted <> '1' ";
-  sqlStmt += "  AND SF_FileLink.IsDeleted <> '1') ON SF_FileLink.ParentId = products.Product__c ";
   sqlStmt += "WHERE (1=1) ";
 
   // product field state
@@ -365,8 +377,11 @@
   sqlStmt += "	AND #compareAsDate('Product2.Field_Valid_Thru__c', 'Date','>=' ,#validThru#, 'Date')# ";
 
   // product master state
-  sqlStmt += "	AND Product2.State__c = '4' ";
-
+  // 230127
+  //sqlStmt += "	AND Product2.State__c = '4' ";
+  sqlStmt += "AND Product2.State__c  IN ('4', 'Active') ";
+  sqlStmt += "AND Product2.Product_Level__c = 'Product' ";
+  // 230127
   sqlStmt += "GROUP BY products.Product__c ";
   sqlStmt += "HAVING #posPKey# = #bpaMainPKey# OR #isKubsch# ='1' OR (MAX(products.storeProduct)='1') ";
 
@@ -390,7 +405,8 @@
  sqlStmt+= "	,Product2.Short_Description_#Language#__c AS shortText ";
  sqlStmt+= "	,Product2.Description_1_#Language#__c AS text1 ";
  sqlStmt+= "    ,PrdGroupText.Short_Description_#Language#__c  as prdGroupText ";
- sqlStmt+= "	,PrdGroupText.Consumer_Goods_Product_Code__c as prdGroupId ";
+ sqlStmt+= "	,PrdGroupText.Sort_Order__c as prdGroupId ";
+ sqlStmt+= "    ,Product2.Sort_Order__c as prdGroupItemId ";
  sqlStmt+= "	,Product2.GTIN__c AS eAN ";
  sqlStmt+= "	,Product2.Category__c AS category ";
  sqlStmt+= "	,Product2.Consumer_Goods_Product_Code__c AS prdId ";
@@ -405,9 +421,10 @@
  sqlStmt+= "FROM Product2 ";
  sqlStmt+= "	,Visit_Job__c ";
  sqlStmt+= "	join Job_Definition_Template__c on Visit_Job__c.Job_Definition_Template__c = Job_Definition_Template__c.Id";
- sqlStmt+= "	LEFT JOIN Product2 AS PrdGroupText on PrdGroupText.id = Product2.Criterion_3_Product__c AND PrdGroupText.Sales_Org__c = '#SalesOrg#' ";
+ sqlStmt+= "	LEFT JOIN Product2 AS PrdGroupText on PrdGroupText.id = Product2.Criterion_4_Product__c AND PrdGroupText.Sales_Org__c = '#SalesOrg#' ";
  sqlStmt+= "WHERE Visit_Job__c.Product__c = Product2.Id ";
  sqlStmt+= "AND Visit_Job__c.Visit__c = #clbMainPKey# ";
+ sqlStmt+= "AND Visit_Job__c.IsDeleted <> '1' ";
  sqlStmt+= "AND Product2.Sales_Org__c = '#SalesOrg#' ";
  sqlStmt+=" GROUP BY Visit_Job__c.Product__c ";
 

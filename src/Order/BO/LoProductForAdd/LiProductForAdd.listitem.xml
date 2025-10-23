@@ -7,7 +7,7 @@
     <SimpleProperty name="prdId" type="DomId" dataSourceProperty="prdId" />
     <SimpleProperty name="shortId" type="DomId" dataSourceProperty="shortId" />
     <SimpleProperty name="deliveryState" type="DomPrdState" dataSourceProperty="deliveryState" />
-    <SimpleProperty name="fieldState" type="DomBool" storable="false" dataSourceProperty="fieldState" />
+    <SimpleProperty name="fieldState" type="DomPrdState" storable="false" dataSourceProperty="fieldState" />
     <SimpleProperty name="newState" type="DomPrdState" dataSourceProperty="newState" />
     <SimpleProperty name="groupingAttribute" type="DomString" dataSourceProperty="groupingAttribute" />
     <SimpleProperty name="sdoItemMeta1" type="DomBool" dataSourceProperty="sdoItemMeta1" />
@@ -44,5 +44,21 @@
     <SimpleProperty name="customerProductNumber" type="DomString" storable="false" dataSourceProperty="customerProductNumber" />
     <SimpleProperty name="focusProductType" type="DomString" storable="false" dataSourceProperty="focusProductType" />
     <SimpleProperty name="focusProductImage" type="DomString" storable="false" dataSourceProperty="focusProductImage" />
+    <SimpleProperty name="groupSortOrder" type="DomString" dataSourceProperty="groupSortOrder" />
+    <SimpleProperty name="sortOrder" type="DomString" dataSourceProperty="sortOrder" />
+    <SimpleProperty name="isSelected" type="DomString" dataSourceProperty="isSelected" />
+    <SimpleProperty name="showInSuggested" type="DomBool" dataSourceProperty="showInSuggested" />
+    <SimpleProperty name="suggested" type="DomBool" dataSourceProperty="suggested" />
+    <SimpleProperty name="distributed" type="DomBool" dataSourceProperty="distributed" />
+    <SimpleProperty name="sellingPriority" type="DomBool" dataSourceProperty="sellingPriority" />
+    <SimpleProperty name="sellingPriorityImage" type="DomString" dataSourceProperty="sellingPriorityImage" />
+    <SimpleProperty name="promotionQuantity" type="DomString" dataSourceProperty="promotionQuantity" />
+    <SimpleProperty name="suggestQty" type="DomString" dataSourceProperty="suggestQty" />
+    <SimpleProperty name="maxAllocation" type="DomString" dataSourceProperty="maxAllocation" />
+    <SimpleProperty name="tpbPromoted" type="DomBool" dataSourceProperty="tpbPromoted" />
+    <SimpleProperty name="cashSaleOrderable" type="DomString" dataSourceProperty="cashSaleOrderable" />
+    <SimpleProperty name="prebookOrderable" type="DomString" dataSourceProperty="prebookOrderable" />
+    <SimpleProperty name="returnable" type="DomString" dataSourceProperty="returnable" />
+    <SimpleProperty name="history" type="DomBool" dataSourceProperty="history" />
   </SimpleProperties>
 </ListItem>

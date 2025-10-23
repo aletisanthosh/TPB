@@ -78,6 +78,9 @@
     <SimpleProperty name="outOfStockRate" type="DomDecimal" id="false" dataSourceProperty="outOfStockRate" />
     <SimpleProperty name="outOfStockIssue" type="DomBool" id="false" dataSourceProperty="outOfStockIssue" />
     <SimpleProperty name="kpiRelevant" type="DomText" id="false" dataSourceProperty="kpiRelevant" />
+    <SimpleProperty name="isInProgress" type="DomBool" id="false" dataSourceProperty="isInProgress" />
+    <SimpleProperty name="isDistributionCaptured" type="DomBool" id="false" dataSourceProperty="isDistributionCaptured" />
+    <SimpleProperty name="visitType" type="DomString" id="false" dataSourceProperty="visitType" />
   </SimpleProperties>
   <ObjectLookups>
     <ObjectLookup name="luCustomer" objectClass="LuCustomer" dataSourceProperty="bpaMainPKey" lookupProperty="pKey" />
@@ -151,6 +154,20 @@
     <Method name="calculateKpi" />
     <Method name="updatePictureCountOnLoad" />
     <Method name="validateCallDeletion" />
+    <Method name="myhasInProgressVisits" />
+    <Method name="replaceGetButtonVisibility" />
+    <Method name="myStartCall" />
+    <Method name="myCheckDistributionCaptured" />
+    <Method name="mySetDistributionCaptured" />
+    <Method name="myValidatePriceQuestions" />
+    <Method name="replaceGetCockpitMenuVisibility" />
+    <Method name="myGetOpenOrdersInfo" />
+    <Method name="myHasOpenTasks" />
+    <Method name="postCreateAsync" />
+    <Method name="replacePrepareCategoryQuickFilterList" />
+    <Method name="replaceFilterProductsByQuickFilter" />
+    <Method name="myValidateCustomer" />
+    <Method name="replaceCaptureProceedingTime" />
   </Methods>
   <Validations>
     <Validation name="validateBase" />

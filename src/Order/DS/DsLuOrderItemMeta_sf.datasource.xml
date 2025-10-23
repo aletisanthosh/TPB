@@ -11,6 +11,7 @@
     <Attribute name="calculationGroup" table="Order_Item_Template__c" column="Calculation_Group__c" />
     <Attribute name="modifyPresetQuantity" table="Order_Item_Template__c" column="Modify_Quantity__c" />
     <Attribute name="scanIncrementQuantity" table="Order_Item_Template__c" column="Scanning_Increment__c" />
+    <Attribute name="movementDirection" table="Order_Item_Template__c" column="Movement_Direction__c" />
   </Attributes>
   <Entities>
     <Entity name="Order_Item_Template__c" alias="" idAttribute="Id" />
@@ -20,6 +21,6 @@
     ]]></QueryCondition>
   <OrderCriteria></OrderCriteria>
   <Parameters>
-    <Parameter name="pKey" type="TEXT"/>
+    <Parameter name="pKey" type="TEXT" />
   </Parameters>
 </DataSource>

@@ -35,5 +35,10 @@
     <SimpleProperty name="distance" type="DomDecimal" />
     <SimpleProperty name="visibleInMap" type="DomBool" />
     <SimpleProperty name="dateFromTimeFrom" type="DomString" />
+    <SimpleProperty name="clbTypeStatusNew" type="DomString" storable="false" dataSourceProperty="clbTypeStatusNew" />
+    <SimpleProperty name="clbTypeStatusColoredNew" type="DomText" storable="false" dataSourceProperty="clbTypeStatusColoredNew" />
+    <SimpleProperty name="recordTypeName" type="DomText" storable="false" dataSourceProperty="recordTypeName" />
+    <SimpleProperty name="visitType" type="DomText" storable="false" dataSourceProperty="visitType" />
+    <SimpleProperty name="customerHQPKey" type="DomPKey" dataSourceProperty="customerHQPKey" />
   </SimpleProperties>
 </ListItem>

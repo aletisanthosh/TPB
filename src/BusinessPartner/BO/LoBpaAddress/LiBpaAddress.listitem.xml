@@ -14,5 +14,14 @@
     <SimpleProperty name="longitude" type="DomDegree" dataSourceProperty="longitude" />
     <SimpleProperty name="address" type="DomText" dataSourceProperty="address" />
     <SimpleProperty name="zipCodeAndCity" type="DomText" dataSourceProperty="zipCodeAndCity" />
+    <SimpleProperty name="bStreet" type="DomStreet" dataSourceProperty="bStreet" />
+    <SimpleProperty name="bZipCode" type="DomZipCode" dataSourceProperty="bZipCode" />
+    <SimpleProperty name="bCity" type="DomCity" dataSourceProperty="bCity" />
+    <SimpleProperty name="bCountryState" type="DomText" dataSourceProperty="bCountryState" />
+    <SimpleProperty name="bCountry" type="DomText" dataSourceProperty="bCountry" />
+    <SimpleProperty name="bLatitude" type="DomDegree" dataSourceProperty="bLatitude" />
+    <SimpleProperty name="bLongitude" type="DomDegree" dataSourceProperty="bLongitude" />
+    <SimpleProperty name="bAddress" type="DomText" dataSourceProperty="bAddress" />
+    <SimpleProperty name="bZipCodeAndCity" type="DomText" dataSourceProperty="bZipCodeAndCity" />
   </SimpleProperties>
 </ListItem>

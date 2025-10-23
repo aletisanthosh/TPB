@@ -55,6 +55,19 @@
               <ValueChangedEvent event="AllDayChanged" />
             </Events>
           </CheckBox>
+          <SelectionBox name="VisitType">
+            <Bindings>
+              <Resource target="Label" type="Label" id="VisitTypeId" defaultLabel="Visit Type" />
+              <Binding target="DataSource" toggleId="DomVisitType" bindingMode="TWO_WAY" />
+              <Binding target="Value" binding="ProcessContext::WizardBO.visitType" bindingMode="TWO_WAY" />
+            </Bindings>
+            <Items>
+              <Bindings>
+                <Binding target="ItemValue" type="Text" binding=".id" bindingMode="ONE_WAY" />
+                <Binding target="ItemText" type="Text" binding=".text" bindingMode="ONE_WAY" />
+              </Bindings>
+            </Items>
+          </SelectionBox>
         </GroupElement>
         <GroupElement name="Customer">
           <Lookup name="CustomerName">

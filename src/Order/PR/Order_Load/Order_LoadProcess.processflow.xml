@@ -20,6 +20,7 @@
         <Input name="CallOutOfStockProducts" type="String" />
         <Input name="CustomerPKey" type="DomPKey" />
         <Input name="BoCall" type="BoCall" />
+        <Input name="ShowInvoice" type="String" />
       </Parameters>
     </ProcessContext>
     <EntryActions>
@@ -32,12 +33,13 @@
   </Entry>
   <Body>
     <Actions>
+      <!-- SF/CASDIF Start -->
+      <!-- SF/CASDIF End -->
       <Action name="StartNavigation" actionType="DECISION" parameter="ProcessContext::OrderBo.boOrderMeta.sdoSubType">
         <Case value="Delivery" action="StartNavigation_Delivery" />
         <CaseElse action="StartNavigation_Order" />
         <CaseEmpty action="StartNavigation_Order" />
       </Action>
-      <!-- SF/CASDIF Start -->
       <Action name="CheckIfDataIsAvailable" actionType="LOGIC" call="ProcessContext::SfReplicationCallbacks.isOrderOnDemandDataAvailable">
         <Parameters>
           <Input name="customerPKey" value="ProcessContext::CustomerPKey" />
@@ -76,7 +78,6 @@
           <Return name="TriggerReload" value="0" />
         </ReturnValues>
       </Action>
-      <!-- SF/CASDIF End -->
       <Action name="LoadBo" actionType="LOAD" type="BoOrder">
         <Parameters>
           <Input name="pKey" value="ProcessContext::MainPKey" />
@@ -86,7 +87,16 @@
           <Input name="boCallCache" value="ProcessContext::BoCall" />
         </Parameters>
         <Return name="ProcessContext::OrderBo" />
-        <TransitionTo action="IsInvalidOrder_Decision" />
+        <TransitionTo action="ViewInvoice_Decision" />
+      </Action>
+      <Action name="ViewInvoice_Decision" actionType="DECISION" parameter="ProcessContext::ShowInvoice">
+        <Case value="Yes" action="ShowInvoice" />
+        <CaseElse action="IsInvalidOrder_Decision" />
+      </Action>
+      <Action name="ShowInvoice" actionType="PROCESS" process="Order::ShowPrintInvoiceProcess">
+        <Parameters>
+          <Input name="loOrderAttachment" value="ProcessContext::OrderBo.loOrderAttachment" />
+        </Parameters>
       </Action>
       <Action name="IsInvalidOrder_Decision" actionType="DECISION" parameter="ProcessContext::OrderBo.isInvalidOrder">
         <Case value="1" action="EndWithoutReload" />

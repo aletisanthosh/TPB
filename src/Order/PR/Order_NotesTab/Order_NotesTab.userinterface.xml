@@ -2,7 +2,7 @@
   <Page pagePattern="SingleSectionPage">
     <PageHeader>
       <Bindings>
-        <Binding target="title" binding="ProcessContext::MainBO.luOrderer.name"/>
+        <Binding target="title" binding="ProcessContext::MainBO.luOrderer.name" />
         <!-- CW-REQUIRED: remove title binding -->
       </Bindings>
       <MenuItems>
@@ -15,19 +15,6 @@
             <ButtonPressedEvent event="showInvoiceNote">
               <Params>
                 <Param name="type" value="Invoice" />
-              </Params>
-            </ButtonPressedEvent>
-          </Events>
-        </MenuItem>
-        <MenuItem directlyVisible="true" itemId="delivery">
-          <Bindings>
-            <Resource target="Text" type="Label" id="deliveryNote" defaultLabel="Delivery" />
-            <Resource target="Icon" type="Image" id="DeliveryItemDarkGrey24" />
-          </Bindings>
-          <Events>
-            <ButtonPressedEvent event="showDeliveryNote">
-              <Params>
-                <Param name="type" value="Delivery" />
               </Params>
             </ButtonPressedEvent>
           </Events>

@@ -23,6 +23,7 @@
     <SimpleProperty name="sfLanguagePostfix" type="DomString" />
     <SimpleProperty name="profilePicture" type="DomBlob" />
     <SimpleProperty name="showCockpitInDashboard" type="DomBool" />
+    <SimpleProperty name="profileName" type="DomUsrName" dataSourceProperty="profileName" />
   </SimpleProperties>
   <ObjectLookups>
     <ObjectLookup name="luIsSupervisor" objectClass="LuIsSupervisor" dataSourceProperty="pKey" lookupProperty="pKey" />
@@ -50,6 +51,7 @@
     <Method name="getReminderRuleTimerThreshold" />
     <Method name="checkUserRelatedDocument" />
     <Method name="isKAMVisible" />
+    <Method name="mytestDeepLink" />
   </Methods>
   <Validations>
     <Validation name="validateSyncTimeInterval" />

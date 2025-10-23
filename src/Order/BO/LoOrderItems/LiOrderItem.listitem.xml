@@ -29,7 +29,7 @@
     <SimpleProperty name="priceEffect" type="DomSdoItemMetaPriceEffect" storable="false" dataSourceProperty="priceEffect" />
     <SimpleProperty name="piecesPerSmallestUnit" type="DomDecimal" storable="false" dataSourceProperty="piecesPerSmallestUnit" />
     <SimpleProperty name="history" type="DomBool" storable="true" dataSourceProperty="history" />
-    <SimpleProperty name="groupText" type="DomString" storable="false" dataSourceProperty="groupText" />
+    <SimpleProperty name="groupText" type="DomText" storable="false" dataSourceProperty="groupText" />
     <SimpleProperty name="groupId" type="DomId" storable="false" dataSourceProperty="groupId" />
     <SimpleProperty name="saveZeroQuantity" type="DomBool" storable="false" dataSourceProperty="saveZeroQuantity" />
     <SimpleProperty name="calculationGroup" type="DomSdoCalculationGroup" storable="false" dataSourceProperty="calculationGroup" />
@@ -83,21 +83,21 @@
     <SimpleProperty name="specialQuantity" type="DomDecimal" storable="false" dataSourceProperty="specialQuantity" />
     <SimpleProperty name="specialPromotionIcon" type="DomString" />
     <SimpleProperty name="groupName" type="DomText" />
-    <SimpleProperty name="groupSort" type="DomDecimal" />
-    <SimpleProperty name="groupIdSort" type="DomDecimal" />
+    <SimpleProperty name="groupSort" type="DomText" />
+    <SimpleProperty name="groupIdSort" type="DomText" />
     <SimpleProperty name="rewardPKey" type="DomPKey" dataSourceProperty="rewardPKey" />
     <SimpleProperty name="category" type="DomPrdCategory" />
     <SimpleProperty name="logicUnitsforDisplay" type="DomString" storable="false" />
-    <SimpleProperty name="pricingInfo1" type="DomDecimal" dataSourceProperty="pricingInfo1" />
-    <SimpleProperty name="pricingInfo2" type="DomDecimal" dataSourceProperty="pricingInfo2" />
-    <SimpleProperty name="pricingInfo3" type="DomDecimal" dataSourceProperty="pricingInfo3" />
-    <SimpleProperty name="pricingInfo4" type="DomDecimal" dataSourceProperty="pricingInfo4" />
-    <SimpleProperty name="pricingInfo5" type="DomDecimal" dataSourceProperty="pricingInfo5" />
-    <SimpleProperty name="pricingInfo6" type="DomDecimal" dataSourceProperty="pricingInfo6" />
-    <SimpleProperty name="pricingInfo7" type="DomDecimal" dataSourceProperty="pricingInfo7" />
-    <SimpleProperty name="pricingInfo8" type="DomDecimal" dataSourceProperty="pricingInfo8" />
-    <SimpleProperty name="pricingInfo9" type="DomDecimal" dataSourceProperty="pricingInfo9" />
-    <SimpleProperty name="pricingInfo10" type="DomDecimal" dataSourceProperty="pricingInfo10" />
+    <SimpleProperty name="pricingInfo1" type="DomMoney" dataSourceProperty="pricingInfo1" />
+    <SimpleProperty name="pricingInfo2" type="DomMoney" dataSourceProperty="pricingInfo2" />
+    <SimpleProperty name="pricingInfo3" type="DomMoney" dataSourceProperty="pricingInfo3" />
+    <SimpleProperty name="pricingInfo4" type="DomMoney" dataSourceProperty="pricingInfo4" />
+    <SimpleProperty name="pricingInfo5" type="DomMoney" dataSourceProperty="pricingInfo5" />
+    <SimpleProperty name="pricingInfo6" type="DomMoney" dataSourceProperty="pricingInfo6" />
+    <SimpleProperty name="pricingInfo7" type="DomMoney" dataSourceProperty="pricingInfo7" />
+    <SimpleProperty name="pricingInfo8" type="DomMoney" dataSourceProperty="pricingInfo8" />
+    <SimpleProperty name="pricingInfo9" type="DomMoney" dataSourceProperty="pricingInfo9" />
+    <SimpleProperty name="pricingInfo10" type="DomMoney" dataSourceProperty="pricingInfo10" />
     <SimpleProperty name="promotedPrice" type="DomMoney" />
     <SimpleProperty name="defaultPiecesPerSmallestUnit" type="DomDecimal" />
     <SimpleProperty name="defaultQuantityLogisticUnit" type="DomPrdLogisticUnit" />
@@ -106,5 +106,37 @@
     <SimpleProperty name="maxValue" type="DomDecimal" />
     <SimpleProperty name="percentDiscount" type="DomDecimal" />
     <SimpleProperty name="showInBasket" type="DomBool" />
+    <SimpleProperty name="promotionWavePKey" type="DomPKey" dataSourceProperty="promotionWavePKey" />
+    <SimpleProperty name="promotionWaveName" type="DomText" dataSourceProperty="promotionWaveName" />
+    <SimpleProperty name="resale" type="DomBool" storable="true" dataSourceProperty="resale" />
+    <SimpleProperty name="wholesalerProduct" type="DomId" storable="true" dataSourceProperty="wholesalerProduct" />
+    <SimpleProperty name="tpbSku" type="DomText" storable="true" dataSourceProperty="tpbSku" />
+    <SimpleProperty name="wsName" type="DomText" storable="true" dataSourceProperty="wsName" />
+    <SimpleProperty name="supplierId" type="DomText" storable="false" dataSourceProperty="supplierId" />
+    <SimpleProperty name="wsNameDisplay" type="DomText" storable="false" />
+    <SimpleProperty name="wholesalerProductSKU" type="DomString" storable="false" dataSourceProperty="wholesalerProductSKU" />
+    <SimpleProperty name="wholesalerId" type="DomId" storable="false" dataSourceProperty="wholesalerId" />
+    <SimpleProperty name="wholesalerName" type="DomText" storable="false" dataSourceProperty="wholesalerName" />
+    <SimpleProperty name="groupSortOrder" type="DomDecimal" storable="false" dataSourceProperty="groupSortOrder" />
+    <SimpleProperty name="sortOrder" type="DomDecimal" storable="false" dataSourceProperty="sortOrder" />
+    <SimpleProperty name="promotionQuantity" type="DomDecimal" />
+    <SimpleProperty name="suggested" type="DomBool" />
+    <SimpleProperty name="showInSuggested" type="DomBool" />
+    <SimpleProperty name="distributed" type="DomBool" />
+    <SimpleProperty name="manual" type="DomString" storable="false" dataSourceProperty="isManual" />
+    <SimpleProperty name="sellingPriority" type="DomBool" />
+    <SimpleProperty name="sellingPriorityImage" type="DomText" />
+    <SimpleProperty name="printCashSalesResturnSection" type="DomBool" />
+    <SimpleProperty name="printPrebookSection" type="DomBool" />
+    <SimpleProperty name="printSuggestedSection" type="DomBool" />
+    <SimpleProperty name="printPromoCode" type="DomText" />
+    <SimpleProperty name="printWholesalerName" type="DomText" />
+    <SimpleProperty name="printWholesalerItemCode" type="DomText" />
+    <SimpleProperty name="tpbPromoted" type="DomBool" />
+    <SimpleProperty name="tpbDiscount" type="DomMoney" />
+    <SimpleProperty name="tpbUnitPrice" type="DomMoney" />
+    <SimpleProperty name="suggestQty" type="DomDecimal" />
+    <SimpleProperty name="maxAllocation" type="DomDecimal" />
+    <SimpleProperty name="suggestedType" type="DomText" />
   </SimpleProperties>
 </ListItem>

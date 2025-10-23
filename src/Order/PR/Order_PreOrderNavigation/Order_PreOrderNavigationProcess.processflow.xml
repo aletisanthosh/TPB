@@ -6,9 +6,12 @@
         <Declaration name="currentTabPage" type="String" />
         <Declaration name="CurrentItemFilterId" type="String" />
         <Declaration name="IsSfBackend" type="DomBool" />
+        <Declaration name="Navigation__NavigateTo" type="String" />
+        <Declaration name="Navigation__NavigateAction" type="String" />
       </Declarations>
       <Parameters>
         <Input name="MainBO" type="BoOrder" />
+        <Input name="PrintInvoice" type="String" />
       </Parameters>
     </ProcessContext>
     <EntryActions>
@@ -22,6 +25,11 @@
   </Entry>
   <Body>
     <Actions>
+      <!-- Item list process -->
+      <!-- On demand load of notes LO-->
+      <!-- On demand load of workflow BO-->
+      <!-- Redirect decission for validation errors to stay on the page where the user was before the validation -->
+      <!-- Message Tab Process -->
       <Action name="Backend_Decision" actionType="DECISION" parameter="ProcessContext::IsSfBackend">
         <Case value="true" action="StartSfNavigation" />
         <CaseElse action="Navigation_Decision" />
@@ -61,7 +69,6 @@
         </Parameters>
         <TransitionTo action="setCurrentTabName_itemList" />
       </Action>
-      <!-- Item list process -->
       <Action actionType="LOGIC" name="setCurrentTabName_itemList" call="Utils.identity">
         <Parameters>
           <Input name="value" type="Literal" value="tab_ItemList" />
@@ -72,18 +79,25 @@
       <Action actionType="PROCESS" name="StartItemListProcess" process="Order::ItemListTabProcess">
         <Parameters>
           <Input name="MainBO" value="ProcessContext::MainBO" />
+          <Input name="ShowInvoice" value="ProcessContext::ShowInvoice" />
         </Parameters>
         <ReturnValues>
           <Return name="ProcessContext::CurrentItemFilterId" value="currentItemFilterId" />
+          <Return name="ProcessContext::Navigation__NavigateTo" value="NavigateTo" />
+          <Return name="ProcessContext::Navigation__NavigateAction" value="NavigateAction" />
         </ReturnValues>
-        <TransitionTo action="StoreCurrentItemFilterId_ItemTabManager" />
+        <TransitionTo action="ItemListTab__NavigateToDecision" />
+      </Action>
+      <Action name="ItemListTab__NavigateToDecision" actionType="DECISION" parameter="ProcessContext::Navigation__NavigateTo">
+        <Case value="HeaderTab" action="Workflow_Load_Decision" />
+        <CaseEmpty action="StoreCurrentItemFilterId_ItemTabManager" />
+        <CaseElse action="StoreCurrentItemFilterId_ItemTabManager" />
       </Action>
       <Action actionType="LOGIC" name="StoreCurrentItemFilterId_ItemTabManager" call="ProcessContext::MainBO.boItemTabManager.setCurrentItemFilterId">
         <Parameters>
           <Input name="value" value="ProcessContext::CurrentItemFilterId" />
         </Parameters>
       </Action>
-      <!-- On demand load of notes LO-->
       <Action name="Notes_Load_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.loNotes">
         <CaseEmpty action="Load_Notes" />
         <CaseElse action="setCurrentTabName_notes" />
@@ -103,7 +117,6 @@
           <Input name="MainBO" value="ProcessContext::MainBO" />
         </Parameters>
       </Action>
-      <!-- On demand load of workflow BO-->
       <Action name="Workflow_Load_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.boWorkflow">
         <CaseEmpty action="Load_Workflow" />
         <CaseElse action="setCurrentTabName_header" />
@@ -121,6 +134,7 @@
       <Action actionType="PROCESS" name="StartHeaderProcess" process="Order::HeaderTabProcess">
         <Parameters>
           <Input name="MainBO" value="ProcessContext::MainBO" />
+          <Input name="NavigateAction" value="ProcessContext::Navigation__NavigateAction" />
         </Parameters>
       </Action>
       <Action actionType="LOGIC" name="resetValidateForReleaseFlag" call="ProcessContext::MainBO.setValidateForRelease">
@@ -129,7 +143,6 @@
         </Parameters>
         <TransitionTo action="AfterValidationErrorUIRedirect_Decision" />
       </Action>
-      <!-- Redirect decission for validation errors to stay on the page where the user was before the validation -->
       <Action name="AfterValidationErrorUIRedirect_Decision" actionType="DECISION" parameter="ProcessContext::currentTabPage">
         <Case value="tab_ItemList" action="StartItemListProcess" />
         <Case value="tab_Notes" action="StartNotesProcess" />
@@ -137,7 +150,6 @@
         <Case value="tab_Message" action="StartMessageProcess" />
         <CaseElse action="StartNavigation" />
       </Action>
-      <!-- Message Tab Process -->
       <Action actionType="LOGIC" name="setCurrentTabName_message" call="Utils.identity">
         <Parameters>
           <Input name="value" type="Literal" value="tab_Message" />

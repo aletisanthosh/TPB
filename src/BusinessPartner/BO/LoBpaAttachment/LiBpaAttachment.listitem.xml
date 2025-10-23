@@ -8,5 +8,6 @@
     <SimpleProperty name="mediaPath" type="DomBlob" dataSourceProperty="mediaPath" blobTable="BpaAttachmentBlob" blobPKeyField="attachmentBlobPKey" />
     <SimpleProperty name="usage" type="DomAttachUsage" dataSourceProperty="usage" />
     <SimpleProperty name="fileName" type="DomFileName" dataSourceProperty="fileName" />
+    <SimpleProperty name="storeName" type="DomBpaName" dataSourceProperty="storeName" />
   </SimpleProperties>
 </ListItem>

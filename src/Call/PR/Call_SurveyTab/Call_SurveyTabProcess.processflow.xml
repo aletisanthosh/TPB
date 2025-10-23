@@ -17,6 +17,8 @@
         <Declaration name="isDiscrepanciesFilterSet" type="String" />
         <Declaration name="ScanProcessCompleted" type="String" />
         <Declaration name="isSfBackend" type="DomBool" />
+        <Declaration name="ProductPKeys" type="Object" />
+        <Declaration name="wholesalersList" type="LoMyOrderItemExtra" />
       </Declarations>
       <Parameters>
         <Input name="MainBO" type="BoCall" />
@@ -65,12 +67,15 @@
         <Parameters>
           <Input name="loadType" type="Literal" value="surveys" />
         </Parameters>
-        <TransitionTo action="ShowSurvey" />
+        <TransitionTo action="SetDistributionCaptured" />
+      </Action>
+      <Action name="SetDistributionCaptured" actionType="LOGIC" call="ProcessContext::MainBO.mySetDistributionCaptured">
+        <TransitionTo action="CurrentProduct_Decision" />
       </Action>
       <Action actionType="VIEW" name="ShowSurvey">
         <UIDescription>Call::SurveyTabUI</UIDescription>
         <Events>
-          <Event name="itemSelected" action="GetSurveysForProduct_Decision" />
+          <Event name="itemSelected" action="GetSurveysForProduct_Decision_Prestep" />
           <Event name="posSelected" action="FilterSurveyByPOS" />
           <Event name="addProduct" action="AddProductLookup" />
           <Event name="scanProduct" action="ScanAndAddProduct" />
@@ -84,6 +89,26 @@
           <Event name="quickFilterOpeningEvent" action="PrepareCategoryQuickFilterList" />
           <Event name="quickFilterSelectedEvent" action="FilterByCategory" />
         </Events>
+      </Action>
+      <Action name="CurrentProduct_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current">
+        <CaseEmpty action="ShowSurvey" />
+        <CaseElse action="GetWholesalersReload" />
+      </Action>
+      <Action actionType="LOAD" name="GetWholesalersReload" type="LoMyOrderItemExtra">
+        <Parameters>
+          <Input name="prdMainPKey" value="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.prdMainPKey" />
+          <Input name="customerPKey" value="ProcessContext::MainBO.bpaMainPKey" />
+          <Input name="onlyRelated" value="1" />
+        </Parameters>
+        <Return name="ProcessContext::wholesalersList" />
+        <TransitionTo action="FilterSurveyInitially" />
+      </Action>
+      <Action name="FilterSurveyInitially" actionType="LOGIC" call="ProcessContext::MainBO.boJobManager.filterSurveysByProduct">
+        <Parameters>
+          <Input name="prdMainPKey" value="ProcessContext::MainBO.boJobManager.loCurrentSurveyProducts.Current.prdMainPKey" />
+          <Input name="posId" value="ProcessContext::posId" />
+        </Parameters>
+        <TransitionTo action="ShowSurvey" />
       </Action>
       <Action name="PrepareCategoryQuickFilterList" actionType="LOGIC" call="ProcessContext::MainBO.prepareCategoryQuickFilterList">
         <Parameters>
@@ -119,6 +144,7 @@
         <Case value="DeleteFromHistory" action="DeleteProductFromHistory" />
         <Case value="DeleteFromPOSHistory" action="DeleteProductFromPOSHistory" />
         <CaseElse action="ShowSurvey" />
+        <Case value="Delete" action="DeleteProductFromList" />
       </Action>
       <Action name="AddProductToHistory" actionType="LOGIC" call="ProcessContext::MainBO.boJobManager.updateHistoricalProductsAsync">
         <Parameters>
@@ -141,15 +167,32 @@
           <Input name="posId" value="ProcessContext::posId" />
         </Parameters>
       </Action>
-      <Action name="AddProductLookup" actionType="PROCESS" process="Product::LookupProcess">
+      <Action name="DeleteProductFromList" actionType="LOGIC" call="ProcessContext::MainBO.boJobManager.myDeleteProduct">
+        <Parameters>
+          <Input name="clbMainPKey" value="ProcessContext::MainBO.pKey" />
+          <Input name="prdMainPKey" value="Event.prdMainPKey" />
+          <Input name="posId" value="ProcessContext::posId" />
+        </Parameters>
+        <TransitionTo action="CurrentProduct_Decision" />
+      </Action>
+      <Action name="AddProductLookup" actionType="PROCESS" process="Product::MyLookupProcess">
         <Parameters>
           <Input name="filterOnlyProducts" type="Literal" value="true" />
         </Parameters>
         <ReturnValues>
-          <Return name="ProcessContext::ProductPKey" value="ProductPKey" />
-          <Return name="ProcessContext::ProductId" value="ProductId" />
+          <Return name="ProcessContext::ProductPKeys" value="ProductPKeys" />
         </ReturnValues>
-        <TransitionTo action="AddProduct_Result_Decision" />
+        <TransitionTo action="AddProducts_Result_Decision" />
+      </Action>
+      <Action name="AddProducts_Result_Decision" actionType="DECISION" parameter="ProcessContext::ProductPKeys">
+        <CaseEmpty action="ShowSurvey" />
+        <CaseElse action="AddProductsLogic" />
+      </Action>
+      <Action name="AddProductsLogic" actionType="LOGIC" call="ProcessContext::MainBO.boJobManager.myAddProducts">
+        <Parameters>
+          <Input name="productKeys" value="ProcessContext::ProductPKeys" />
+          <Input name="posId" value="ProcessContext::posId" />
+        </Parameters>
       </Action>
       <Action name="AddProduct_Result_Decision" actionType="DECISION" parameter="ProcessContext::ProductPKey">
         <CaseEmpty action="ShowSurvey" />
@@ -183,6 +226,21 @@
           <Input name="listItem" value="ProcessContext::FirstSurveyProduct" />
         </Parameters>
         <TransitionTo action="SetSurveysFilter" />
+      </Action>
+      <Action name="GetSurveysForProduct_Decision_Prestep" actionType="LOGIC" call="ProcessContext::MainBO.boJobManager.mySetJobManagerInfo">
+        <Parameters>
+          <Input name="prdMainPKey" value="Event.prdMainPKey" />
+        </Parameters>
+        <TransitionTo action="GetWholesalers" />
+      </Action>
+      <Action actionType="LOAD" name="GetWholesalers" type="LoMyOrderItemExtra">
+        <Parameters>
+          <Input name="prdMainPKey" value="Event.prdMainPKey" />
+          <Input name="customerPKey" value="ProcessContext::MainBO.bpaMainPKey" />
+          <Input name="onlyRelated" value="1" />
+        </Parameters>
+        <Return name="ProcessContext::wholesalersList" />
+        <TransitionTo action="GetSurveysForProduct_Decision" />
       </Action>
       <Action name="GetSurveysForProduct_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.clbStatus">
         <Case value="Planned" action="GetSurveysForProduct" />

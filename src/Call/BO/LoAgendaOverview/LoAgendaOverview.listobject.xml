@@ -36,5 +36,9 @@
     <Method name="prepareMapDetails" />
     <Method name="calculateDistance" />
     <Method name="getCallsForFollowUpCard" />
+    <Method name="replaceGetCallsByDate" />
+    <Method name="replaceGetCallsForCard" />
+    <Method name="myOpenToSfLink" />
+    <Method name="myGetParentPKey" />
   </Methods>
 </ListObject>

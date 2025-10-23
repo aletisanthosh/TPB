@@ -29,6 +29,11 @@
     <DerivedAttribute name="criterion4" value="''" />
     <DerivedAttribute name="criterion5" value="''" />
     <DerivedAttribute name="criterion6" value="''" />
+    <Attribute name="groupSortOrder" table="ProductGroup" column="Sort_Order__c" />
+    <Attribute name="sortOrder" table="Product2" column="Sort_Order__c" />
+    <Attribute name="cashSaleOrderable" table="Product2" column="TPB_Cash_Sale_Orderable__c" />
+    <Attribute name="prebookOrderable" table="Product2" column="TPB_Prebook_Orderable__c" />
+    <Attribute name="returnable" table="Product2" column="TPB_Returnable__c" />
   </Attributes>
   <Entities>
     <Entity name="Product2" alias="" idAttribute="Id" />
@@ -88,13 +93,6 @@
       </Join>
     </Entity>
   </Entities>
-  <QueryCondition><![CDATA[
-                #addCond_ProductState#
-                #addCond_FieldState#
-                #addCond_NewState#
-                #addCond_ForeignProduct# 
-                AND Product2.Sales_Org__c = '#SalesOrg#'
-        ]]></QueryCondition>
   <OrderCriteria>
     <OrderCriterion entity="Product2" attribute="Id" direction="ASC" />
   </OrderCriteria>
@@ -107,4 +105,12 @@
     <Parameter name="addCond_NewState" treatAs="sqlSnippet" />
     <Parameter name="addCond_ForeignProduct" treatAs="sqlSnippet" />
   </Parameters>
+  <QueryCondition><![CDATA[
+                #addCond_ProductState#
+                #addCond_FieldState#
+                #addCond_NewState#
+                #addCond_ForeignProduct# 
+                AND Product2.Sales_Org__c = '#SalesOrg#'
+                AND Product2.Product_Level__c = 'Product'
+        ]]></QueryCondition>
 </DataSource>

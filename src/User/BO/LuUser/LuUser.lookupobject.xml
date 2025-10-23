@@ -6,6 +6,7 @@
     <SimpleProperty name="id" type="DomId" dataSourceProperty="id" />
     <SimpleProperty name="firstName" type="DomString" dataSourceProperty="firstName" />
     <SimpleProperty name="lastName" type="DomString" dataSourceProperty="lastName" />
+    <SimpleProperty name="distributorId" type="DomText" dataSourceProperty="distributorId" />
   </SimpleProperties>
   <Methods />
 </LookupObject>

@@ -50,10 +50,15 @@ sql += "historic.history, ";
 sql += "promotion.promoted, ";
 sql += defaultQuantityLogisticUnit + ", " + defaultPiecesPerSmallestUnit + ", " ;
 sql += "product.text1, product.text2, product.prdId, product.shortId, product.taxClassification, product.simplePricingBasePrice, ";
-sql += "product.deliveryState, product.fieldState, product.foreignProduct, product.eAN, product.newState, product.piecesPerSmallestUnitForBasePrice, product.groupId, product.groupText, product.category, product.prdType, "; 
-sql += "null, null, null, null, null, null, null, null, null, null, null, null, 0 ";
+sql += "product.deliveryState, product.fieldState, product.foreignProduct, product.eAN, product.newState, product.piecesPerSmallestUnitForBasePrice, product.groupSortOrder, product.sortOrder, product.groupId, product.groupText, product.category, product.prdType, "; 
+sql += "null, null, null, null, null, null, null, null, null, null, null, null, 0, suggested.suggested,distributed.distributed,suggested.sellingPriority, ";
+sql += "CASE WHEN tpbPromotion.promotionQuantity IS NULL THEN suggested.promotionQuantity WHEN suggested.promotionQuantity IS NULL THEN tpbPromotion.promotionQuantity ELSE tpbPromotion.promotionQuantity END, tpbPromotion.tpbPromoted ";
+sql += ", product.cashSaleOrderable, product.prebookOrderable, product.returnable "
+sql += ", CASE WHEN tpbPromotion.promotionQuantity IS NULL THEN suggested.promotionQuantity WHEN suggested.promotionQuantity IS NULL THEN tpbPromotion.promotionQuantity ELSE tpbPromotion.promotionQuantity END, suggested.maxAllocation "
+sql += ", suggested.itemType "
 sql += "FROM ";
 sql += query;
+
 
 var sqlStmtResult = Utils.replaceMacrosParam(sql, sqlParams);
 var finalParams = sqlStmtResult.params.concat(queryParams);

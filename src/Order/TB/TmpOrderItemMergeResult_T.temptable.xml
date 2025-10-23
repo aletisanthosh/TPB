@@ -35,13 +35,26 @@
     <column name="SpecialQuantity" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="SuggestedQuantity" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="GroupName" defaultValue="' '" nullable="true" domain="DomText" migrationDefault=" " />
-    <column name="GroupSort" defaultValue="' '" nullable="true" domain="DomDecimal" migrationDefault=" " />    
+    <column name="GroupSort" defaultValue="' '" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="GroupIdSort" defaultValue="' '" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="TacticProductPKey" defaultValue="" nullable="true" domain="DomPKey" migrationDefault=" " />
     <column name="PromotedPrice" defaultValue="' '" nullable="true" domain="DomMoney" migrationDefault=" " />
     <column name="DefaultValue" defaultValue="' '" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="MaxValue" defaultValue="" nullable="true" domain="DomDecimal" migrationDefault=" " />
     <column name="IsDeleted" defaultValue="" nullable="true" domain="DomBool" migrationDefault="0" />
+    <column name="GroupSortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <column name="SortOrder" defaultValue="0" nullable="true" domain="DomDecimal" migrationDefault=" " />
+    <column name="Suggested" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="Distributed" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="SellingPriority" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="PromotionQuantity" defaultValue="0" nullable="true" domain="DomText" migrationDefault=" " />
+    <column name="TpbPromoted" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="CashSaleOrderable" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="PrebookOrderable" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="Returnable" defaultValue="" nullable="true" domain="DomBool" migrationDefault="" />
+    <column name="SuggestQty" defaultValue="0" nullable="true" domain="DomText" migrationDefault=" " />
+    <column name="MaxAllocation" defaultValue="0" nullable="true" domain="DomText" migrationDefault=" " />
+    <column name="SuggestedType" defaultValue="" nullable="true" domain="DomText" migrationDefault=" " />
   </columns>
   <indexes />
 </TempTable>

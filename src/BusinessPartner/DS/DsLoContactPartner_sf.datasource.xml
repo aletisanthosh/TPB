@@ -20,6 +20,8 @@
     <DerivedAttribute name="fileType" value="' '" />
     <DerivedAttribute name="bpaMetaPKey" value="' '" />
     <DerivedAttribute name="emailEditable" value="'0'" />
+    <Attribute name="contactTitle" table="Contact" column="Title2__c" />
+    <Attribute name="decisionMaker" table="Contact" column="Decision_Maker__c" />
   </Attributes>
   <Database platform="SQLite">
     <Load><![CDATA[
@@ -47,6 +49,8 @@
    sqlStmt += ",fax1 ";
    sqlStmt += ",toPKey ";
    sqlStmt += ",department ";
+   sqlStmt += ",contactTitle ";
+   sqlStmt += ",decisionMaker ";
    sqlStmt += ",contactPartnerName ";
    sqlStmt += ",fileType ";
    sqlStmt += ",mediaPath ";
@@ -66,6 +70,8 @@
    sqlStmt += ",Contact.Fax as fax1 ";
    sqlStmt += ",Contact.Id as toPKey ";
    sqlStmt += ",Contact.Department as department ";
+   sqlStmt += ",Contact.Title2__c as contactTitle ";
+   sqlStmt += ",CASE Contact.Decision_Maker__c WHEN 1 THEN 'Decision Maker' ELSE ' ' END as decisionMaker ";
    sqlStmt += ",Contact.Salutation || ' ' || Contact.Name as contactPartnerName ";
    sqlStmt += ",replace( SF_File.PathOnClient, rtrim(SF_File.PathOnClient,replace(SF_File.PathOnClient, '.', '')),'') as fileType ";
    sqlStmt += ",CASE SF_File.Usage__c WHEN 'Icon' THEN SF_File.VersionData ELSE ' ' END as mediaPath ";

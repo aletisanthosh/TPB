@@ -14,6 +14,15 @@
     <Attribute name="longitude" table="Account" column="ShippingLongitude" />
     <DerivedAttribute name="address" value="Account.ShippingStreet ||', ' || Account.ShippingPostalCode || ' ' || Account.ShippingCity || ', ' || Account.ShippingState" />
     <DerivedAttribute name="zipCodeAndCity" value="Account.ShippingPostalCode || ' ' || Account.ShippingCity " />
+    <Attribute name="bStreet" table="Account" column="BillingStreet" />
+    <Attribute name="bZipCode" table="Account" column="BillingPostalCode" />
+    <Attribute name="bCity" table="Account" column="BillingCity" />
+    <Attribute name="bCountryState" table="Account" column="BillingState" />
+    <Attribute name="bCountry" table="Account" column="BillingCountry" />
+    <Attribute name="bLatitude" table="Account" column="BillingLatitude" />
+    <Attribute name="bLongitude" table="Account" column="BillingLongitude" />
+    <DerivedAttribute name="bAddress" value="Account.BillingStreet ||', ' || Account.BillingPostalCode || ' ' || Account.BillingCity || ', ' || Account.BillingState" />
+    <DerivedAttribute name="bZipCodeAndCity" value="Account.BillingPostalCode || ' ' || Account.BillingCity " />
   </Attributes>
   <Entities>
     <Entity name="Account" alias="" idAttribute="Id" />

@@ -10,5 +10,6 @@
     <SimpleProperty name="tmgTourPKey" type="DomPKey" storable="false" dataSourceProperty="tmgTourPKey" />
     <SimpleProperty name="etpVehiclePKey" type="DomPKey" storable="false" dataSourceProperty="etpVehiclePKey" />
     <SimpleProperty name="currency" type="DomCurrency" storable="false" dataSourceProperty="currency" />
+    <SimpleProperty name="tourState" type="DomText" storable="false" dataSourceProperty="tourState" />
   </SimpleProperties>
 </ListItem>

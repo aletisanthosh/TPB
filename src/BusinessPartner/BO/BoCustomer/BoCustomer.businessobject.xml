@@ -2,20 +2,31 @@
   <DataSource name="DsBoCustomer" />
   <SimpleProperties>
     <SimpleProperty id="true" name="pKey" type="DomPKey" storable="true" dataSourceProperty="pKey" />
-    <SimpleProperty name="name" type="DomBpaName" storable="true" dataSourceProperty="name" />
+    <SimpleProperty name="name" type="DomBpaName" storable="true" dataSourceProperty="name">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
     <SimpleProperty name="name2" type="DomBpaName" storable="true" dataSourceProperty="name2" />
     <SimpleProperty name="matchcode" type="DomBpaName" storable="true" dataSourceProperty="matchcode" />
     <SimpleProperty name="customerId" type="DomId" storable="true" dataSourceProperty="customerId" />
     <SimpleProperty name="phone1" type="DomDial" storable="true" dataSourceProperty="phone1" />
-    <SimpleProperty name="email1" type="DomEmail" storable="true" dataSourceProperty="email1" />
+    <SimpleProperty name="email1" type="DomEmail" storable="true" dataSourceProperty="email1">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
     <SimpleProperty name="fax1" type="DomDial" storable="true" dataSourceProperty="fax1" />
     <SimpleProperty name="priority" type="DomABC" storable="true" dataSourceProperty="priority" />
     <SimpleProperty name="classOfTrade" type="DomBpaClassOfTrade" storable="true" dataSourceProperty="classOfTrade" />
-    <SimpleProperty name="companyType" type="DomBpaCompanyType" storable="true" dataSourceProperty="companyType" />
     <SimpleProperty name="orgLevel" type="DomBpaOrgLevel" storable="true" dataSourceProperty="orgLevel" />
     <SimpleProperty name="phase" type="DomBpaPhase" storable="true" dataSourceProperty="phase" />
     <SimpleProperty name="salesRelevant" type="DomBpaSalesRelevant" storable="true" dataSourceProperty="salesRelevant" />
-    <SimpleProperty name="state" type="DomBpaState" storable="true" dataSourceProperty="state" />
+    <SimpleProperty name="state" type="DomBpaState" storable="true" dataSourceProperty="state">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
     <SimpleProperty name="bpaMetaPKey" type="DomPKey" storable="true" dataSourceProperty="bpaMetaPKey" />
     <SimpleProperty name="dateClosure" type="DomDate" storable="true" dataSourceProperty="dateClosure" />
     <SimpleProperty name="deleted" type="DomBool" storable="false" dataSourceProperty="deleted" />
@@ -29,6 +40,76 @@
     <SimpleProperty name="accountOi" type="DomBool" storable="true" id="false" dataSourceProperty="accountOi" />
     <SimpleProperty name="operatingHoursId" type="DomPKey" dataSourceProperty="operatingHoursId" />
     <SimpleProperty name="emailEditable" type="DomBool" storable="false" dataSourceProperty="emailEditable" />
+    <SimpleProperty name="parentId" type="DomBpaName" storable="false" dataSourceProperty="parentId" />
+    <SimpleProperty name="primaryWholesalerName" type="DomBpaName" storable="false" dataSourceProperty="primaryWholesalerName" />
+    <SimpleProperty name="promotionalWholesalerName" type="DomBpaName" storable="false" dataSourceProperty="promotionalWholesalerName" />
+    <SimpleProperty name="accountNumberId" type="DomId" storable="true" dataSourceProperty="accountNumberId" />
+    <SimpleProperty name="recordTypeId" type="DomId" storable="true" dataSourceProperty="recordTypeId" />
+    <SimpleProperty name="ownerId" type="DomId" storable="true" dataSourceProperty="ownerId" />
+    <SimpleProperty name="headquarterId" type="DomPKey" id="false" dataSourceProperty="headquarterId" />
+    <SimpleProperty name="accClassOfTrade" type="DomBpaAccClassOfTrade" storable="true" dataSourceProperty="accClassOfTrade">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
+    <SimpleProperty name="accSubClassOfTrade" type="DomBpaAccSubClassOfTrade" storable="true" dataSourceProperty="accSubClassOfTrade">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
+    <SimpleProperty name="primaryWholesaler" type="DomId" storable="true" dataSourceProperty="primaryWholesaler">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
+    <SimpleProperty name="promotionalWholesaler" type="DomId" storable="true" dataSourceProperty="promotionalWholesaler" />
+    <SimpleProperty name="type" type="DomString" storable="true" dataSourceProperty="type" />
+    <SimpleProperty name="status" type="DomBpaStatus" storable="true" dataSourceProperty="status">
+      <Events>
+        <Event name="onChanged" eventHandler="myIsChanged" />
+      </Events>
+    </SimpleProperty>
+    <SimpleProperty name="closureReason" type="DomBpaClosureReason" storable="true" dataSourceProperty="closureReason" />
+    <SimpleProperty name="paymentTerm" type="DomBpaPaymentTerm" storable="true" dataSourceProperty="paymentTerm" />
+    <SimpleProperty name="tdlStoreID" type="DomString" storable="true" dataSourceProperty="tdlStoreID" />
+    <SimpleProperty name="counterfeitHistory" type="DomBool" storable="true" dataSourceProperty="counterfeitHistory" />
+    <SimpleProperty name="accountNotes" type="DomBpaAccountNotes" storable="true" dataSourceProperty="accountNotes" />
+    <SimpleProperty name="tobaccoLicenseExpirationDate" type="DomCustomDate" storable="true" dataSourceProperty="tobaccoLicenseExpirationDate" />
+    <SimpleProperty name="clearingHouseParticipant" type="DomBool" storable="false" dataSourceProperty="clearingHouseParticipant" />
+    <SimpleProperty name="sameAsShippingAddress" type="DomBool">
+      <Events>
+        <Event name="onChanged" eventHandler="mySetBillingAddress" />
+      </Events>
+    </SimpleProperty>
+    <SimpleProperty name="salesDivision" type="DomString" storable="false" dataSourceProperty="salesDivision" />
+    <SimpleProperty name="isAddressChange" type="DomString" />
+    <SimpleProperty name="recordTypeName" type="DomString" dataSourceProperty="recordTypeName" />
+    <SimpleProperty name="WholesalerType" type="DomString" />
+    <SimpleProperty name="isPrimaryWholesalerChanged" type="DomBool" />
+    <SimpleProperty name="isClassOfTradeChanged" type="DomBool" />
+    <SimpleProperty name="isSubclassOfTradeChanged" type="DomBool" />
+    <SimpleProperty name="isNameChanged" type="DomBool" />
+    <SimpleProperty name="isEmail1Changed" type="DomBool" />
+    <SimpleProperty name="isStateChanged" type="DomBool" />
+    <SimpleProperty name="isStatusChanged" type="DomBool" />
+    <SimpleProperty name="county" type="DomString" dataSourceProperty="county" />
+    <SimpleProperty name="jurisdiction" type="DomBpaJurisdiction" dataSourceProperty="jurisdiction" />
+    <SimpleProperty name="taxNumber" type="DomString" dataSourceProperty="taxNumber" />
+    <SimpleProperty name="tobaccoNumber" type="DomString" dataSourceProperty="tobaccoNumber" />
+    <SimpleProperty name="ownership" type="DomString" dataSourceProperty="ownership" />
+    <SimpleProperty name="workloadStatus" type="DomWorkloadStatus" dataSourceProperty="workloadStatus" />
+    <SimpleProperty name="smokelessStoreRank" type="DomString" dataSourceProperty="smokelessStoreRank" />
+    <SimpleProperty name="smokingStoreRank" type="DomString" dataSourceProperty="smokingStoreRank" />
+    <SimpleProperty name="acceptsMobileCoupons" type="DomString" dataSourceProperty="acceptsMobileCoupons" />
+    <SimpleProperty name="mobileCouponEnrollment" type="DomBool" dataSourceProperty="mobileCouponEnrollment" />
+    <SimpleProperty name="prohibitVisit" type="DomString" dataSourceProperty="prohibitVisit" />
+    <SimpleProperty name="promosAllowed" type="DomBool" dataSourceProperty="promosAllowed" />
+    <SimpleProperty name="reasonNotVisited" type="DomString" dataSourceProperty="reasonNotVisited" />
+    <SimpleProperty name="posAllowed" type="DomBool" dataSourceProperty="posAllowed" />
+    <SimpleProperty name="priceTaxAdvantage" type="DomBool" dataSourceProperty="priceTaxAdvantage" />
+    <SimpleProperty name="lastCompletedVisitDateTime" type="DomDate" dataSourceProperty="lastCompletedVisitDateTime" />
+    <SimpleProperty name="ownerName" type="DomText" dataSourceProperty="ownerName" />
+    <SimpleProperty name="ownerEmail" type="DomEmail" dataSourceProperty="ownerEmail" />
   </SimpleProperties>
   <ObjectLookups>
     <!-- luCustomerTradeOrg: load immediate -->
@@ -44,7 +125,8 @@
     <NestedObject name="boPayerRole" objectClass="BoPayerRole" dataSourceProperty="pKey" nestingProperty="customerPKey" loadMode="OnDemand" />
     <NestedObject name="boDeliveryRole" objectClass="BoDeliveryRole" dataSourceProperty="pKey" nestingProperty="customerPKey" loadMode="OnDemand" />
     <NestedObject name="boStoreRole" objectClass="BoStoreRole" dataSourceProperty="pKey" nestingProperty="customerPKey" loadMode="OnDemand" />
-    <NestedObject name="boOperatingHour" objectClass="BoOperatingHour" dataSourceProperty="operatingHoursId" nestingProperty="pKey" loadMode="OnDemand" />
+    <NestedObject name="boPrimaryWholesaler" objectClass="BoMyPrimaryWholesaler" dataSourceProperty="pKey" nestingProperty="customerPKey" loadMode="LoadImmediate" />
+    <NestedObject name="boSecondaryWholesaler" objectClass="BoMySecondaryWholesaler" dataSourceProperty="pKey" nestingProperty="customerPKey" loadMode="LoadImmediate" />
   </NestedObjects>
   <ListObjects>
     <!-- loCustomerAddress: load immediate -->
@@ -98,6 +180,23 @@
     <Method name="selectedListingModule" />
     <Method name="validatePOSDeletion" />
     <Method name="loadLoOpenHoursAsync" />
+    <Method name="postLoadAsync" />
+    <Method name="mygetAccountNotesEditability" />
+    <Method name="myEditableTest" />
+    <Method name="myOnAddressCollectedChanged" />
+    <Method name="replaceValidateCustomer" />
+    <Method name="replaceCreateAsync" />
+    <Method name="mySetBillingAddress" />
+    <Method name="mySetPrimaryWholesaler" />
+    <Method name="replaceLoadAsync" />
+    <Method name="postSetEARights" />
+    <Method name="myClearWholesaler" />
+    <Method name="myCanaclButtonVisibility" />
+    <Method name="myIsChanged" />
+    <Method name="myAddCustomer" />
+    <Method name="myAssignNoHeadquarterMessage" />
+    <Method name="myOpenDetailToSF" />
+    <Method name="myCheckEmail" />
   </Methods>
   <Validations>
     <!--Account Harmonization: obsolete <Validation name="validateCustomerOpeningTime" /> -->

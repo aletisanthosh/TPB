@@ -9,5 +9,6 @@
     <Method name="afterDoValidateAsync" />
     <Method name="beforeDoValidateAsync" />
     <Method name="getActivitiesForCard" />
+    <Method name="replaceGetActivitiesForCard" />
   </Methods>
 </ListObject>
