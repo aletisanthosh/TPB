@@ -14,6 +14,7 @@
     <DerivedAttribute name="bpaMetaPKey" type="String" value="' '" />
     <DerivedAttribute name="mainAddress" type="String" value="Contact.Mailing_Street__c || ', ' || Contact.Mailing_Postal_Code__c || ' ' || Contact.Mailing_City__c || ', ' || Contact.Mailing_State__c" />
     <DerivedAttribute name="grouping1" value="substr(Contact.Name,1,1)" />
+    <Attribute name="department" table="Contact" column="Department" />
   </Attributes>
   <Entities>
     <Entity name="Contact" alias="" idAttribute="Id" />

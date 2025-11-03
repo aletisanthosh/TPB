@@ -98,12 +98,6 @@
       <Empty value="" />
     </Initializer>
   </Domain>
-  <Domain name="DomABC" baseType="Toggle" length="30">
-    <Initializer>
-      <Default value="' '" />
-      <Empty value="" />
-    </Initializer>
-  </Domain>
   <Domain name="DomAgrAgreementType" baseType="Toggle" length="16">
     <Initializer>
       <Default value="'Basic'" />
@@ -6242,7 +6236,7 @@
       <Empty value="" />
     </Initializer>
   </Domain>
-    <Domain name="DomTaskType" baseType="Toggle" length="255">
+  <Domain name="DomTaskType" baseType="Toggle" length="255">
     <Initializer>
       <Default value="'Inquiry'" />
       <Empty value="" />
@@ -7847,6 +7841,90 @@
   <Domain name="DomZipCode" baseType="String" length="10">
     <Initializer>
       <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomABC" baseType="Toggle" length="30">
+    <Initializer>
+      <Default value="Open" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaAccClassOfTrade" baseType="Toggle" length="30">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaAccSubClassOfTrade" baseType="Toggle" length="30">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomWorkloadStatus" baseType="Toggle" length="30">
+    <Initializer>
+      <Default value="Pending" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaJurisdiction" baseType="Toggle" length="30">
+    <Initializer>
+      <Default value="N" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaStatus" baseType="Toggle" length="50">
+    <Initializer>
+      <Default value="Open" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaClosureReason" baseType="Toggle" length="80">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaPaymentTerm" baseType="Toggle" length="50">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaContactTitle" baseType="Toggle" length="50">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomContactTitle" baseType="Toggle" length="50">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomBpaAccountNotes" baseType="String" length="131072">
+    <Initializer>
+      <Default value="' '" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomCustomDate" baseType="Date" length="16">
+    <Initializer>
+      <Default value="2123-05-01" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomRelatedAccountPrimary" baseType="Toggle" length="15">
+    <Initializer>
+      <Default value="'NotPrimary'" />
+      <Empty value="" />
+    </Initializer>
+  </Domain>
+  <Domain name="DomVisitType" baseType="Toggle" length="256">
+    <Initializer>
+      <Default value="In-Store Visit" />
       <Empty value="" />
     </Initializer>
   </Domain>

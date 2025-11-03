@@ -83,7 +83,7 @@ persistedItemsStmt += " CASE WHEN Order_Item_Template__c.Movement_Direction__c =
 persistedItemsStmt += " Order_Item__c.Promotion__c AS promotionPKey,";
 persistedItemsStmt += " 1 AS promoted,";
 persistedItemsStmt += " '0' AS grossValue,";
-persistedItemsStmt += " Order_Item__c.Product__c || Order_Item__c.Order_Item_Template__c || Order_Item__c.Promotion__c AS refPKey,";
+persistedItemsStmt += " Order_Item__c.Product__c || Order_Item__c.Order_Item_Template__c || Order_Item__c.Promotion__c || IFNULL(Order_Item__c.TPB_Promotion_Waves__c, ' ') AS refPKey,";
 persistedItemsStmt += " Order_Item__c.Pricing_Info_1__c AS pricingInfo1,";
 persistedItemsStmt += " Order_Item__c.Pricing_Info_2__c AS pricingInfo2,";
 persistedItemsStmt += " Order_Item__c.Pricing_Info_3__c AS pricingInfo3,";

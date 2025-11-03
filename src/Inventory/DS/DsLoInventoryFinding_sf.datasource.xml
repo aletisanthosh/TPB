@@ -6,6 +6,7 @@
     <Attribute name="bpaMainPKey" table="Inventory__c" column="Account__c" />
     <Attribute name="prdMainPKey" table="Inventory__c" column="Product__c" />
     <DerivedAttribute name="balance" value="SUM(CASE WHEN Inventory_Transaction__c.Amount__c IS NULL THEN 0.0 ELSE Inventory_Transaction__c.Amount__c END)" />
+    <Attribute name="tourState" table="Inventory__c" column="TPB_Tour_State__c" />
   </Attributes>
   <Entities>
     <Entity name="Inventory__c" alias="" idAttribute="Id" />
@@ -55,8 +56,8 @@
     <Parameter name="usrMainPKeys" type="LIST" />
     <Parameter name="bpaMainPKeys" type="LIST" />
     <Parameter name="prdMainPKeys" type="LIST" />
-    <Parameter name="addCond_Tour" treatAs="sqlSnippet"/>
-    <Parameter name="addCond_Vehicle" treatAs="sqlSnippet"/>
-    <Parameter name="addCond_OrderCurrency" treatAs="sqlSnippet"/>
+    <Parameter name="addCond_Tour" treatAs="sqlSnippet" />
+    <Parameter name="addCond_Vehicle" treatAs="sqlSnippet" />
+    <Parameter name="addCond_OrderCurrency" treatAs="sqlSnippet" />
   </Parameters>
 </DataSource>

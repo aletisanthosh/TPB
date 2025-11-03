@@ -283,8 +283,8 @@
   <Label id="CardVisits_NoDataMessageMainText" text="No visits planned today," translationStatus="7" />
   <Label id="CardVisits_NoDataMessageSubText" text="why don't you add one?" translationStatus="7" />
   <Label id="CardVisits_NoDataMessageMainDateText" text="No visits planned," translationStatus="7" />
-  <Label id="CardActivities_StoreCheck" text="Store Check" translationStatus="7" />
-  <Label id="CardActivities_CaptureSurvey" text="Capture Survey" translationStatus="7" />
+  <Label id="CardActivities_StoreCheck" text="Surveys" translationStatus="7" />
+  <Label id="CardActivities_CaptureSurvey" text="Product Distribution" translationStatus="7" />
   <Label id="CardActivities_CreateOrder" text="Create Order" translationStatus="7" />
   <Label id="CardActivities_TrackAssets" text="Track Assets" translationStatus="7" />
   <Label id="CardCustomerTasks_CreatedToday" text="Today" translationStatus="7" />

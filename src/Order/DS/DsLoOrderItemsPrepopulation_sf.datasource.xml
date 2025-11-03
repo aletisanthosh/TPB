@@ -33,7 +33,6 @@
     <Attribute name="price" table="Order_Item__c" column="Price__c" />
     <Attribute name="priceReceipt" table="Order_Item__c" column="Price_Receipt__c" />
     <Attribute name="history" table="TmpOrderItemMergeResult_T" column="History" />
-    <Attribute name="groupText" table="TmpOrderItemMergeResult_T" column="GroupText" />
     <Attribute name="groupId" table="TmpOrderItemMergeResult_T" column="GroupId" />
     <Attribute name="saveZeroQuantity" table="Order_Item_Template__c" column="Save_Zero_Quantity__c" />
     <DerivedAttribute name="mergeEngine_invalidated" value="'0'" />
@@ -55,6 +54,26 @@
     <DerivedAttribute name="refPKey" value="''" />
     <Attribute name="quantityLogisticUnit" table="Unit_Of_Measure__c" column="Unit_Type__c" />
     <Attribute name="piecesPerSmallestUnit" table="Unit_Of_Measure__c" column="Pieces_Per_Smallest_Unit__c" />
+    <Attribute name="wholesalerProduct" table="Order_Item__c" column="Wholesaler_Product__c" />
+    <Attribute name="tpbSku" table="Order_Item__c" column="TPB_SKU__c" />
+    <Attribute name="wsName" table="Order_Item__c" column="TPB_Wholesaler_Name__c" />
+    <Attribute name="supplierId" table="Order_Item__c" column="TPB_Supplier_ID__c" />
+    <DerivedAttribute name="wholesalerProductSKU" value="''" />
+    <DerivedAttribute name="wholesalerId" value="''" />
+    <DerivedAttribute name="wholesalerName" value="''" />
+    <Attribute name="resale" table="Order_Item__c" column="Resale__c" />
+    <Attribute name="suggested" table="TmpOrderItemMergeResult_T" column="Suggested" />
+    <DerivedAttribute name="showInSuggested" value="''" />
+    <Attribute name="sellingPriority" table="TmpOrderItemMergeResult_T" column="SellingPriority" />
+    <DerivedAttribute name="sellingPriorityImage" value="''" />
+    <Attribute name="distributed" table="TmpOrderItemMergeResult_T" column="Distributed" />
+    <Attribute name="tpbPromoted" table="TmpOrderItemMergeResult_T" column="TpbPromoted" />
+    <Attribute name="promotionQuantity" table="TmpOrderItemMergeResult_T" column="PromotionQuantity" />
+    <Attribute name="groupSortOrder" table="TmpOrderItemMergeResult_T" column="GroupSortOrder" />
+    <Attribute name="sortOrder" table="TmpOrderItemMergeResult_T" column="SortOrder" />
+    <Attribute name="suggestQty" table="TmpOrderItemMergeResult_T" column="SuggestQty" />
+    <Attribute name="maxAllocation" table="TmpOrderItemMergeResult_T" column="MaxAllocation" />
+    <Attribute name="suggestedType" table="TmpOrderItemMergeResult_T" column="SuggestedType" />
   </Attributes>
   <Entities>
     <Entity name="TmpOrderItemMergeResult_T" alias="" idAttribute="PrdMainPKey" />
@@ -150,7 +169,16 @@ selectAttributes += "	,proposedProduct.FocusProductType AS focusProductType ";
 selectAttributes += "	,CASE WHEN proposedProduct.FocusProductType IS NULL THEN 'EmptyImage' WHEN proposedProduct.FocusProductType = ' ' THEN 'EmptyImage' ELSE 'FocusIcon' END AS focusProductImage ";
 selectAttributes += "	,IFNULL(proposedProduct.OutOfStock, persistedProduct.OutOfStock) AS outOfStock ";
 selectAttributes += "	,IFNULL(proposedProduct.History, persistedProduct.History) AS history ";
+selectAttributes += "	,proposedProduct.Suggested AS suggested ";
+selectAttributes += "	,proposedProduct.ShowInSuggested AS showInSuggested ";
+selectAttributes += "	,proposedProduct.sellingPriority AS sellingPriority ";
+selectAttributes += "	,proposedProduct.sellingPriorityImage AS sellingPriorityImage ";
+selectAttributes += "	,proposedProduct.Distributed AS distributed ";
+selectAttributes += "	,proposedProduct.PromotionQuantity AS promotionQuantity ";
+selectAttributes += "	,proposedProduct.PromotionQuantity AS suggestQty ";
+selectAttributes += "	,proposedProduct.maxAllocation AS maxAllocation ";
 selectAttributes += "	,IFNULL(proposedProduct.Promoted, persistedProduct.Promoted) AS promoted ";
+selectAttributes += "	,proposedProduct.TpbPromoted AS tpbPromoted ";
 selectAttributes += "	,CASE WHEN proposedProduct.SdoAssortment = '1' THEN  '1' ELSE '0' END AS sdoAssortment ";
 selectAttributes += "	,CASE WHEN persistedProduct.IsPersistedItem = '1' THEN  '1' ELSE '0' END AS isPersistedItem ";
 selectAttributes += "	,CASE WHEN proposedProduct.Listing = 'Hit' THEN 'Hit' WHEN proposedProduct.Listing = 'None' THEN 'None' ELSE ' ' END AS listing ";
@@ -163,6 +191,8 @@ selectAttributes += "	,IFNULL(proposedProduct.SpecialQuantity, '') AS specialQua
 selectAttributes += "	,IFNULL(proposedProduct.GroupName, '') AS groupName ";
 selectAttributes += "	,IFNULL(proposedProduct.GroupSort, '') AS groupSort ";
 selectAttributes += "	,IFNULL(proposedProduct.GroupIdSort, '') AS groupIdSort ";
+selectAttributes += "	,IFNULL(proposedProduct.GroupSortOrder, '') AS groupSortOrder ";
+selectAttributes += "	,IFNULL(proposedProduct.SortOrder, '') AS sortOrder ";
 selectAttributes += "	,IFNULL(proposedProduct.TacticProductPKey, '') AS tacticProductPKey ";
 selectAttributes += "	,IFNULL(proposedProduct.sort, persistedProduct.sort) AS sort ";
 selectAttributes += "	,proposedProduct.isOrderUnit AS isOrderUnit ";
@@ -172,7 +202,7 @@ selectAttributes += "	,proposedProduct.UnitType AS unitType ";
 selectAttributes += "	,IFNULL(proposedProduct.quantityLogisticUnit, persistedProduct.quantityLogisticUnit) AS quantityLogisticUnit ";
 selectAttributes += "	,proposedProduct.DefaultQuantityLogisticUnit AS defaultQuantityLogisticUnit ";
 selectAttributes += "	,proposedProduct.DefaultPiecesPerSmallestUnit AS defaultPiecesPerSmallestUnit ";
-selectAttributes += "	,proposedProduct.Text1 AS text1 ";
+selectAttributes += "	,proposedProduct.Text1 || CASE WHEN persistedProduct.promotionWaveName IS NULL THEN '' ELSE ' [' || persistedProduct.promotionWaveName || '] ' END AS text1 ";
 selectAttributes += "	,proposedProduct.Text2 AS text2 ";
 selectAttributes += "	,proposedProduct.PrdId AS prdId ";
 selectAttributes += "	,proposedProduct.ShortId AS shortId ";
@@ -209,6 +239,14 @@ selectAttributes += "	,'0' AS deletedFreeItem ";
 selectAttributes += "	,IFNULL(persistedProduct.sdoParentItemPKey, ' ') AS sdoParentItemPKey ";
 selectAttributes += "	,persistedProduct.parentType AS parentType ";
 selectAttributes += "	,persistedProduct.quantity AS quantity ";
+selectAttributes += "	,persistedProduct.resale AS resale ";
+selectAttributes += "	,persistedProduct.wholesalerProduct AS wholesalerProduct ";
+selectAttributes += "	,IFNULL(persistedProduct.tpbSku, ' ') AS tpbSku ";
+selectAttributes += "	,IFNULL(persistedProduct.wsName, ' ') AS wsName ";
+selectAttributes += "	,persistedProduct.supplierId AS supplierId ";
+selectAttributes += "	,persistedProduct.wholesalerProductSKU AS wholesalerProductSKU ";
+selectAttributes += "	,persistedProduct.wholesalerId AS wholesalerId ";
+selectAttributes += "	,persistedProduct.wholesalerName AS wholesalerName ";
 selectAttributes += "	,persistedProduct.discount AS discount ";
 selectAttributes += "	,persistedProduct.price AS price ";
 selectAttributes += "	,persistedProduct.priceReceipt AS priceReceipt ";
@@ -231,7 +269,9 @@ selectAttributes += "	,IFNULL(persistedProduct.shortType, #shortType#) AS shortT
 selectAttributes += "	,IFNULL(persistedProduct.type, #type#) AS type ";
 selectAttributes += "	,IFNULL(persistedProduct.calculationGroup, #calculationGroup#) AS calculationGroup ";
 selectAttributes += "	,IFNULL(persistedProduct.movementDirection, #movementDirection#) AS movementDirection ";
-selectAttributes += "	,IFNULL(persistedProduct.rewardPKey, ' ') AS rewardPKey ";
+selectAttributes += "	,IFNULL(persistedProduct.rewardPKey, ' ') AS rewardPKey "
+selectAttributes += " ,IFNULL(persistedProduct.promotionWavePKey, ' ') AS promotionWavePKey ";;
+selectAttributes += " ,IFNULL(persistedProduct.promotionWaveName, ' ') AS promotionWaveName ";
 selectAttributes += "	,persistedProduct.pricingInfo1 AS pricingInfo1 ";
 selectAttributes += "	,persistedProduct.pricingInfo2 AS pricingInfo2 ";
 selectAttributes += "	,persistedProduct.pricingInfo3 AS pricingInfo3 ";
@@ -242,7 +282,8 @@ selectAttributes += "	,persistedProduct.pricingInfo7 AS pricingInfo7 ";
 selectAttributes += "	,persistedProduct.pricingInfo8 AS pricingInfo8 ";
 selectAttributes += "	,persistedProduct.pricingInfo9 AS pricingInfo9 ";
 selectAttributes += "	,persistedProduct.pricingInfo10 AS pricingInfo10 ";
-selectAttributes += "	,IFNULL(persistedProduct.refPKey, proposedProduct.prdMainPKey || #sdoItemMetaPKey# || proposedProduct.promotionPKey || ' ') AS refPKey ";
+selectAttributes += "	,proposedProduct.suggestedType AS suggestedType ";
+selectAttributes += "	,IFNULL(persistedProduct.refPKey, proposedProduct.prdMainPKey || #sdoItemMetaPKey# || proposedProduct.promotionPKey || ' ' || ' ') AS refPKey ";
 
 //Select relevant data from UoM table
 proposedSqlQuery += "SELECT proposedProductWithoutUoM.PrdMainPKey AS prdMainPKey ";
@@ -252,7 +293,16 @@ proposedSqlQuery += "	,proposedProductWithoutUoM.FocusProductType AS focusProduc
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.FocusProductType IS NULL THEN 'EmptyImage' WHEN proposedProductWithoutUoM.FocusProductType = ' ' THEN 'EmptyImage' ELSE 'FocusIcon' END AS focusProductImage ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.OutOfStock = '1' THEN  '1' ELSE '0' END AS outOfStock ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.History = '1' THEN  '1' ELSE '0' END AS history ";
+proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.Suggested = '1' THEN  '1' ELSE '0' END AS suggested ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.showInSuggested AS showInSuggested ";
+proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.SellingPriority = '1' THEN  '1' ELSE '0' END AS sellingPriority ";
+proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.SellingPriority = '1' THEN  'CheckBlueGrey24' ELSE 'EmptyImage' END AS sellingPriorityImage ";
+proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.Distributed = '1' THEN  '1' ELSE '0' END AS distributed ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.PromotionQuantity AS promotionQuantity ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.PromotionQuantity AS suggestQty ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.maxAllocation AS maxAllocation ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.Promoted = '1' THEN  '1' ELSE '0' END AS promoted ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.TpbPromoted AS tpbPromoted ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.SdoAssortment = '1' THEN  '1' ELSE '0' END AS sdoAssortment ";
 proposedSqlQuery += "	,UnitOfMeasure.Pieces_Per_Smallest_Unit__c AS piecesPerSmallestUnit ";
 proposedSqlQuery += "	,IFNULL(proposedProductWithoutUoM.PromotionPKey, ' ') AS promotionPKey ";
@@ -263,6 +313,8 @@ proposedSqlQuery += "	,proposedProductWithoutUoM.SuggestedQuantity AS suggestedQ
 proposedSqlQuery += "	,proposedProductWithoutUoM.GroupName AS groupName ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.GroupSort AS groupSort ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.GroupIdSort AS groupIdSort ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.GroupSortOrder AS groupSortOrder ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.SortOrder AS sortOrder ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.TacticProductPKey AS tacticProductPKey ";
 proposedSqlQuery += "	,UnitOfMeasure.Sort__c AS sort ";
 proposedSqlQuery += "	,UnitOfMeasure.Is_Order_Unit__c AS isOrderUnit ";
@@ -291,6 +343,7 @@ proposedSqlQuery += "	,proposedProductWithoutUoM.PrdType AS prdType ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.PromotedPrice AS promotedPrice ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.DefaultValue AS defaultValue ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.MaxValue AS maxValue ";
+proposedSqlQuery += "	,proposedProductWithoutUoM.suggestedType AS suggestedType ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.Listing = 'Hit' THEN 'Hit' WHEN proposedProductWithoutUoM.Listing = 'None' THEN 'None' ELSE ' ' END AS listing ";
 proposedSqlQuery += "	,CASE WHEN proposedProductWithoutUoM.ListingWithModules = 'Hit' THEN 'Hit' WHEN proposedProductWithoutUoM.ListingWithModules  = 'None' THEN 'None' ELSE ' ' END AS listingWithModules ";
 proposedSqlQuery += "	,proposedProductWithoutUoM.selectablePromoted as selectablePromoted ";
@@ -306,7 +359,16 @@ proposedSqlQuery += "	,TmpOrderItemMergeResult_T.FocusProductType AS focusProduc
 proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.FocusProductType IS NULL THEN 'EmptyImage' WHEN TmpOrderItemMergeResult_T.FocusProductType = ' ' THEN 'EmptyImage' ELSE 'FocusIcon' END AS focusProductImage ";
 proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.OutOfStock = '1' THEN  '1' ELSE '0' END AS outOfStock ";
 proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.History = '1' THEN  '1' ELSE '0' END AS history ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' THEN  '1' ELSE '0' END AS suggested ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' AND TmpOrderItemMergeResult_T.TpbPromoted IS NULL THEN  '1' ELSE '0' END AS showInSuggested ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SellingPriority = '1' THEN  '1' ELSE '0' END AS sellingPriority ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SellingPriority = '1' THEN  'CheckBlueGrey24' ELSE 'EmptyImage' END AS sellingPriorityImage ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Distributed = '1' THEN  '1' ELSE '0' END AS distributed ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.PromotionQuantity IS NULL THEN '0' ELSE TmpOrderItemMergeResult_T.PromotionQuantity END AS promotionQuantity ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.PromotionQuantity IS NULL THEN '0' ELSE TmpOrderItemMergeResult_T.PromotionQuantity END AS suggestQty ";
+proposedSqlQuery += "	,TmpOrderItemMergeResult_T.MaxAllocation AS maxAllocation ";
 proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Promoted = '1' THEN  '1' ELSE '0' END AS promoted ";
+proposedSqlQuery += "	,TmpOrderItemMergeResult_T.TpbPromoted AS tpbPromoted ";
 proposedSqlQuery += "	,'0' AS selectablePromoted ";
 proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SdoAssortment = '1' THEN  '1' ELSE '0' END AS sdoAssortment ";
 proposedSqlQuery += "	,IFNULL(TmpOrderItemMergeResult_T.PromotionPKey, ' ') AS promotionPKey ";
@@ -332,6 +394,8 @@ proposedSqlQuery += "	,TmpOrderItemMergeResult_T.ForeignProduct AS foreignProduc
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.EAN AS eAN ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.NewState AS newState ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.PiecesPerSmallestUnitForBasePrice AS piecesPerSmallestUnitForBasePrice ";
+proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupSortOrder AS groupSortOrder ";
+proposedSqlQuery += "	,TmpOrderItemMergeResult_T.SortOrder AS sortOrder ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupId AS groupId ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupText AS groupText ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.Category AS category ";
@@ -341,6 +405,7 @@ proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.ListingWithModules = 
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.PromotedPrice AS promotedPrice ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.DefaultValue AS defaultValue ";
 proposedSqlQuery += "	,TmpOrderItemMergeResult_T.MaxValue AS maxValue ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' AND TmpOrderItemMergeResult_T.TpbPromoted IS NULL AND TmpOrderItemMergeResult_T.suggestedType = 'Wholesale Promotion' THEN 'Overdue_Promo_Activities' ELSE 'EmptyImage' END AS suggestedType ";
 proposedSqlQuery += "	FROM TmpOrderItemMergeResult_T ";
 
 if(jsonQuerySelectPromotion.considerSelectablePromotion == "1"){
@@ -354,7 +419,16 @@ if(jsonQuerySelectPromotion.considerSelectablePromotion == "1"){
   proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.FocusProductType IS NULL THEN 'EmptyImage' WHEN TmpOrderItemMergeResult_T.FocusProductType = ' ' THEN 'EmptyImage' ELSE 'FocusIcon' END AS focusProductImage ";
   proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.OutOfStock = '1' THEN  '1' ELSE '0' END AS outOfStock ";
   proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.History = '1' THEN  '1' ELSE '0' END AS history ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' THEN  '1' ELSE '0' END AS suggested ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' AND TmpOrderItemMergeResult_T.TpbPromoted IS NULL THEN  '1' ELSE '0' END AS showInSuggested ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SellingPriority = '1' THEN  '1' ELSE '0' END AS sellingPriority ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SellingPriority = '1' THEN  'CheckBlueGrey24' ELSE 'EmptyImage' END AS sellingPriorityImage ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Distributed = '1' THEN  '1' ELSE '0' END AS distributed ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.PromotionQuantity IS NULL THEN '0' ELSE TmpOrderItemMergeResult_T.PromotionQuantity END AS promotionQuantity ";
+  proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.PromotionQuantity IS NULL THEN '0' ELSE TmpOrderItemMergeResult_T.PromotionQuantity END AS suggestQty ";
+  proposedSqlQuery += "	,TmpOrderItemMergeResult_T.MaxAllocation AS maxAllocation ";
   proposedSqlQuery += "	,'1' AS promoted ";
+  proposedSqlQuery += "	,'0' AS tpbPromoted ";
   proposedSqlQuery += "	,'1' AS selectablePromoted ";
   proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.SdoAssortment = '1' THEN  '1' ELSE '0' END AS sdoAssortment ";
   proposedSqlQuery += "	,IFNULL(selectablePromotion.promotionPKey, ' ') AS promotionPKey ";
@@ -380,6 +454,8 @@ if(jsonQuerySelectPromotion.considerSelectablePromotion == "1"){
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.EAN AS eAN ";
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.NewState AS newState ";
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.PiecesPerSmallestUnitForBasePrice AS piecesPerSmallestUnitForBasePrice ";
+  proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupSortOrder AS groupSortOrder ";
+  proposedSqlQuery += "	,TmpOrderItemMergeResult_T.SortOrder AS sortOrder ";
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupId AS groupId ";
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.GroupText AS groupText ";
   proposedSqlQuery += "	,TmpOrderItemMergeResult_T.Category AS category ";
@@ -389,9 +465,11 @@ if(jsonQuerySelectPromotion.considerSelectablePromotion == "1"){
   proposedSqlQuery += "	,selectablePromotion.promotedPrice AS promotedPrice ";
   proposedSqlQuery += "	,selectablePromotion.defaultValue AS defaultValue ";
   proposedSqlQuery += "	,selectablePromotion.maxValue AS maxValue ";
+proposedSqlQuery += "	,CASE WHEN TmpOrderItemMergeResult_T.Suggested = '1' AND TmpOrderItemMergeResult_T.TpbPromoted IS NULL AND TmpOrderItemMergeResult_T.suggestedType = 'Wholesale Promotion' THEN 'Overdue_Promo_Activities' ELSE 'EmptyImage' END AS suggestedType ";
   proposedSqlQuery += " FROM ( ";
   proposedSqlQuery += 		selectPromotionSqlQuery.sql;
   proposedSqlQuery += "    ) AS selectablePromotion INNER JOIN TmpOrderItemMergeResult_T ON selectablePromotion.prdMainPKey = TmpOrderItemMergeResult_T.PrdMainPKey ";
+
 }
 proposedSqlQuery += " ) AS proposedProductWithoutUoM ";
 proposedSqlQuery += " INNER JOIN Unit_Of_Measure__c AS UnitOfMeasure ON proposedProductWithoutUOM.prdMainPKey = UnitOfMeasure.Product__c AND UnitOfMeasure.Order_Ability__c = '1' ";

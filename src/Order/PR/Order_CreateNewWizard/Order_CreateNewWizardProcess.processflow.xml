@@ -22,10 +22,12 @@
   <Body>
     <Actions>
       <!-- Order Role Check -->
+      <!-- Message -->
+      <!-- Order Templates -->
       <Action name="HasNoOrderRole" actionType="LOGIC" call="Utils.isEmptyString">
         <Parameters>
           <Input name="orderRoleId" value="ProcessContext::BoOrderRole.pKey" />
-        </Parameters>  
+        </Parameters>
         <Return name="ProcessContext::HasNoOrderRole" />
         <TransitionTo action="OrderRoleDecision" />
       </Action>
@@ -33,22 +35,29 @@
         <Case value="true" action="Message_SalesFolderDataNotOnDevice" />
         <Case value="false" action="GetTemplateList" />
         <CaseElse action="Message_SalesFolderDataNotOnDevice" />
-        <CaseEmpty  action="Message_SalesFolderDataNotOnDevice"/>
+        <CaseEmpty action="Message_SalesFolderDataNotOnDevice" />
       </Action>
-      <!-- Message -->
       <Action name="Message_SalesFolderDataNotOnDevice" actionType="CONFIRM" confirmType="Ok">
         <Message messageId="CasMessageNoOrdererRole" />
         <Cases>
           <Case value="Ok" action="End" />
         </Cases>
       </Action>
-      <!-- Order Templates -->
       <Action name="GetTemplateList" actionType="LOAD" type="LoOrderMeta">
         <Parameters>
           <Input name="customerPKey" value="ProcessContext::OrdererPKey" />
         </Parameters>
         <Return name="ProcessContext::OrderMetaList" />
-        <TransitionTo action="ShowView" />
+        <TransitionTo action="CheckOrderTemplates" />
+      </Action>
+      <Action name="CheckOrderTemplates" actionType="DECISION" parameter="ProcessContext::OrderMetaList.getItems().length">
+        <Case value="1" action="Return" />
+        <CaseElse action="ShowView" />
+      </Action>
+      <Action actionType="END" name="Return">
+        <ReturnValues>
+          <Return name="orderMetaPKey" value="ProcessContext::OrderMetaList.current.pKey" />
+        </ReturnValues>
       </Action>
       <Action actionType="VIEW" name="ShowView">
         <UIDescription>Order::CreateNewWizard</UIDescription>

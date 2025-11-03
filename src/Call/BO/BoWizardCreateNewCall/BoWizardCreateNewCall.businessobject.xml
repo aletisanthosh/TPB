@@ -19,6 +19,7 @@
     <SimpleProperty name="responsiblePKey" type="DomPKey" dataSourceProperty="responsiblePKey" />
     <SimpleProperty name="managementRelationValidFrom" type="DomDate" dataSourceProperty="managementRelationValidFrom" />
     <SimpleProperty name="managementRelationValidThru" type="DomValidThru" dataSourceProperty="managementRelationValidThru" />
+    <SimpleProperty name="visitType" type="DomVisitType" dataSourceProperty="visitType" />
   </SimpleProperties>
   <ObjectLookups>
     <ObjectLookup name="customerLookup" objectClass="LuCustomer" dataSourceProperty="customerPKey" lookupProperty="pKey" loadMode="LoadImmediate" />
@@ -31,7 +32,7 @@
     <Method name="loadCustomerLookup" />
     <Method name="reloadManagementInformation" />
     <Method name="setEARights" />
-    <Method name="updateTimeAllDay"/>
+    <Method name="updateTimeAllDay" />
   </Methods>
   <Validations>
     <Validation name="validateNotEmpty" />

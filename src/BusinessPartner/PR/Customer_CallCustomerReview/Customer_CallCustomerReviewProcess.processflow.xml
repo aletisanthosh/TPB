@@ -24,6 +24,8 @@
         <Declaration name="TimeSlotContextMenu" type="LoTimeSlotContextMenu" />
         <Declaration name="IsOperatingHourAvailable" type="DomBool" />
         <Declaration name="AccountOperatingHourEnabled" type="LuSysSettingById" />
+        <Declaration name="CustomerAddressList" type="LoMyBoCustomerAddressRepeat" />
+        <Declaration name="OrgUnitMapList" type="LoMyOrgUnitMapping" />
       </Declarations>
       <Parameters>
         <Input name="CustomerPKey" type="String" />
@@ -48,6 +50,12 @@
           <Input name="value" value="1" type="Literal" />
         </Parameters>
         <Return name="ProcessContext::MaximizedMode" />
+      </Action>
+      <Action actionType="LOAD" name="GetCustomerDBList" type="LoMyBoCustomerAddressRepeat">
+        <Return name="ProcessContext::CustomerAddressList" />
+      </Action>
+      <Action actionType="LOAD" name="GetZipCodeMapList" type="LoMyOrgUnitMapping">
+        <Return name="ProcessContext::OrgUnitMapList" />
       </Action>
     </EntryActions>
   </Entry>

@@ -23,6 +23,7 @@
     <SimpleProperty name="dictHistoricalProductsLoaded" type="Object" dataSourceProperty="dictHistoricalProductsLoaded" />
     <SimpleProperty name="considerModule" type="DomBool" dataSourceProperty="considerModule" />
     <SimpleProperty name="questionDic" type="Object" />
+    <SimpleProperty name="prdMainPKey" type="DomPKey" />
   </SimpleProperties>
   <ListObjects>
     <ListObject name="loPOS" objectClass="LoPOS" dataSourceProperty="pKey" listProperty="clbMainPKey" loadMode="LoadImmediate" />
@@ -46,9 +47,11 @@
     <ListObject name="loExistingJobListJobs" objectClass="LoJobListJobs" dataSourceProperty="clbMainPKey" listProperty="clbMainPKey" loadMode="LoadImmediate" />
     <ListObject name="loSurveyColumns" objectClass="LoSurveyColumns" dataSourceProperty="clbMainPKey" listProperty="clbMainPKey" loadMode="LoadImmediate" />
     <ListObject name="loHistoricalProducts" objectClass="LoBpaHistSurveyProduct" dataSourceProperty="bpaMainPKey" listProperty="bpaCustomerPKey" loadMode="LoadImmediate" />
+    <ListObject name="loPrdAttachments" objectClass="LoPrdAttachments" dataSourceProperty="prdMainPKey" listProperty="ProductPKey" loadMode="LoadImmediate" />
   </ListObjects>
   <ObjectLookups>
     <ObjectLookup name="luCustomer" objectClass="LuCustomer" dataSourceProperty="bpaMainPKey" lookupProperty="pKey" loadMode="LoadImmediate" />
+    <ObjectLookup name="luPrdUsageIcon" objectClass="LuPrdUsageIcon" dataSourceProperty="prdMainPKey" lookupProperty="pKey" loadMode="LoadImmediate" />
   </ObjectLookups>
   <Methods>
     <Method name="addProduct" />
@@ -83,5 +86,15 @@
     <Method name="assimilateQuestion" />
     <Method name="evaluateQuestions" />
     <Method name="updatePictureCountOnAddDelete" />
+    <Method name="mySetJobManagerInfo" />
+    <Method name="replaceGetJobProducts" />
+    <Method name="replaceOnSurveyChanged" />
+    <Method name="myAddProducts" />
+    <Method name="replaceOnQuestionChanged" />
+    <Method name="replaceGetQuestions" />
+    <Method name="replaceAddProduct" />
+    <Method name="replaceGetSurveys" />
+    <Method name="myGetAllSurveys" />
+    <Method name="myDeleteProduct" />
   </Methods>
 </BusinessObject>

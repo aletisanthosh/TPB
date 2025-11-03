@@ -10,6 +10,8 @@
     <SimpleProperty name="groupShortText" type="DomText" dataSourceProperty="groupShortText" />
     <SimpleProperty name="eAN" type="DomPrdNumber" dataSourceProperty="eAN" />
     <SimpleProperty name="category" type="DomPrdCategory" dataSourceProperty="category" />
+    <SimpleProperty name="groupSortOrder" type="DomText" dataSourceProperty="groupSortOrder" />
+    <SimpleProperty name="sortOrder" type="DomText" dataSourceProperty="sortOrder" />
   </SimpleProperties>
   <Methods></Methods>
 </LookupObject>

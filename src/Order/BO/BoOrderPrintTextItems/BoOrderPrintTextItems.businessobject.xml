@@ -24,5 +24,6 @@
     <Method name="loadAsync" />
     <Method name="saveAsync" />
     <Method name="createAsync" />
+    <Method name="replaceAfterCreateAsync" />
   </Methods>
 </BusinessObject>

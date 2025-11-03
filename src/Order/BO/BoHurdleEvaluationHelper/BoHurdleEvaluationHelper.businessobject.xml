@@ -36,5 +36,6 @@
     <Method name="filterRewardSpecificHurdle" />
     <Method name="getHurdleValue" />
     <Method name="onRewardSelectionChanged" />
+    <Method name="replaceDetermineSatisfiedRewardGroups" />
   </Methods>
 </BusinessObject>

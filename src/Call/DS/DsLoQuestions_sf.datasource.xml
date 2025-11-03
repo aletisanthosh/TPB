@@ -51,6 +51,9 @@
     <Attribute name="scoreAnswers" table="Job_DL_Job_Definition_Template__c" column="Score_Relevant_Answers__c" />
     <Attribute name="jobDefListPKey" table="Job_Definition_List__c" column="Id" />
     <DerivedAttribute name="visible" value="'1'" />
+    <Attribute name="templateName" table="Job_Definition_List_Template__c" column="Name" />
+    <DerivedAttribute name="decimalMinValue" value="'0'" />
+    <DerivedAttribute name="decimalMaxValue" value="'0'" />
   </Attributes>
   <Entities>
     <Entity name="Visit_Job__c" idAttribute="Id" />
@@ -123,6 +126,7 @@ sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Condition__c AS condition ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Consider_Score__c AS considerScore ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Score__c AS score ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Score_Relevant_Answers__c AS scoreAnswers ";
+sqlStmt+= " 	,Job_Definition_List_Template__c.Name AS templateName ";
 sqlStmt+= " 	,Job_Definition_List__c.Id AS jobDefListPKey ";
 sqlStmt+= " 	,CASE  ";
 sqlStmt+= " 		WHEN Job_DL_Job_Definition_Template__c.Mandatory__c = '1' ";
@@ -182,6 +186,8 @@ sqlStmt+= "  ,Job_Definition_Template__c.Min_Date_Policy__c AS minDatePolicy ";
 sqlStmt+= "  ,Job_Definition_Template__c.Consider_Max_Value__c AS considerMaxValue ";          
 sqlStmt+= "  ,Data_Type__c.Data_Length_Decimal_Places__c AS decimalPlaces ";
 sqlStmt+= "  ,Job_Definition_Template__c.Max_Date_Policy__c AS maxDatePolicy ";
+sqlStmt+= "  ,CASE WHEN Data_Type__c.Data_Type__c = 'Decimal' THEN Job_Definition_Template__c.Min_Value__c ELSE '0' END AS decimalMinValue ";
+sqlStmt+= "  ,CASE WHEN Data_Type__c.Data_Type__c = 'Decimal' THEN Job_Definition_Template__c.Max_Value__c ELSE '0' END AS decimalMaxValue ";
 sqlStmt+= " 	,Job_Definition_Template__c.Description_#Language#__c AS questionText ";
 sqlStmt+= " 	,'1' AS visible ";
 sqlStmt+= " 	,CASE WHEN Job_Definition_List__c.Description_#Language#__c IS NULL THEN #clbManualQuestionGroupName# ELSE Job_Definition_List__c.Description_#Language#__c END AS jobDefinitionListText ";
@@ -190,6 +196,8 @@ sqlStmt+= " FROM Visit_Job__c, Data_Type__c ";
 sqlStmt+= " 	,Job_Definition_Template__c ";
 sqlStmt+= " LEFT OUTER JOIN Job_DL_Job_Definition_Template__c ON Job_DL_Job_Definition_Template__c.Id = Visit_Job__c.Job_Definition__c ";
 sqlStmt+= " LEFT OUTER JOIN Job_Definition_List__c ON Job_Definition_List__c.Id = Job_DL_Job_Definition_Template__c.Job_Definition_List__c ";
+sqlStmt+= " LEFT OUTER JOIN Job_Definition_List_Template__c ON Job_Definition_List__c.Job_Definition_List_Template__c = Job_Definition_List_Template__c.Id ";
+sqlStmt+= " AND Job_Definition_List_Template__c.Standard_Jobs__c = '1' ";
 sqlStmt+= " LEFT OUTER JOIN Visit ON Visit.Id = Visit_Job__c.Visit__c ";
 sqlStmt+= " LEFT OUTER JOIN Job_Template__c on Job_Template__c.Id = Job_Definition_Template__c.Job_Template__c ";
 sqlStmt+= " WHERE (1 = 1) ";
@@ -232,6 +240,7 @@ sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Condition__c AS condition ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Consider_Score__c AS considerScore ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Score__c AS score ";
 sqlStmt+= " 	,Job_DL_Job_Definition_Template__c.Score_Relevant_Answers__c AS scoreAnswers ";
+sqlStmt+= " 	,Job_Definition_List_Template__c.Name AS templateName ";
 sqlStmt+= " 	,Job_Definition_List__c.Id AS jobDefListPKey ";
 sqlStmt+= " 	,CASE  ";
 sqlStmt+= " 		WHEN Job_DL_Job_Definition_Template__c.Mandatory__c = '1' ";
@@ -262,6 +271,8 @@ sqlStmt+= " 	,case when (data_type__c.data_type__c = 'Toggle' AND Data_Type__c.N
 sqlStmt+= "  ,Job_Definition_Template__c.Use_Stepper__c AS useStepper ";
 sqlStmt+= "  ,Job_Definition_Template__c.Step_Size__c AS stepSize ";
 sqlStmt+= "  ,Job_Definition_Template__c.Consider_Min_Value__c AS considerMinValue ";
+sqlStmt+= "  ,Job_Definition_Template__c.Min_Value__c AS decimalMinValue ";
+sqlStmt+= "  ,Job_Definition_Template__c.Max_Value__c AS decimalMaxValue ";
 sqlStmt+= "  ,CASE WHEN Data_Type__c.Data_Type__c = 'Decimal' THEN  ";
 sqlStmt+= "     CASE WHEN Job_Definition_Template__c.Consider_Min_Value__c  = '1' THEN Job_Definition_Template__c.Min_Value__c ";
 sqlStmt+= "     ELSE '-9999999' ";
@@ -291,6 +302,8 @@ sqlStmt+= "  ,Job_Definition_Template__c.Min_Date_Policy__c AS minDatePolicy ";
 sqlStmt+= "  ,Job_Definition_Template__c.Consider_Max_Value__c AS considerMaxValue ";          
 sqlStmt+= "  ,Data_Type__c.Data_Length_Decimal_Places__c AS decimalPlaces ";
 sqlStmt+= "  ,Job_Definition_Template__c.Max_Date_Policy__c AS maxDatePolicy ";
+sqlStmt+= "  ,CASE WHEN Data_Type__c.Data_Type__c = 'Decimal' THEN Job_Definition_Template__c.Min_Value__c ELSE '0' END AS decimalMinValue ";
+sqlStmt+= "  ,CASE WHEN Data_Type__c.Data_Type__c = 'Decimal' THEN Job_Definition_Template__c.Max_Value__c ELSE '0' END AS decimalMaxValue ";
 sqlStmt+= " 	,Job_Definition_Template__c.Description_#Language#__c AS questionText ";
 sqlStmt+= " 	,'1' AS visible ";
 sqlStmt+= " 	,CASE WHEN Job_Definition_List__c.Description_#Language#__c IS NULL THEN #clbManualQuestionGroupName# ELSE Job_Definition_List__c.Description_#Language#__c END AS jobDefinitionListText ";
@@ -309,7 +322,6 @@ sqlStmt+= "  AND Job_Definition_Template__c.Data_Type__c = Data_Type__c.Id  ";
 sqlStmt+= "	 AND #compareAsDate('Job_Definition_List__c.Valid_From__c', 'Date','<=' , #validFrom# , 'Date')# ";
 sqlStmt+= "	 AND #compareAsDate('Job_Definition_List__c.Valid_Thru__c', 'Date','>=' , #validFrom# , 'Date')# ";
 sqlStmt+= "  AND Job_Definition_List__c.Active__c = '1' ";
-sqlStmt+= "  AND Job_Definition_List__c.Approval_State__c <> 'Canceled' ";
 sqlStmt+= "  AND Job_Definition_Template__c.Active__c = '1' ";
 sqlStmt+= "  AND Visit_Job__c.Job_Definition_Template__c = Job_Definition_Template__c.Id  ";
 sqlStmt+=   addCond;

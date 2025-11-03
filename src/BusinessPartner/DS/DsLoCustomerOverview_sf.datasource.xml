@@ -28,13 +28,15 @@
     <DerivedAttribute name="mapIcon" value="'PurpleGoogleMarkerEmpty'" />
     <DerivedAttribute name="hasActivity" value="'0'" />
     <DerivedAttribute name="hasPromotion" value="'0'" />
+    <DerivedAttribute name="status" value="''" />
+    <DerivedAttribute name="closureReason" value="''" />
   </Attributes>
   <Entities>
     <Entity name="Account" alias="" idAttribute="Id" />
   </Entities>
   <Database platform="SQLite">
     <Load><![CDATA[
-
+			
 			if (!jsonQuery){jsonQuery={'params': []};}
 
 			if (Utils.isDefined(jsonQuery)){
@@ -60,6 +62,8 @@
 			var city = "";
 			var countryState = "";
 			var prio = "";
+			var status = "Open";
+			var closureReason = "";
 			var classOfTrade = "";
 			var substituted = "";
 			var tradeOrgPKey = "";
@@ -71,7 +75,11 @@
             var currentLongitude = 0; 
             var currentLatitude = 0;
 			var distance = 0;
+			var onlyRetailer = 0;
 
+			if(Utils.isDefined(newParams.onlyRetailer)){
+				onlyRetailer = newParams.onlyRetailer;
+			}
 			if(Utils.isDefined(newParams.addCond_LeadTimeFollowUpTime)){
 				addCond_LeadTimeFollowUpTime = newParams.addCond_LeadTimeFollowUpTime;
 			}
@@ -152,6 +160,23 @@
               prio = Utils.convertForDBParam(newParams.prio, "DomABC");
               addCondSearch += " AND customers.prio " + Utils.replaceOperator(newParams.prioComp) + "#prio# ";
 			}
+			
+			/**  Status  */
+			if (Utils.isDefined(newParams.status)){
+              status = Utils.convertForDBParam(newParams.status, "DomBpaStatus");
+			  addCondSearch += " AND customers.status " + Utils.replaceOperator(newParams.statusComp) + "#status# ";
+			}
+			if (!Utils.isDefined(newParams.status)){            
+			  addCondSearch += " AND customers.status ='Open'";
+			}
+
+
+
+			/**  Closure Reason  */
+			if (Utils.isDefined(newParams.closureReason)){
+              closureReason = Utils.convertForDBParam(newParams.closureReason, "DomABC");
+              addCondSearch += " AND customers.closureReason " + Utils.replaceOperator(newParams.closureReasonComp) + "#closureReason# ";
+			}
 
 			/**  Class of Trade  */
 			if (Utils.isDefined(newParams.classOfTrade)){
@@ -210,13 +235,15 @@
             }
 
 			var sqlParams1 = {referenceDateThru, referenceDateFrom, currentLatitude, currentLongitude, distance};
-			var sqlParams2 = {referenceDateThru, referenceDateFrom, customerId, name, street, zipCode, city, countryState, prio, classOfTrade, substituted, tradeOrgPKey, currentDate, overdue, distributionIssue, outOfStockIssue, hasActivity, hasPromotion, currentLatitude, currentLongitude, referenceUserPKey, distance};
+			var sqlParams2 = {referenceDateThru, referenceDateFrom, customerId, name, street, zipCode, city, countryState, prio, status, closureReason, classOfTrade, substituted, tradeOrgPKey, currentDate, overdue, distributionIssue, outOfStockIssue, hasActivity, hasPromotion, currentLatitude, currentLongitude, referenceUserPKey, distance};
 
 			var sqlStmt1 = "SELECT ";
 			sqlStmt1 +=      "customers.pKey AS pKey, ";
 			sqlStmt1 +=      "customers.name  as name, ";
 			sqlStmt1 +=      "customers.customerid as customerId, ";
 			sqlStmt1 +=      "customers.Prio as prio, ";
+			sqlStmt1 +=      "customers.Status as status, ";
+			sqlStmt1 +=      "customers.ClosureReason as closureReason, ";
 			sqlStmt1 +=      "customers.ClassOfTrade as classOfTrade, ";
 			sqlStmt1 +=      "customers.mainaddress as mainAddress, ";
 			sqlStmt1 +=      "customers.Street as street, ";
@@ -245,6 +272,8 @@
 			sqlStmt1 +=          "Account.Id AS pKey, ";
 			sqlStmt1 +=          "Account.Name as name, ";
 			sqlStmt1 +=          "Account.Account_Number__c as customerId,";
+			sqlStmt1 +=          "Account.Status__c as status,";
+			sqlStmt1 +=          "Account.Closure_Reason__c as closureReason,";
 			sqlStmt1 +=          "#toggleMapping('Account_Extension__c', 'Priority__c')# as prio, ";
 			sqlStmt1 +=          "Account_Extension__c.Class_Of_Trade__c as ClassOfTrade,   ";
 			sqlStmt1 +=          "Account.ShippingStreet || ', ' || Account.ShippingPostalCode || ' ' || Account.ShippingCity || ', ' || Account.ShippingState as mainAddress, ";
@@ -266,9 +295,13 @@
             sqlStmt1 +=          "Account_Extension__c.OOS_Issue__c as outOfStockIssue, ";
             sqlStmt1 +=          "CASE WHEN EXISTS (SELECT Null FROM Job_Definition_List_Account__c WHERE Account.Id = Job_Definition_List_Account__c.Account__c) THEN '1' ELSE '0' END as hasActivity, ";
             sqlStmt1 +=          "CASE WHEN EXISTS (SELECT Null FROM Promotion_Store__c, Promotion__c WHERE Promotion_Store__c.Promotion__c = Promotion__c.Id AND Account.Id = Promotion_Store__c.Store__c AND Promotion__c.Active__c ='1' AND Promotion__c.Phase__c='Committed') "
-            sqlStmt1 +=          "OR EXISTS (SELECT Null FROM Account_Set_Account__c, Promotion__c WHERE Promotion__c.Anchor_Account_Set__c = Account_Set_Account__c.Account_Set__c AND Account_Set_Account__c.Account_Set_Account__c = Account.Id AND Promotion__c.Active__c ='1' AND Promotion__c.Phase__c='Committed') THEN '1' ELSE '0' END as hasPromotion ";
+            sqlStmt1 +=          "OR EXISTS (SELECT Null FROM Account_Set_Account__c, Promotion__c WHERE Promotion__c.Anchor_Account_Set__c = Account_Set_Account__c.Account_Set__c AND Account_Set_Account__c.Account_Set_Account__c = Account.Id AND Promotion__c.Active__c ='1' AND Promotion__c.Phase__c='Committed') THEN '1' ELSE '0' END as hasPromotion, ";
+			sqlStmt1 +=          "RecordType.DeveloperName as recordTypeName";
 			sqlStmt1 +=      " FROM  ";
 			sqlStmt1 +=          "Account";
+			sqlStmt1 +=      " JOIN ";
+			sqlStmt1 +=          "RecordType ";
+			sqlStmt1 +=              "ON Account.RecordTypeId = RecordType.Id ";
 			sqlStmt1 +=      " JOIN ";
 			sqlStmt1 +=          "Account_Extension__c ";
 			sqlStmt1 +=              "ON Account.Id = Account_Extension__c.Account__c ";
@@ -336,6 +369,9 @@
 			sqlStmt2 +=          "))";
 			sqlStmt2 +=      ") customers ";
 			sqlStmt2 +=    "WHERE 1=1 ";
+			if(onlyRetailer == 1){
+				sqlStmt2 +=    "AND customers.recordTypeName = 'Retailer' ";
+			}
             sqlStmt2 +=    addCond_OverdueCustomers;
 
 			sqlStmt2 +=    addCondSearch;

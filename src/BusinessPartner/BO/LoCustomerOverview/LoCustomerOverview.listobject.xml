@@ -14,12 +14,15 @@
     <Method name="getButtonEditability" />
     <Method name="getButtonVisibility" />
     <Method name="deleteAdditionalWaypoints" />
+    <Method name="mygetAccountNotesEditability" />
+    <Method name="mygetTestData" />
   </Methods>
   <AdvancedSearchObjects>
     <AdvancedSearchObject name="AsoCustomerOverview">
       <AdvancedSearchAttributes profileId="default">
         <AdvancedSearchAttribute label="Customer_Id" property="customerId" type="Text" />
         <AdvancedSearchAttribute label="Customer_Name" property="name" type="Text" />
+        <AdvancedSearchAttribute label="Customer_Status" property="status" type="Selection" toggleId="BpaStatus" editable="true" defaultOperator="EQ" defaultValue="Open" />
         <AdvancedSearchAttribute label="Customer_Street" property="street" type="Text" />
         <AdvancedSearchAttribute label="Customer_ZipCode" property="zipCode" type="Text" />
         <AdvancedSearchAttribute label="Customer_City" property="city" type="Text" />

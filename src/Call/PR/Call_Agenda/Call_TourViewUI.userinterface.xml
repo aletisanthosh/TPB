@@ -269,6 +269,7 @@
               <Params>
                 <Param name="pKey" value=".pKey" />
                 <Param name="customerOnDevice" value=".customerOnDevice" />
+                <Param name="recordTypeName" value=".recordTypeName" />
               </Params>
             </ItemSelectedEvent>
             <ContextOpeningEvent event="contextMenuOpening">

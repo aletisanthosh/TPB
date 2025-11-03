@@ -43,6 +43,7 @@
           <Input name="allDay" value="ProcessContext::AllDay" />
           <Input name="mode" value="ProcessContext::Mode" />
           <Input name="responsiblePKey" value="ProcessContext::ResponsiblePKey" />
+          <Input name="visitType" value="In-Store Visit" type="Literal" />
         </Parameters>
         <Return name="ProcessContext::WizardBO" />
       </Action>
@@ -206,6 +207,7 @@
           <Return name="isManagedCustomer" value="ProcessContext::WizardBO.isManagedCustomer" />
           <Return name="isSubstituted" value="ProcessContext::WizardBO.isSubstituted" />
           <Return name="tripListPKey" value="ProcessContext::TripListPKey" />
+          <Return name="visitType" value="ProcessContext::WizardBO.visitType" />
         </ReturnValues>
       </Action>
     </Actions>

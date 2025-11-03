@@ -16,6 +16,8 @@
         <Declaration name="CopyLu" type="LuCopyOrderLookup" />
         <Declaration name="OrderMetaList" type="LoOrderMeta" />
         <Declaration name="TemplateLegit" type="DomBool" />
+        <Declaration name="OpenOrderInfo" type="LuMyOpenOrder" />
+        <Declaration name="OpenOrderId" type="String" />
       </Declarations>
       <Parameters>
         <Input name="MainPKey" type="DomPKey" />
@@ -41,6 +43,7 @@
   </Entry>
   <Body>
     <Actions>
+      <!-- SF/CASDIF Start -->
       <Action name="GetTemplateList" actionType="LOAD" type="LoOrderMeta">
         <Parameters>
           <Input name="customerPKey" value="ProcessContext::CopyLu.ordererPKey" />
@@ -56,17 +59,52 @@
         <TransitionTo action="TemplateLegit_Decision" />
       </Action>
       <Action name="TemplateLegit_Decision" actionType="DECISION" parameter="ProcessContext::TemplateLegit">
-        <Case value="true" action="CreateOrder" />
+        <Case value="true" action="LoadOpenOrderInfo" />
         <CaseElse action="Message_TemplateNotValid" />
+      </Action>
+      <Action actionType="LOAD" name="LoadOpenOrderInfo" type="LuMyOpenOrder">
+        <Parameters>
+          <Input name="clbMainPKey" value="ProcessContext::ClbMainPKey" />
+          <Input name="customerPKey" value="ProcessContext::CopyLu.ordererPKey" />
+        </Parameters>
+        <Return name="ProcessContext::OpenOrderInfo" />
+        <TransitionTo action="CheckOpenOrders" />
+      </Action>
+      <Action actionType="LOGIC" name="CheckOpenOrders" call="ProcessContext::OpenOrderInfo.myGetOpenOrderInfo">
+        <Parameters>
+          <Input name="lookup" value="ProcessContext::OpenOrderInfo" />
+        </Parameters>
+        <Return name="ProcessContext::OpenOrderId" />
+        <TransitionTo action="openOrders_Decision" />
+      </Action>
+      <Action actionType="DECISION" name="openOrders_Decision" parameter="ProcessContext::OpenOrderId">
+        <Case value="0" action="CreateOrder" />
+        <CaseElse action="Message_HasOpenedOrders" />
+      </Action>
+      <Action name="Message_HasOpenedOrders" actionType="CONFIRM" confirmType="YesNo">
+        <Message messageId="CasMessageHasOpenedOrders" />
+        <Cases>
+          <Case value="Yes" action="NovigateToOpenOrder" />
+          <Case value="No" action="End" />
+        </Cases>
+      </Action>
+      <Action name="NovigateToOpenOrder" actionType="PROCESS" process="Order::LoadProcess">
+        <Parameters>
+          <Input name="MainPKey" value="ProcessContext::OpenOrderId" />
+          <Input name="ClbMainPKey" value="ProcessContext::ClbMainPKey" />
+          <Input name="CallInContext_clbMainPKey" value="ProcessContext::CallInContext_clbMainPKey" />
+          <Input name="CallOutOfStockProducts" value="ProcessContext::CallOutOfStockProducts" />
+        </Parameters>
+        <TransitionTo action="End" />
       </Action>
       <Action name="CreateOrder" actionType="CREATE" type="BoOrder">
         <Parameters>
+          <!--Input name="ClbMainPKey" value="ProcessContext::OldOrderBo.clbMainPKey" /-->
+          <!--Input name="etpWarehousePKey" value="ProcessContext::OldOrderBo.etpWarehousePKey" /-->
           <Input name="SdoMetaPKey" value="ProcessContext::CopyLu.sdoMetaPKey" />
           <Input name="OrdererPKey" value="ProcessContext::CopyLu.ordererPKey" />
-          <Input name="ClbMainPKey" type="Literal" value=" " />
-          <!--Input name="ClbMainPKey" value="ProcessContext::OldOrderBo.clbMainPKey" /-->
+          <Input name="clbMainPKey" value="ProcessContext::ClbMainPKey" />
           <Input name="etpWarehousePKey" type="Literal" value=" " />
-          <!--Input name="etpWarehousePKey" value="ProcessContext::OldOrderBo.etpWarehousePKey" /-->
           <Input name="CallInContext_clbMainPKey" value="ProcessContext::CallInContext_clbMainPKey" />
           <Input name="OwnerPKey" value="ApplicationContext::User.pKey" />
           <Input name="ResponsiblePKey" value="ApplicationContext::User.pKey" />
@@ -80,7 +118,6 @@
         <Case value="1" action="End" />
         <CaseElse action="CopyOrderItems" />
       </Action>
-      <!-- SF/CASDIF Start -->
       <Action name="CopyOrderItems" actionType="LOGIC" call="ProcessContext::OrderBo.copyBo">
         <Parameters>
           <Input name="oldBo" value="ProcessContext::CopyLu" />

@@ -17,6 +17,9 @@
     <Method name="getAllCustomerTasksForCard" />
     <Method name="setFirstItemAsCurrent" />
     <Method name="updateIssueStatus" />
+    <Method name="replaceGetAllCustomerTasksForCard" />
+    <Method name="replaceGetInfoForCustomerTasksCard" />
+    <Method name="replaceGetCustomerTasksForCard" />
   </Methods>
   <AdvancedSearchObjects>
     <AdvancedSearchObject name="AsoIssue">

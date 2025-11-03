@@ -175,6 +175,7 @@ sqlStmt+= "	AND PrdMainPKey <> ' ' ";
 sqlStmt+= "	AND Visit_Job__c.Visit__c= #clbMainPKey# ";
 sqlStmt+= "	AND Job_Definition_Template__c.Data_Type__c = Data_Type__c.Id ";
 sqlStmt+= "	AND Product2.Sales_Org__c = '#SalesOrg#' ";
+sqlStmt+= "	AND Visit_Job__c.IsDeleted <> '1' ";
 
 
 
@@ -193,7 +194,9 @@ if (!Utils.isEmptyString(jsonQuery.jobDefPKeys)) {
 	sqlStmt+= "	,Visit_Job__c.Job_Definition__c AS jobDefinitionPKey ";
 	sqlStmt+= "	,/*Visit_Job__c.JobMetaPKey*/ ' ' AS jobMetaPKey ";
 	sqlStmt+= "	,Visit_Job__c.Job_List__c AS jobListPKey ";
-	sqlStmt+= "	,Visit_Job__c.Value__c AS lastValue ";
+    //1970
+    //sqlStmt+= "	,Visit_Job__c.Value__c AS lastValue ";
+    sqlStmt+= "	,Visit_Job__c.TPB_Calculated_EOV__c AS lastValue ";
 	sqlStmt+= "	,Job_DL_Job_Definition_Template__c.Mandatory__c AS mandatory ";
 	sqlStmt+= "	,CASE  ";
 	sqlStmt+= "		WHEN Job_DL_Job_Definition_Template__c.Mandatory__c = '1' ";

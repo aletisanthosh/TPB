@@ -33,7 +33,7 @@
     <Attribute name="erpId" table="Order_Item__c" column="Erp_Id__c" />
     <Attribute name="suggestedQuantity" table="Order_Item__c" column="Suggested_Quantity__c" />
     <Attribute name="freeItemCreationStep" table="Order_Item__c" column="Free_Item_Creation_Step__c" />
-    <DerivedAttribute name="refPKey" value="Order_Item__c.Product__c || Order_Item__c.Order_Item_Template__c || Order_Item__c.Promotion__c || Order_Item__c.Promotion_Reward__c" />
+    <DerivedAttribute name="refPKey" value="Order_Item__c.Product__c || Order_Item__c.Order_Item_Template__c || Order_Item__c.Promotion__c || Order_Item__c.Promotion_Reward__c || Order_Item__c.TPB_Promotion_Waves__c" />
     <Attribute name="isOrderUnit" table="Unit_Of_Measure__c" column="Is_Order_Unit__c" />
     <Attribute name="sort" table="Unit_Of_Measure__c" column="Sort__c" />
     <Attribute name="pricingInformation" table="Order_Item__c" column="Pricing_Information__c" />
@@ -55,6 +55,16 @@
     <Attribute name="pricingInfo8" table="Order_Item__c" column="Pricing_Info_8__c" />
     <Attribute name="pricingInfo9" table="Order_Item__c" column="Pricing_Info_9__c" />
     <Attribute name="pricingInfo10" table="Order_Item__c" column="Pricing_Info_10__c" />
+    <Attribute name="promotionWavePKey" table="Order_Item__c" column="TPB_Promotion_Waves__c" />
+    <DerivedAttribute name="promotionWaveName" value="promotionWave.Name" />
+    <Attribute name="resale" table="Order_Item__c" column="Resale__c" />
+    <Attribute name="wholesalerProduct" table="Order_Item__c" column="Wholesaler_Product__c" />
+    <Attribute name="tpbSku" table="Order_Item__c" column="TPB_SKU__c" />
+    <Attribute name="wsName" table="Order_Item__c" column="TPB_Wholesaler_Name__c" />
+    <Attribute name="supplierId" table="Order_Item__c" column="TPB_Supplier_ID__c" />
+    <DerivedAttribute name="wholesalerProductSKU" value="Ap.SKU__c" />
+    <DerivedAttribute name="wholesalerId" value="Ws.Id" />
+    <DerivedAttribute name="wholesalerName" value="Ws.Name" />
   </Attributes>
   <Entities>
     <Entity name="Order_Item__c" alias="" idAttribute="Id" />
@@ -70,6 +80,27 @@
         <SimpleJoin>
           <Condition leftSideValue="Order_Item__c.Product__c" comparator="eq" rightSideType="Attribute" rightSideValue="Unit_Of_Measure__c.Product__c" />
           <Condition leftSideValue="Order_Item__c.UoM__c" comparator="eq" rightSideType="Attribute" rightSideValue="Unit_Of_Measure__c.Unit_Type__c" />
+        </SimpleJoin>
+      </Join>
+    </Entity>
+    <Entity name="Account_Product__c" alias="Ap">
+      <Join Type="left outer">
+        <SimpleJoin>
+          <Condition leftSideValue="Ap.Id" comparator="eq" rightSideType="Attribute" rightSideValue="Order_Item__c.Wholesaler_Product__c" />
+        </SimpleJoin>
+      </Join>
+    </Entity>
+    <Entity name="Account" alias="Ws">
+      <Join Type="left outer">
+        <SimpleJoin>
+          <Condition leftSideValue="Ws.Id" comparator="eq" rightSideType="Attribute" rightSideValue="Ap.Account__c" />
+        </SimpleJoin>
+      </Join>
+    </Entity>
+    <Entity name="TPB_Promotion_Waves__c" alias="promotionWave">
+      <Join Type="left outer">
+        <SimpleJoin>
+          <Condition leftSideValue="promotionWave.Id" comparator="eq" rightSideType="Attribute" rightSideValue="Order_Item__c.TPB_Promotion_Waves__c" />
         </SimpleJoin>
       </Join>
     </Entity>

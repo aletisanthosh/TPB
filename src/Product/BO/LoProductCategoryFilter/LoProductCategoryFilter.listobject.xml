@@ -12,5 +12,6 @@
     <Method name="saveAsync" />
     <Method name="createAsync" />
     <Method name="onTabChange" />
+    <Method name="replaceCreateAsync" />
   </Methods>
 </ListObject>

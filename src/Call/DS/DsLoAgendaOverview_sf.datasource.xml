@@ -32,6 +32,11 @@
     <DerivedAttribute name="hasOrder" value="'0'" />
     <DerivedAttribute name="clbStatusCount" value="0" />
     <DerivedAttribute name="mainAddress" value="''" />
+    <Attribute name="clbTypeStatusNew" table="Visit" column="Status" />
+    <Attribute name="clbTypeStatusColoredNew" table="Event" column="Type" />
+    <DerivedAttribute name="recordTypeName" value="''" />
+    <Attribute name="visitType" table="Visit" column="TPB_Visit_Type__c" />
+    <Attribute name="customerHQPKey" table="Account" column="ParentId" />
   </Attributes>
   <Entities>
     <Entity name="Visit" alias="" idAttribute="Id" />
@@ -50,6 +55,7 @@
       var currentLatitude = 0;
       var followUpCardMode;
       var callCustomer;
+      var includeDailyReport = false;
 
       if(Utils.isDefined(jsonQuery.pKey)){
 		clbMainPKey = Utils.convertForDBParam(jsonQuery.pKey, "DomPKey");
@@ -108,6 +114,10 @@
       }
       if(Utils.isDefined(jsonQuery.currentLongitude)) {         
          currentLongitude = Utils.convertForDBParam(jsonQuery.currentLongitude, "DomDecimal");
+      }
+
+      if (Utils.isDefined(jsonQuery.includeDailyReport)) {
+        includeDailyReport = jsonQuery.includeDailyReport == '1';
       }
 
       var sqlParams1 = {tmgMainPKey, usrMainPKey, clbMainPKey, callCustomer, currentLatitude, currentLongitude};
@@ -170,14 +180,22 @@
        sqlStmt1 += ",Visit.Status AS clbStatus ";
        sqlStmt1 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || Visit.Status AS clbTypeStatus ";
        sqlStmt1 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || Visit.Status || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColored ";
+       sqlStmt1 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || (CASE WHEN Visit.Status = 'Planned' AND Visit.TPB_InProgress__c = 1 THEN 'InProgress' ELSE Visit.Status END) AS clbTypeStatusNew ";
+       sqlStmt1 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || (CASE WHEN Visit.Status = 'Planned' AND Visit.TPB_InProgress__c = 1 THEN 'InProgress' ELSE Visit.Status END) || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColoredNew ";
        sqlStmt1 += ",trim(Account.ShippingStreet) || ', ' || Account.ShippingCity AS address ";
        sqlStmt1 += ",Account.ShippingStreet || ', ' || Account.ShippingPostalCode || ' ' || Account.ShippingCity || ', ' || Account.ShippingState as mainAddress ";
+       sqlStmt1 += ",CASE ";
+       sqlStmt1 += "WHEN Visit.TPB_VisitType__c = 'Wholesaler'   THEN  'WHL' ";
+       sqlStmt1 += "WHEN Visit.TPB_VisitType__c = 'Headquarter'  THEN  'HQ' ";
+       sqlStmt1 += "ELSE 'R' ";
+       sqlStmt1 += "END AS recordTypeName ";
        sqlStmt1 += ",Account.ShippingLatitude AS latitude ";
        sqlStmt1 += ",Account.ShippingLongitude AS longitude ";
        sqlStmt1 += ",Visit_Template__c.Company_Required__c AS companyRequired "; 
        sqlStmt1 += ",Visit_Template__c.Id AS clbMetaPKey "; 
 	   sqlStmt1 += ",Visit.Creation_Mode__c AS creationMode "; 
 	   sqlStmt1 += ",Visit.CreatedById AS initiatorPKey ";
+	   sqlStmt1 += ",Visit.TPB_Visit_Type__c AS visitType ";
 
 	   if (!Utils.isEmptyString(tmgMainPKey)){
           sqlStmt1 += ",( SELECT T.Name FROM Tour__c T WHERE T.Id = #tmgMainPKey# ) AS tourContextId ";
@@ -307,15 +325,23 @@
       sqlStmt2 += ",Visit.Subject__c AS subject ";
       sqlStmt2 += ",Visit.Status AS clbStatus ";
       sqlStmt2 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || Visit.Status AS clbTypeStatus ";
-      sqlStmt2 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || Visit.Status || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColored ";
+       sqlStmt2 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || Visit.Status || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColored ";
+       sqlStmt2 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || (CASE WHEN Visit.Status = 'Planned' AND Visit.TPB_InProgress__c = 1 THEN 'InProgress' ELSE Visit.Status END) AS clbTypeStatusNew ";
+       sqlStmt2 += ",'ClbTypeStatus_' || Visit_Template__c.Meta_Type__c || '_' || (CASE WHEN Visit.Status = 'Planned' AND Visit.TPB_InProgress__c = 1 THEN 'InProgress' ELSE Visit.Status END) || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColoredNew ";
       sqlStmt2 += ",trim(Account.ShippingStreet) || ', ' || Account.ShippingCity AS address ";
       sqlStmt2 += ",Account.ShippingStreet || ', ' || Account.ShippingPostalCode || ' ' || Account.ShippingCity || ', ' || Account.ShippingState as mainAddress ";
+       sqlStmt2 += ",CASE ";
+       sqlStmt2 += "WHEN Visit.TPB_VisitType__c = 'Wholesaler'   THEN  'WHL' ";
+       sqlStmt2 += "WHEN Visit.TPB_VisitType__c = 'Headquarter'  THEN  'HQ' ";
+       sqlStmt2 += "ELSE 'R' ";
+       sqlStmt2 += "END AS recordTypeName ";
       sqlStmt2 += ",Account.ShippingLatitude AS latitude ";
       sqlStmt2 += ",Account.ShippingLongitude AS longitude ";
       sqlStmt2 += ",Visit_Template__c.Company_Required__c AS companyRequired ";
       sqlStmt2 += ",Visit_Template__c.Id AS clbMetaPKey "; 
   	sqlStmt2 += ",Visit.Creation_Mode__c AS creationMode "; 
   	sqlStmt2 += ",Visit.CreatedById AS initiatorPKey ";
+  	sqlStmt2 += ",Visit.TPB_Visit_Type__c AS visitType ";
   
       if (!Utils.isEmptyString(tmgMainPKey))
       {
@@ -436,14 +462,18 @@
         sqlStmt3 += ",'Planned' AS clbStatus ";                           
         sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' AS clbTypeStatus ";
         sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColored ";
+        sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' AS clbTypeStatusNew ";
+        sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColoredNew ";
         sqlStmt3 += ",' ' AS address ";
         sqlStmt3 += ",' ' AS mainAddress ";
+        sqlStmt3 += ",'R' AS recordTypeName ";
         sqlStmt3 += ",0 AS latitude ";
         sqlStmt3 += ",0 AS longitude ";
         sqlStmt3 += ",Visit_Template__c.Company_Required__c AS companyRequired "; 
         sqlStmt3 += ",Visit_Template__c.Id AS clbMetaPKey "; 
   	  sqlStmt3 += ",' ' AS creationMode "; 
   	  sqlStmt3 += ",Event.CreatedById AS initiatorPKey ";
+  	  sqlStmt3 += ",' ' AS visitType ";
   
   	  if (!Utils.isEmptyString(tmgMainPKey))
         {
@@ -528,14 +558,18 @@
       sqlStmt3 += ",'Planned' AS clbStatus ";
       sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' AS clbTypeStatus ";
       sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColored ";
+      sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' AS clbTypeStatusNew ";
+      sqlStmt3 += ",'ClbTypeStatus_' || Event.Type || '_' || 'Planned' || '_' || Visit_Template__c.Mobility_Color__c AS clbTypeStatusColoredNew ";
       sqlStmt3 += ",' ' AS address ";
       sqlStmt3 += ",' ' AS mainAddress ";
+      sqlStmt3 += ",'R' AS recordTypeName ";
       sqlStmt3 += ",0 AS latitude ";
       sqlStmt3 += ",0 AS longitude ";
       sqlStmt3 += ",Visit_Template__c.Company_Required__c AS companyRequired ";
       sqlStmt3 += ",Visit_Template__c.Id AS clbMetaPKey "; 
   	sqlStmt3 += ",' ' AS creationMode "; 
   	sqlStmt3 += ",Event.CreatedById AS initiatorPKey ";
+  	sqlStmt3 += ",' ' AS visitType  ";
   
       if (!Utils.isEmptyString(tmgMainPKey))
       {
@@ -626,6 +660,105 @@
         sqlStmt3 += "AND #compareAsDate('SubBpaRel.Valid_From__c', 'Date', '<=', 'Event.StartDateTime', 'DateTime')# ";
         sqlStmt3 += "AND #compareAsDate('SubBpaRel.Valid_Thru__c', 'Date', '>=', 'Event.StartDateTime', 'DateTime')# ";
       }
+
+
+      // Begin of Daily Report
+      if (includeDailyReport) {
+        sqlStmt3 += 'UNION ';
+
+        sqlStmt3 += "SELECT ";
+        sqlStmt3 += "  User_Document__c.Id as pKey, ";
+        sqlStmt3 += "  strftime( ";
+        sqlStmt3 += "    '%s', ";
+        sqlStmt3 += "    datetime(User_Document__c.Date__c, 'unixepoch', User_Document__c.Work_Time_From__c, 'utc'), ";
+        sqlStmt3 += "    'utc' ";
+        sqlStmt3 += "  ) as sortDateTime, ";
+        sqlStmt3 += "  strftime( ";
+        sqlStmt3 += "    '%s', ";
+        sqlStmt3 += "    date(User_Document__c.Date__c, 'unixepoch') ";
+        sqlStmt3 += "  ) as dateFrom, ";
+        sqlStmt3 += "  User_Document__c.Work_Time_From__c as timeFrom, ";
+        sqlStmt3 += "  strftime( ";
+        sqlStmt3 += "    '%s', ";
+        sqlStmt3 += "    date(User_Document__c.Date__c, 'unixepoch') ";
+        sqlStmt3 += "  ) as dateThru, ";
+        sqlStmt3 += "  User_Document__c.Work_Time_Thru__c as timeThru, ";
+        sqlStmt3 += "  0 as allDay, ";
+        sqlStmt3 += "  User_Document__c.Annotation__c as name, ";
+        sqlStmt3 += "  '' as bpaMainPKey, ";
+        sqlStmt3 += "  User_Document__c.Responsible__c as responsiblePKey, ";
+        sqlStmt3 += "  Responsible.LastName || ', ' || Responsible.FirstName as responsibleName, ";
+        sqlStmt3 += "  CASE ";
+        sqlStmt3 += "    WHEN Owner.Id IS NULL ";
+        sqlStmt3 += "    AND User_Document__c.Accountable__c <> ' ' THEN '0' ";
+        sqlStmt3 += "    ELSE '1' ";
+        sqlStmt3 += "  END AS customerOnDevice, ";
+        sqlStmt3 += "  'DailyReport' as clbMetaType, ";
+        sqlStmt3 += "  0 as deleteAllowed, ";
+        sqlStmt3 += "  '66bb93' as Color, ";
+        sqlStmt3 += "  '' as subject, ";
+        sqlStmt3 += "  case ";
+        sqlStmt3 += "    when User_Document__c.Phase__c = 'Approved' then 'Approved' ";
+        sqlStmt3 += "    when User_Document__c.Phase__c = 'Correction' then 'Correction' ";
+        sqlStmt3 += "    when User_Document__c.Phase__c = 'Initial' then 'initial' ";
+        sqlStmt3 += "    when User_Document__c.Phase__c = 'Released' then 'Released' ";
+        sqlStmt3 += "    else 'Initial' ";
+        sqlStmt3 += "  end as clbStatus, ";
+        sqlStmt3 += "  '' as clbTypeStatus, ";
+        sqlStmt3 += "  '' as clbTypeStatusColored, ";
+        sqlStmt3 += "  '' as clbTypeStatusNew, ";
+        sqlStmt3 += "  '' as clbTypeStatusColoredNew, ";
+        sqlStmt3 += "  '' as address, ";
+        sqlStmt3 += "  '' as mainAddress, ";
+        sqlStmt3 += "  User_Document__c.Template_Description__c as recordTypeName, ";
+        sqlStmt3 += "  '' as latitude, ";
+        sqlStmt3 += "  '' as longitude, ";
+        sqlStmt3 += "  0 as companyRequired, ";
+        sqlStmt3 += "  '' as clbMetaPKey, ";
+        sqlStmt3 += "  '' as creationMode, ";
+        sqlStmt3 += "  '' as initiatorPKey, ";
+        sqlStmt3 += "  '' as visitType, ";
+        sqlStmt3 += "  '' as tourContextId, ";
+        sqlStmt3 += "  '' as hasOrder ";
+        sqlStmt3 += "FROM ";
+        sqlStmt3 += "  User_Document__c ";
+        sqlStmt3 += "  inner JOIN User AS Owner ON User_Document__c.Accountable__c = Owner.Id ";
+        sqlStmt3 += "  AND ( ";
+        sqlStmt3 += "    Owner.IsDeleted <> '1' ";
+        sqlStmt3 += "    OR Owner.IsDeleted IS NULL ";
+        sqlStmt3 += "  ) ";
+        sqlStmt3 += "  inner JOIN User AS Responsible ON User_Document__c.Responsible__c = Responsible.Id ";
+        sqlStmt3 += "  AND ( ";
+        sqlStmt3 += "    Responsible.IsDeleted <> '1' ";
+        sqlStmt3 += "    OR Responsible.IsDeleted IS NULL ";
+        sqlStmt3 += "  ) ";
+        sqlStmt3 += "WHERE ";
+        sqlStmt3 += "  1 = 1 ";
+        sqlStmt3 += "  AND ( ";
+        sqlStmt3 += "    User_Document__c.Responsible__c = #usrMainPKey# ";
+        sqlStmt3 += "    OR User_Document__c.Accountable__c = #usrMainPKey# ";
+        sqlStmt3 += "    OR ( ";
+        sqlStmt3 += "      User_Document__c.Accountable__c IN (#usrMainPKey#) ";
+        sqlStmt3 += "      AND User_Document__c.Phase__c <> 'Initial' ";
+        sqlStmt3 += "    ) ";
+        sqlStmt3 += "  ) ";
+        sqlStmt3 += "  AND User_Document__c.Phase__c = 'Approved' ";
+        if (Utils.isDefined(dateFromStart)) { 
+          sqlStmt3 += "AND ( ";
+          sqlStmt3 += "  ( ";
+          sqlStmt3 += "    date(User_Document__c.Date__c, 'unixepoch') >= date(#dateFromStart#, 'unixepoch') ";
+          sqlStmt3 += "    AND date(User_Document__c.Date__c,'unixepoch') <= date(#dateFromEnd#, 'unixepoch') ";
+          sqlStmt3 += "  ) ";
+          sqlStmt3 += "  OR ( ";
+          sqlStmt3 += "    date(#dateFromStart#, 'unixepoch') >= date(User_Document__c.Date__c,'unixepoch') ";
+          sqlStmt3 += "    AND date(#dateFromEnd#, 'unixepoch') <= date(User_Document__c.Date__c,'unixepoch') ";
+          sqlStmt3 += "  ) ";
+          sqlStmt3 += ") ";
+        }
+      }
+
+      // End of Daily Report
+
   
   	  //###########################
   	  //###  Card - Visit Rate  ###

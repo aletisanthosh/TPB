@@ -13,18 +13,18 @@
       </Join>
     </Entity>
   </Entities>
-  <QueryCondition><![CDATA[
-        (Order__c.Phase__c='Ready' OR Order__c.Phase__c='SendFax' OR Order__c.Phase__c='Feedback' OR Order__c.Phase__c='Closed')
-        AND Order__c.Order_Account__c = '#ordererPKey#'
-        AND Order__c.Order_Template__c = '#sdoMetaPKey#'
-        AND #compareAsDate('Order__c.Order_Date__c', 'Date','>=',#dateFrom#, 'Date')#
-    ]]></QueryCondition>
   <OrderCriteria>
     <OrderCriterion entity="Order_Item__c" attribute="Product__c" direction="ASC" />
   </OrderCriteria>
   <Parameters>
-    <Parameter name="ordererPKey"  type="TEXT"/>
-    <Parameter name="sdoMetaPKey"  type="TEXT"/>
-    <Parameter name="dateFrom" baseType="Date"  type="INTEGER"/>
+    <Parameter name="ordererPKey" type="TEXT" />
+    <Parameter name="sdoMetaPKey" type="TEXT" />
+    <Parameter name="dateFrom" baseType="Date" type="INTEGER" />
   </Parameters>
+  <QueryCondition><![CDATA[
+        (Order__c.Phase__c='Ready' OR Order__c.Phase__c='SendFax' OR Order__c.Phase__c='Feedback' OR Order__c.Phase__c='Closed' OR Order__c.Phase__c ='Released')
+        AND Order__c.Order_Account__c = '#ordererPKey#'
+        AND Order__c.Order_Template__c = '#sdoMetaPKey#'
+        AND #compareAsDate('Order__c.Order_Date__c', 'Date','>=',#dateFrom#, 'Date')#
+    ]]></QueryCondition>
 </DataSource>

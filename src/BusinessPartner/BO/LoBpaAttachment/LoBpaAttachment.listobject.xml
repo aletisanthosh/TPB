@@ -8,5 +8,7 @@
     <Method name="beforeLoadAsync" />
     <Method name="afterDoValidateAsync" />
     <Method name="beforeDoValidateAsync" />
+    <Method name="myGetListForWholesalerPromotionCard" />
+    <Method name="myGetListForInStoreMissionCard" />
   </Methods>
 </ListObject>

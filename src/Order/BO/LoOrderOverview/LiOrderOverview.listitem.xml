@@ -29,5 +29,6 @@
     <SimpleProperty name="payerValidFrom" type="DomDate" dataSourceProperty="payerValidFrom" />
     <SimpleProperty name="payerValidThru" type="DomDate" dataSourceProperty="payerValidThru" />
     <SimpleProperty name="syncStatus" type="DomInteger" storable="false" dataSourceProperty="syncStatus" />
+    <SimpleProperty name="totalValue" type="DomMoney" storable="true" dataSourceProperty="totalValue" />
   </SimpleProperties>
 </ListItem>

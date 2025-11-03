@@ -80,6 +80,10 @@
     <Attribute name="pricingInfo9" table="Order__c" column="Pricing_Info_9__c" />
     <Attribute name="pricingInfo10" table="Order__c" column="Pricing_Info_10__c" />
     <Attribute name="syncStatus" table="Order__c" column="_syncStatus" />
+    <Attribute name="ntcTaxId" table="Order__c" column="TPB_Tax_ID__c" />
+    <Attribute name="ntcStateUseTax" table="Order__c" column="TPB_State_Use_Tax__c" />
+    <Attribute name="authorizingAgent" table="Order__c" column="TPB_Authorizing_Agent__c" />
+    <Attribute name="pdfDetailsSnapshot" table="Order__c" column="TPB_PDF_Details_Snapshot__c" />
   </Attributes>
   <Entities>
     <Entity name="Order__c" alias="" idAttribute="Id" />

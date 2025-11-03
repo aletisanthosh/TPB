@@ -28,4 +28,5 @@
   <ValidationMessage name="CasCheckPaymentCollected" defaultMessage="Please confirm payment collected." comment="Payment Collected must be checked" />
   <ValidationMessage name="CasSdoCheckEmptyPaymentMethod" defaultMessage="For collecting the order payment, a payment method needs to be specified." comment="Payment method cannot be empty" />
   <ValidationMessage name="CasSdoNoPPPLicense" defaultMessage="You don't have the required permission to use the penny perfect pricing feature. Contact your salesforce administrator." comment="PPP license needed to calculate orders" />
+  <ValidationMessage name="CasSdoDeliveryDateLaterThanOrderDate" defaultMessage="Delivery date cannot be earlier than the order date." comment="Invalid delivery date" />
 </ValidationMessages>

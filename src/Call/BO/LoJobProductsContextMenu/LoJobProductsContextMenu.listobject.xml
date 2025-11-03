@@ -9,5 +9,6 @@
     <Method name="afterDoValidateAsync" />
     <Method name="beforeDoValidateAsync" />
     <Method name="saveAsync" />
+    <Method name="postBeforeLoadAsync" />
   </Methods>
 </ListObject>

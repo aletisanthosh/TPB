@@ -21,6 +21,7 @@
         <Parameters>
           <Input name="considerSubstitutionLeadFollowUpTime" type="Literal" value="1" />
           <Input name="referenceUserPKey" value="ProcessContext::ReferenceUserPKey" />
+          <Input name="onlyRetailer" value="1" />
         </Parameters>
         <Return name="ProcessContext::CustomerList" />
       </Action>

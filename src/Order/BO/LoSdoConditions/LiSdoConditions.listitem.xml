@@ -18,5 +18,6 @@
     <SimpleProperty name="convertedConditionValue" type="DomDecimal" storable="true" dataSourceProperty="convertedConditionValue" />
     <SimpleProperty name="conditionResult" type="DomDecimal" storable="true" dataSourceProperty="conditionResult" />
     <SimpleProperty name="cpIsPrintRelevant" type="DomBool" storable="true" dataSourceProperty="cpIsPrintRelevant" />
+    <SimpleProperty name="hide" type="DomText" />
   </SimpleProperties>
 </ListItem>

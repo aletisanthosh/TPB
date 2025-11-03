@@ -56,5 +56,14 @@
     <SimpleProperty name="sort" type="DomBool" storable="false" dataSourceProperty="sort" />
     <SimpleProperty name="category" type="DomPrdCategory" dataSourceProperty="category" />
     <SimpleProperty name="refPKey" type="DomId" dataSourceProperty="refPKey" />
+    <SimpleProperty name="resale" type="DomBool" dataSourceProperty="resale" />
+    <SimpleProperty name="wholesalerProduct" type="DomId" dataSourceProperty="wholesalerProduct" />
+    <SimpleProperty name="tpbSku" type="DomText" storable="true" dataSourceProperty="tpbSku" />
+    <SimpleProperty name="wsName" type="DomText" storable="true" dataSourceProperty="wsName" />
+    <SimpleProperty name="supplierId" type="DomText" storable="false" dataSourceProperty="supplierId" />
+    <SimpleProperty name="wholesalerProductSKU" type="DomString" storable="false" dataSourceProperty="wholesalerProductSKU" />
+    <SimpleProperty name="wholesalerId" type="DomId" storable="false" dataSourceProperty="wholesalerId" />
+    <SimpleProperty name="wholesalerName" type="DomString" storable="false" dataSourceProperty="wholesalerName" />
+    <SimpleProperty name="sortOrder" type="DomDecimal" dataSourceProperty="sortOrder" />
   </SimpleProperties>
 </ListItem>

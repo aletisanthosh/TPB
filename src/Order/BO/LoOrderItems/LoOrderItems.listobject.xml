@@ -44,5 +44,11 @@
     <Method name="isFreeItem" />
     <Method name="displayQuantitySuggestion" />
     <Method name="resetMergeEngineInvalidated" />
+    <Method name="replaceSetItemFilter" />
+    <Method name="replaceCreateDisplayInformationForUoMItem" />
+    <Method name="replaceAddItemFromObject" />
+    <Method name="replaceBuildQueryCondition" />
+    <Method name="mySetWholesalerInfo" />
+    <Method name="myGenerateMassPrebookItems" />
   </Methods>
 </ListObject>

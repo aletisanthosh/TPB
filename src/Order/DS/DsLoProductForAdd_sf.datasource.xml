@@ -41,6 +41,11 @@
     <DerivedAttribute name="sdoItemMeta11" value="'0'" />
     <DerivedAttribute name="sdoItemMeta12" value="'0'" />
     <DerivedAttribute name="basePriceReceipt" value="'0'" />
+    <Attribute name="groupSortOrder" table="TmpOrderItemMergeResult_T" column="GroupSortOrder" />
+    <Attribute name="sortOrder" table="TmpOrderItemMergeResult_T" column="SortOrder" />
+    <Attribute name="cashSaleOrderable" table="TmpOrderItemMergeResult_T" column="CashSaleOrderable" />
+    <Attribute name="prebookOrderable" table="TmpOrderItemMergeResult_T" column="PrebookOrderable" />
+    <Attribute name="returnable" table="TmpOrderItemMergeResult_T" column="Returnable" />
   </Attributes>
   <Entities>
     <Entity name="TmpOrderItemMergeResult_T" alias="" idAttribute="PrdMainPKey" />
@@ -63,6 +68,7 @@ var text1= "";
 var prdType= "";
 var foreignProduct= "";
 var category = "";
+var groupText = "";
 
 /**  prdId */
 if (Utils.isDefined(jsonQuery.prdId)){
@@ -100,6 +106,12 @@ if (Utils.isDefined(jsonQuery.category)){
 	addCondSearch += " AND Category " + Utils.replaceOperator(jsonQuery.categoryComp) + " #category# ";
 }
 
+/** groupText */
+if (Utils.isDefined(jsonQuery.groupText)){
+	groupText = Utils.convertForDBParam(jsonQuery.groupText, "DomString");
+	addCondSearch += " AND GroupText " + Utils.replaceOperator(jsonQuery.groupTextComp) + " #groupText# ";
+}
+
 var index = 0;
 for (index in params){
   switch (params[index].field) {                           
@@ -128,7 +140,7 @@ if (filterOutCompetitorProducts == '1') {
   competitorProductsCondition = " AND ForeignProduct = '0' ";
 }			
 
-var sqlParams = {prdId, text1, eAN, prdType, foreignProduct, category}; 
+var sqlParams = {prdId, text1, eAN, prdType, foreignProduct, category, groupText}; 
 var sqlStmt = "";
 sqlStmt += "SELECT ";
 sqlStmt += "DISTINCT PrdMainPKey AS prdMainPKey, ";
@@ -142,6 +154,9 @@ sqlStmt += "FocusProductType AS focusProductType, ";
 sqlStmt += "ForeignProduct AS foreignProduct, ";
 sqlStmt += "GroupId AS groupId, ";
 sqlStmt += "GroupText AS groupText, ";
+sqlStmt += "GroupSortOrder AS groupSortOrder, ";
+sqlStmt += "SortOrder AS sortOrder, ";
+sqlStmt += " '' as isSelected, ";
 sqlStmt += "SUBSTR(Text1,1,1) AS groupingAttribute, ";
 sqlStmt += "CASE WHEN Promoted = '1' AND Listed = '1' THEN 'PL' WHEN Promoted = '1' AND Listed = '0' THEN 'P' WHEN Promoted = '0' AND Listed = '1' THEN 'L' ELSE ' ' END AS itemState, ";
 sqlStmt += "Listed AS listed, ";
@@ -158,7 +173,20 @@ sqlStmt += "TaxClassification AS taxClassification, ";
 sqlStmt += "Text1 AS text1, ";
 sqlStmt += "Text1 AS productGroup, ";
 sqlStmt += "Text2 AS text2, ";
-sqlStmt += "PrdType AS prdType ";
+sqlStmt += "PrdType AS prdType, ";
+sqlStmt += "CASE WHEN Suggested = '1' AND TpbPromoted IS NULL THEN  '1' ELSE '0' END AS showInSuggested, ";
+sqlStmt += "Suggested AS suggested, ";
+sqlStmt += "Distributed AS distributed, ";
+sqlStmt += "SellingPriority AS sellingPriority, ";
+sqlStmt += "CASE WHEN SellingPriority = '1' THEN  'CheckBlueGrey24' ELSE 'EmptyImage' END AS sellingPriorityImage, ";
+sqlStmt += "PromotionQuantity AS promotionQuantity, ";
+sqlStmt += "SuggestQty AS suggestQty, ";
+sqlStmt += "MaxAllocation AS maxAllocation, ";
+sqlStmt += "TpbPromoted AS tpbPromoted, ";
+sqlStmt += "CashSaleOrderable AS cashSaleOrderable, ";
+sqlStmt += "PrebookOrderable AS prebookOrderable, ";
+sqlStmt += "Returnable AS returnable, ";
+sqlStmt += "History AS history ";
 sqlStmt += "FROM TmpOrderItemMergeResult_T ";
 sqlStmt += "WHERE ";
 sqlStmt += queryCondition;
@@ -174,7 +202,6 @@ sqlStmt += competitorProductsCondition;
 sqlStmt += " AND FieldState = 'Available' ";
 sqlStmt += addCondSearch;
 sqlStmt += " ORDER BY PrdMainPKey ASC"
-
 var finalQuery=Utils.replaceMacrosParam(sqlStmt, sqlParams);
 var finalParams = finalQuery.params;
 if (!Utils.isEmptyString(addCond_ProductPKeys)) {

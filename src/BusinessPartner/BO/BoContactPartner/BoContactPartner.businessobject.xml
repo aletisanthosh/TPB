@@ -17,6 +17,9 @@
     <SimpleProperty name="department" type="DomText" dataSourceProperty="department" />
     <SimpleProperty name="description" type="DomText" dataSourceProperty="description" />
     <SimpleProperty name="emailEditable" type="DomBool" storable="false" dataSourceProperty="emailEditable" />
+    <SimpleProperty name="decisionMaker" type="DomBool" storable="true" dataSourceProperty="decisionMaker" />
+    <SimpleProperty name="primaryContact" type="DomBool" storable="true" dataSourceProperty="primaryContact" />
+    <SimpleProperty name="contactTitle" type="DomBpaContactTitle" storable="true" dataSourceProperty="contactTitle" />
   </SimpleProperties>
   <NestedObjects>
     <!-- boBpaSales: not loaded - only used during create at the moment -->

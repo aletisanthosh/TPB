@@ -1,5 +1,5 @@
 <UIDescription name="Order::ShowPrintInvoiceUI" schemaVersion="0.0.0.5" >
-  <Page pagePattern="SingleSectionPage">
+  <Page pagePattern="SingleSectionDialogPage">
     <PageHeader>
       <Bindings>
         <Resource target="title" type="Label" id="PrintDocumentId" defaultLabel="Print Document" />

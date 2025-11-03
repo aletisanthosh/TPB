@@ -13,5 +13,6 @@
     <Method name="getMobileLinkForCard" />
     <Method name="getInfoForMobileLinkCard" />
     <Method name="startMobileLinkTransition" />
+    <Method name="replaceStartMobileLinkTransition" />
   </Methods>
 </ListObject>

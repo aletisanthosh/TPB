@@ -40,5 +40,6 @@
     <Method name="refreshSalesCockpitData" />
     <Method name="checkIsCurrentDateToday" />
     <Method name="getCockpitMenuVisibility" />
+    <Method name="replaceGetCockpitMenuVisibility" />
   </Methods>
 </BusinessObject>

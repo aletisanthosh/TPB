@@ -16,6 +16,9 @@
     <Attribute name="description" table="Contact" column="Description" />
     <DerivedAttribute name="bpaMetaPKey" value="' '" />
     <DerivedAttribute name="emailEditable" value="'0'" />
+    <Attribute name="decisionMaker" table="Contact" column="Decision_Maker__c" />
+    <Attribute name="primaryContact" table="Contact" column="Primary_Contact__c" />
+    <Attribute name="contactTitle" table="Contact" column="Title2__c" />
   </Attributes>
   <Entities>
     <Entity name="Contact" alias="" idAttribute="Id" />

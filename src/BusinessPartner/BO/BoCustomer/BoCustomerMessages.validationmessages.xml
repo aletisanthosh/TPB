@@ -14,4 +14,16 @@
   <ValidationMessage name="CasBpaSplittingRuleHasToBeBlank" defaultMessage="The splitting rule should be blank." comment="The splitting rule must be blank." />
   <ValidationMessage name="CasBpaMainOpeningTimeFromOrTimeThruNotEmpty" defaultMessage="Please specify Time From and Time Thru for opening hours." comment="Time from and Time thru of opening hours cannot be blank." />
   <ValidationMessage name="CasBpaPOSHasReferencedAsset" defaultMessage="Deleting this POS is not allowed because there are assets relying on it." comment="A POS cannot be deleted if it has referenced assets." />
+  <ValidationMessage name="CasBpaMainCustomerClosureReasonMustNotBeEmpty" defaultMessage="You must provide a closure reason before proceeding." comment="Validates if the closure reason is not empty." />
+  <ValidationMessage name="CasBpaMainCustomerClosureReasonMustBeCorrect" defaultMessage="You must provide a correct closure reason before proceeding." comment="Validates if the closure reason is not correct." />
+  <ValidationMessage name="CasBpaMainCustomerAddressMustNotBeEmpty" defaultMessage="Please enter the Address of the customer." comment="Customer Address cannot be blank." />
+  <ValidationMessage name="CasBpaMainCustomerStatusMustNotBeEmpty" defaultMessage="Please enter the Status of the customer." comment="Customer Status cannot be blank." />
+  <ValidationMessage name="CasBpaMainCustomerZipCodeMustNotBeEmpty" defaultMessage="Please enter the Zip Code of the customer correctly." comment="Customer ZipCode cannot be blank." />
+  <ValidationMessage name="CasConfirmEmptyPrimaryWholesalerMsg" defaultMessage="You left Primary Wholesaler blank. Continue?" comment="Primary Wholesaler blank." />
+  <ValidationMessage name="CasConfirmErrorZipCodeMsg" defaultMessage="Please enter a zip code within your territory." comment="TSM Zip Code" />
+  <ValidationMessage name="CasConfirmClassOfTradeMsg" defaultMessage="Please enter the Class Of Trade of the customer." comment="Class Of Trade is blank" />
+  <ValidationMessage name="CasConfirmSubClassOfTradeMsg" defaultMessage="Please enter the Subclass Of Trade of the customer." comment="SubClass Of Trade is blank" />
+  <ValidationMessage name="CasBpaMainCustomerAddressMustNotRepeat" defaultMessage="Duplicate account exists with this address. Please enter unique address." comment="Customer ZipCode cannot be repeat." />
+  <ValidationMessage name="CasBpaClassOfTradeDependencyMsg" defaultMessage="Class of trade and subclass of trade field dependency errors.#newLine# Available options for #className#:#newLine# #subClassName#" comment="Class of Trade Dependcy" />
+  <ValidationMessage name="CasBpaClosureReasonDependencyMsg" defaultMessage="Status and Closure Reason field dependency errors.#newLine# Available options for #statusName#:#newLine# #closureReasonName#" comment="Status Dependcy" />
 </ValidationMessages>

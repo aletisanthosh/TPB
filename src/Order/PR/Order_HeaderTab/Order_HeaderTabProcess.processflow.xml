@@ -1,4 +1,4 @@
-<Process name="Order::HeaderTabProcess" defaultAction="ShowHeader_Decision" schemaVersion="0.0.0.5">
+<Process name="Order::HeaderTabProcess" defaultAction="SetEARights" schemaVersion="0.0.0.5">
   <Entry>
     <ProcessContext>
       <Declarations>
@@ -16,10 +16,13 @@
         <Declaration name="ReleaseInProgress" type="DomString" />
         <Declaration name="FinalPath" type="DomString" />
         <Declaration name="PreviewButtonVisible" type="DomBool" />
+        <Declaration name="luInvoiceTerm" type="LuMyInvoiceTerm" />
+        <Declaration name="luDistributorLicense" type="LuMyDistributorLicense" />
       </Declarations>
       <Parameters>
         <Input name="MainBO" type="BoOrder" />
         <Input name="HeaderView" type="String" />
+        <Input name="NavigateAction" type="String" />
       </Parameters>
     </ProcessContext>
     <EntryActions>
@@ -29,7 +32,29 @@
   <Body>
     <Actions>
       <!-- Show Header / Delivery Header -->
-      <Action name="ShowHeader_Decision" actionType="DECISION" parameter="ProcessContext::MainBO.boOrderMeta.sdoSubType">
+      <!-- Actions for Delivery Recipient Lookup -->
+      <!-- Actions for Broker Customer Lookup -->
+      <!-- Actions for Context Menu (Release, HoldBack) -->
+      <!-- PRINTING SPLITTING GROUPS -->
+      <!-- Setting printId -->
+      <!-- Redirect to OrderConfirmationPDF for all report policies, action is needed for extensibility reasons -->
+      <!-- END PRINTING SPLITTING GROUPS -->
+      <!-- Setting printId -->
+      <!-- Redirect to OrderConfirmationPDF for all report policies, action is needed for extensibility reasons -->
+      <!-- END PRINTING -->
+      <!-- Integration of release process -->
+      <!-- Release Information Review -->
+      <!-- Complex Pricing -->
+      <!-- Display Print Invoice PDF as an attachment -->
+      <!-- End of Release Information Review -->
+      <Action name="SetEARights" actionType="LOGIC" call="ProcessContext::MainBO.setEARight">
+        <TransitionTo action="ShowHeader_Decision" />
+      </Action>
+      <Action name="ShowHeader_Decision" actionType="DECISION" parameter="ProcessContext::NavigateAction">
+        <Case value="generateInvoice" action="ShowPrintPreview" />
+        <CaseElse action="ShowHeader_Decision_Default" />
+      </Action>
+      <Action name="ShowHeader_Decision_Default" actionType="DECISION" parameter="ProcessContext::MainBO.boOrderMeta.sdoSubType">
         <Case value="Delivery" action="PrepareShowDeliveryHeaderList" />
         <CaseElse action="ShowHeader_ReplenishmentDecision" />
         <CaseEmpty action="ShowHeader_ReplenishmentDecision" />
@@ -96,7 +121,6 @@
         </Events>
       </Action>
       <Action name="isPaymentCollectedChanged" actionType="LOGIC" call="ProcessContext::MainBO.releaseButtonActive" />
-      <!-- Actions for Delivery Recipient Lookup -->
       <Action actionType="PROCESS" name="OpenDeliveryRecipientLookup" process="DeliveryRecipient::LookupProcess">
         <Parameters>
           <Input name="pKey" value="ProcessContext::MainBO.ordererPKey" />
@@ -119,7 +143,6 @@
         </Parameters>
         <Return name="ProcessContext::MainBO.luDeliveryRecipient" />
       </Action>
-      <!-- Actions for Broker Customer Lookup -->
       <Action actionType="PROCESS" name="OpenBrokerCustomerLookup" process="Broker::LookupProcess">
         <Parameters>
           <Input name="pKey" value="ProcessContext::MainBO.ordererPKey" />
@@ -142,14 +165,21 @@
         </Parameters>
         <Return name="ProcessContext::MainBO.luBrokerCustomer" />
       </Action>
-      <!-- Actions for Context Menu (Release, HoldBack) -->
       <Action actionType="LOGIC" name="HoldBackOrder" call="ProcessContext::MainBO.holdBack">
         <TransitionTo action="SaveMainBO" />
       </Action>
-      <Action actionType="LOGIC" name="ReleaseOrder" call="ProcessContext::MainBO.release">
+      <Action actionType="LOGIC" name="ReleaseOrder" call="ProcessContext::MainBO.myValidateOrderItem">
+        <TransitionTo action="ReleaseOrder_ValidationDecision" />
+        <Return name="ProcessContext::validationResult" />
+      </Action>
+      <Action name="ReleaseOrder_ValidationDecision" actionType="DECISION" parameter="ProcessContext::validationResult">
+        <Case value="back" action="ShowHeader_Decision" />
+        <Case value="valid" action="ReleaseOrder_AfterValidation" />
+        <CaseElse action="ShowHeader_Decision" />
+      </Action>
+      <Action actionType="LOGIC" name="ReleaseOrder_AfterValidation" call="ProcessContext::MainBO.release">
         <TransitionTo action="ProcessValidateReasonCode" />
       </Action>
-      <!-- PRINTING SPLITTING GROUPS -->
       <Action actionType="LOGIC" name="CheckAvailableSplittingGroups" call="ProcessContext::MainBO.getFirstSplittingGroup">
         <Parameters>
           <Input name="availableSplittingGroups" value="ProcessContext::SplittingGroups" />
@@ -229,12 +259,10 @@
       <Action actionType="LOGIC" name="CalculateEmptiesForPrintoutForSplittingGroup" call="ProcessContext::SplittedBO.calculateEmptiesForPrintout">
         <TransitionTo action="setPrintIdForSplittingGroup" />
       </Action>
-      <!-- Setting printId -->
       <Action name="setPrintIdForSplittingGroup" actionType="DECISION" parameter="ProcessContext::SplittedBO.boOrderMeta.sdoSubType">
         <Case value="OrderEntry" action="setOrderConfirmationPrintIdForSplittingGroup" />
         <CaseElse action="setPrintIdByReportPolicyForSplittingGroup" />
       </Action>
-      <!-- Redirect to OrderConfirmationPDF for all report policies, action is needed for extensibility reasons -->
       <Action name="setPrintIdByReportPolicyForSplittingGroup" actionType="DECISION" parameter="ProcessContext::SplittedBO.boOrderMeta.reportPolicy">
         <Case value="Confirmation" action="setOrderConfirmationPrintIdForSplittingGroup" />
         <CaseElse action="setOrderConfirmationPrintIdForSplittingGroup" />
@@ -274,7 +302,6 @@
         <Return name="ProcessContext::SplittedBO" />
         <TransitionTo action="checkIfReleased" />
       </Action>
-      <!-- END PRINTING SPLITTING GROUPS -->
       <Action actionType="CREATE" name="CreateBoOrderPrintTextItems" type="BoOrderPrintTextItems">
         <Parameters>
           <Input name="phase" value="ProcessContext::MainBO.phase" />
@@ -291,9 +318,9 @@
           <Input name="customerPKey" value="ProcessContext::MainBO.luOrderer.pKey" />
         </Parameters>
         <Return name="ProcessContext::BoCustomerRole" />
-        <TransitionTo action="PreparePrint_SetPrintItems" />
+        <TransitionTo action="PreparePrint_SetMyPrintItems" />
       </Action>
-      <Action actionType="LOGIC" name="PreparePrint_SetPrintItems" call="ProcessContext::MainBO.setLoPrintItems">
+      <Action actionType="LOGIC" name="PreparePrint_SetMyPrintItems" call="ProcessContext::MainBO.mySetPrintItems">
         <Parameters>
           <Input name="loPrintItems" value="ProcessContext::MainBO.loItems" />
         </Parameters>
@@ -313,18 +340,31 @@
       <Action actionType="LOGIC" name="CalculateEmptiesForPrintout" call="ProcessContext::MainBO.calculateEmptiesForPrintout">
         <TransitionTo action="setPrintId" />
       </Action>
-      <!-- Setting printId -->
       <Action name="setPrintId" actionType="DECISION" parameter="ProcessContext::MainBO.boOrderMeta.sdoSubType">
         <Case value="OrderEntry" action="setOrderConfirmationPrintId" />
         <CaseElse action="setPrintIdByReportPolicy" />
       </Action>
-      <!-- Redirect to OrderConfirmationPDF for all report policies, action is needed for extensibility reasons -->
       <Action name="setPrintIdByReportPolicy" actionType="DECISION" parameter="ProcessContext::MainBO.boOrderMeta.reportPolicy">
         <Case value="Confirmation" action="setOrderConfirmationPrintId" />
         <CaseElse action="setOrderConfirmationPrintId" />
       </Action>
       <Action actionType="LOGIC" name="setOrderConfirmationPrintId" call="ProcessContext::MainBO.determinePrintId">
         <Return name="ProcessContext::PrintId" />
+        <TransitionTo action="LoadLuInvoiceTerm" />
+      </Action>
+      <Action name="LoadLuInvoiceTerm" actionType="LOAD" type="LuMyInvoiceTerm">
+        <Parameters>
+          <Input name="state" value="ProcessContext::MainBO.luOrderer.shippingState" type="String" />
+        </Parameters>
+        <Return name="ProcessContext::luInvoiceTerm" />
+        <TransitionTo action="LoadLuDistributorLicense" />
+      </Action>
+      <Action name="LoadLuDistributorLicense" actionType="LOAD" type="LuMyDistributorLicense">
+        <Parameters>
+          <Input name="state" value="ProcessContext::MainBO.luOrderer.shippingState" type="String" />
+          <Input name="userId" value="ProcessContext::MainBO.luResponsible.pKey" type="String" />
+        </Parameters>
+        <Return name="ProcessContext::luDistributorLicense" />
         <TransitionTo action="previewDocument" />
       </Action>
       <Action name="previewDocument" actionType="PRINTV2" printId="ProcessContext::PrintId" locale="ApplicationContext::user.languageSpoken" showShareButton="true" watermark="ProcessContext::BoOrderPrintTextItems.documentStatus" generateAndSave="ProcessContext::BoOrderPrintTextItems.printV2GenerateAndSave">
@@ -333,8 +373,20 @@
           <Input name="salesOrg" value="ApplicationContext::SalesOrg" />
           <Input name="textItems" value="ProcessContext::BoOrderPrintTextItems" />
           <Input name="blobPkey" value="ProcessContext::BoOrderPrintTextItems.blobPKey" />
+          <Input name="invoiceTerm" value="ProcessContext::luInvoiceTerm" />
+          <Input name="luDistributorLicense" value="ProcessContext::luDistributorLicense" />
         </Parameters>
         <Return name="ProcessContext::FinalPath" />
+        <TransitionTo action="SetMerchandiseValueReceipt" />
+      </Action>
+      <Action name="SetMerchandiseValueReceipt" actionType="LOGIC" call="ProcessContext::MainBO.myResetValues">
+        <TransitionTo action="ShowPrintPreviewForOutter_ClearInfo" />
+      </Action>
+      <Action name="ShowPrintPreviewForOutter_ClearInfo" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" type="Literal" value=" " />
+        </Parameters>
+        <Return name="ProcessContext::NavigateAction" />
         <TransitionTo action="CheckIfPrintGenerationRequired" />
       </Action>
       <Action name="CheckIfPrintGenerationRequired" actionType="DECISION" parameter="ProcessContext::FinalPath">
@@ -352,7 +404,6 @@
         </Parameters>
         <TransitionTo action="setPhaseInBeforeSave" />
       </Action>
-      <!-- END PRINTING -->
       <Action actionType="LOGIC" name="ProcessValidateReasonCode" call="ProcessContext::MainBO.processValidateReasonCode">
         <Return name="ProcessContext::CancelReleaseProcess" />
         <TransitionTo action="CheckCancelReleaseReasonCode" />
@@ -369,7 +420,6 @@
         <Case value="Cancel" action="CancelRelease" />
         <CaseElse action="Release_ValidateBeforeReleaseProcess" />
       </Action>
-      <!-- Integration of release process -->
       <Action name="Release_ValidateBeforeReleaseProcess" actionType="VALIDATION">
         <Validations>
           <Validation name="ProcessContext::MainBO.doValidateAsync" />
@@ -436,7 +486,6 @@
         <Parameters />
         <TransitionTo action="ShowHeader_Decision" />
       </Action>
-      <!-- Release Information Review -->
       <Action actionType="PROCESS" name="ReviewReleaseInformation" process="System::ReleaseHandlerProcess">
         <Parameters>
           <Input name="referenceObject" value="ProcessContext::MainBO" />
@@ -450,7 +499,6 @@
         </Parameters>
         <TransitionTo action="End" />
       </Action>
-      <!-- Complex Pricing -->
       <Action name="CalculateOrderValue" actionType="LOGIC" call="ProcessContext::MainBO.cpCalculate">
         <TransitionTo action="refreshEARights" />
       </Action>
@@ -469,7 +517,6 @@
           <Input name="value" type="Literal" value="OFF" />
         </Parameters>
       </Action>
-      <!-- Display Print Invoice PDF as an attachment -->
       <Action name="ShowPrintInvoicePDFAttachment" actionType="PROCESS" process="Order::ShowPrintInvoiceProcess">
         <Parameters>
           <Input name="loOrderAttachment" value="ProcessContext::MainBO.loOrderAttachment" />
@@ -481,7 +528,6 @@
           <Input name="field" value="usage" type="Literal" />
         </Parameters>
       </Action>
-      <!-- End of Release Information Review -->
       <Action actionType="END" name="End" />
     </Actions>
   </Body>

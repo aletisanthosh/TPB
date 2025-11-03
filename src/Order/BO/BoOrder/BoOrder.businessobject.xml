@@ -70,7 +70,7 @@
     <SimpleProperty name="isRoundingOn" type="DomBool" dataSourceProperty="isRoundingOn" />
     <SimpleProperty name="isRoundingToggleChanged" type="DomBool" dataSourceProperty="isRoundingToggleChanged" />
     <SimpleProperty name="firstCalculation" type="DomBool" />
-    <SimpleProperty name="sdoConditionsJson" type="DomString" />
+    <SimpleProperty name="sdoConditionsJson" type="DomLongText" />
     <SimpleProperty name="pricingJSON" type="Object" />
     <SimpleProperty name="asn" type="DomString" dataSourceProperty="asn" />
     <SimpleProperty name="invoiceId" type="DomId" dataSourceProperty="invoiceId" />
@@ -117,21 +117,21 @@
     <SimpleProperty name="selectedPromotionPKey" type="Object" />
     <SimpleProperty name="promotionCount" type="DomInteger" />
     <SimpleProperty name="isInvalidOrder" type="DomBool" />
-    <SimpleProperty name="selectedRewards" type="DomString" />
+    <SimpleProperty name="selectedRewards" type="DomLongText" />
     <SimpleProperty name="simplePricingCalculator" type="Object" />
     <SimpleProperty name="orderStatus" type="DomString" />
-    <SimpleProperty name="groupQuickFilterCache" type="DomString" />
-    <SimpleProperty name="categoryQuickFilterCache" type="DomString" />
-    <SimpleProperty name="pricingInfo1" type="DomDecimal" dataSourceProperty="pricingInfo1" />
-    <SimpleProperty name="pricingInfo2" type="DomDecimal" dataSourceProperty="pricingInfo2" />
-    <SimpleProperty name="pricingInfo3" type="DomDecimal" dataSourceProperty="pricingInfo3" />
-    <SimpleProperty name="pricingInfo4" type="DomDecimal" dataSourceProperty="pricingInfo4" />
-    <SimpleProperty name="pricingInfo5" type="DomDecimal" dataSourceProperty="pricingInfo5" />
-    <SimpleProperty name="pricingInfo6" type="DomDecimal" dataSourceProperty="pricingInfo6" />
-    <SimpleProperty name="pricingInfo7" type="DomDecimal" dataSourceProperty="pricingInfo7" />
-    <SimpleProperty name="pricingInfo8" type="DomDecimal" dataSourceProperty="pricingInfo8" />
-    <SimpleProperty name="pricingInfo9" type="DomDecimal" dataSourceProperty="pricingInfo9" />
-    <SimpleProperty name="pricingInfo10" type="DomDecimal" dataSourceProperty="pricingInfo10" />
+    <SimpleProperty name="groupQuickFilterCache" type="DomText" />
+    <SimpleProperty name="categoryQuickFilterCache" type="DomText" />
+    <SimpleProperty name="pricingInfo1" type="DomMoney" dataSourceProperty="pricingInfo1" />
+    <SimpleProperty name="pricingInfo2" type="DomMoney" dataSourceProperty="pricingInfo2" />
+    <SimpleProperty name="pricingInfo3" type="DomMoney" dataSourceProperty="pricingInfo3" />
+    <SimpleProperty name="pricingInfo4" type="DomMoney" dataSourceProperty="pricingInfo4" />
+    <SimpleProperty name="pricingInfo5" type="DomMoney" dataSourceProperty="pricingInfo5" />
+    <SimpleProperty name="pricingInfo6" type="DomMoney" dataSourceProperty="pricingInfo6" />
+    <SimpleProperty name="pricingInfo7" type="DomMoney" dataSourceProperty="pricingInfo7" />
+    <SimpleProperty name="pricingInfo8" type="DomMoney" dataSourceProperty="pricingInfo8" />
+    <SimpleProperty name="pricingInfo9" type="DomMoney" dataSourceProperty="pricingInfo9" />
+    <SimpleProperty name="pricingInfo10" type="DomMoney" dataSourceProperty="pricingInfo10" />
     <SimpleProperty name="isNextStateRelease" type="DomBool" />
     <SimpleProperty name="isOrderPaymentRelevant" type="DomBool" />
     <SimpleProperty name="isPaymentCollected" type="DomBool">
@@ -142,6 +142,14 @@
     <SimpleProperty name="syncStatus" type="DomInteger" dataSourceProperty="syncStatus" />
     <SimpleProperty name="isNotReadyForHurdleEvaluation" type="DomBool" />
     <SimpleProperty name="productForAddDict" type="Object" />
+    <SimpleProperty name="ntcTaxId" type="DomText" dataSourceProperty="ntcTaxId" />
+    <SimpleProperty name="ntcStateUseTax" type="DomText" dataSourceProperty="ntcStateUseTax" />
+    <SimpleProperty name="pdfDetailsSnapshot" type="DomLongText" dataSourceProperty="pdfDetailsSnapshot" />
+    <SimpleProperty name="authorizingAgent" type="DomText" dataSourceProperty="authorizingAgent">
+      <Events>
+        <Event name="onChanged" eventHandler="releaseButtonActive" />
+      </Events>
+    </SimpleProperty>
   </SimpleProperties>
   <ObjectLookups>
     <ObjectLookup name="luOrderer" objectClass="LuOrderer" dataSourceProperty="ordererPKey" lookupProperty="pKey" />
@@ -151,6 +159,7 @@
     <ObjectLookup name="luResponsible" objectClass="LuUser" dataSourceProperty="responsiblePKey" lookupProperty="pKey" />
     <ObjectLookup name="luTour" objectClass="LuTourInformation" dataSourceProperty="tmgMainPKey" lookupProperty="pKey" />
     <ObjectLookup name="luEtpWarehouse" objectClass="LuEtpWarehouse" dataSourceProperty="etpWarehousePKey" lookupProperty="pKey" />
+    <ObjectLookup name="luInvoiceTerm" objectClass="LuMyInvoiceTerm" dataSourceProperty="empty" lookupProperty="empty" />
   </ObjectLookups>
   <NestedObjects>
     <NestedObject name="hurdleEvaluationHelper" objectClass="BoHurdleEvaluationHelper" dataSourceProperty="empty" nestingProperty="empty" />
@@ -341,6 +350,32 @@
     <Method name="createPrintInvoicePDF" />
     <Method name="isShowPrintVisible" />
     <Method name="isOrderSyncable" />
+    <Method name="postCreateAsync" />
+    <Method name="replaceGetJsonQueryForLoItems" />
+    <Method name="postRelease" />
+    <Method name="replacePreparePrint" />
+    <Method name="replaceCalculateOrderValue" />
+    <Method name="replaceReleaseButtonActive" />
+    <Method name="postLoadProductForAdd" />
+    <Method name="myInitializeItemWholesaler" />
+    <Method name="replaceIsFastOrderButtonVisible" />
+    <Method name="replaceIsSuggestedVisible" />
+    <Method name="replaceSetEARight" />
+    <Method name="replaceSetItemFilterCounts" />
+    <Method name="replaceSetItemFilterCountsByCategory" />
+    <Method name="replaceOnOrderItemChanged" />
+    <Method name="replaceSetInventoryBalanceOfItem" />
+    <Method name="myGetItemMetaForCloneProduct" />
+    <Method name="replacePrepareCategoryQuickFilterList" />
+    <Method name="replaceFilterProductsByQuickFilter" />
+    <Method name="mySetPrintItems" />
+    <Method name="replaceOnHeaderDeliveryDateChanged" />
+    <Method name="myValidateOrderItem" />
+    <Method name="replaceCreatePrintInvoicePDF" />
+    <Method name="myResetValues" />
+    <Method name="replaceValidateOrder" />
+    <Method name="myRemoveCartItem" />
+    <Method name="replaceCpHandleCalculateResult" />
   </Methods>
   <Validations>
     <Validation name="validateOrderValue" />

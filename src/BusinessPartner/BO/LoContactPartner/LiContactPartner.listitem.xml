@@ -21,5 +21,8 @@
     <SimpleProperty name="fileType" type="DomFileType" dataSourceProperty="fileType" />
     <SimpleProperty name="text" type="DomText" />
     <SimpleProperty name="emailEditable" type="DomBool" dataSourceProperty="emailEditable" />
+    <SimpleProperty name="primaryContact" type="DomBool" dataSourceProperty="primaryContact" />
+    <SimpleProperty name="decisionMaker" type="DomText" dataSourceProperty="decisionMaker" />
+    <SimpleProperty name="contactTitle" type="DomText" dataSourceProperty="contactTitle" />
   </SimpleProperties>
 </ListItem>

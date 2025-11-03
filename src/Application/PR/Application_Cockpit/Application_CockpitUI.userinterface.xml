@@ -95,17 +95,13 @@
             <Bindings>
               <Resource target="Image" type="Image" id="Box" />
               <Resource target="Title" type="Label" id="truckLoadOverviewLabelId" defaultLabel="Inventory" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::CardController.getCockpitMenuVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="InventoryMenu" />
-                </Parameters>
-              </Binding>
             </Bindings>
             <Events>
               <ButtonPressedEvent event="openInventoryOverview" />
             </Events>
             <VisibilityRoles allRoles="false">
               <Role name="TourUser" />
+              <Role name="RetailUser" />
             </VisibilityRoles>
           </NavigationMenuItem>
           <NavigationMenuItem name="CashMenuItem">
@@ -156,20 +152,6 @@
               <Role name="TourUser" />
             </VisibilityRoles>
           </NavigationMenuItem>
-          <NavigationMenuItem name="ProductMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="Products" />
-              <Resource target="Title" type="Label" id="productOverviewLabelId" defaultLabel="Product" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openProductOverview" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
-              <Role name="TourUser" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
           <NavigationMenuItem name="OrderMenuItem">
             <Bindings>
               <Resource target="Image" type="Image" id="Clipboard_LM" />
@@ -182,71 +164,6 @@
               <Role name="RetailUser" />
               <Role name="PromotionApprover" />
               <Role name="TourUser" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="SalesFolderMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="NavSalesFolder" />
-              <Resource target="Title" type="Label" id="SalesFolderId" defaultLabel="Sales Folder" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::CardController.getCockpitMenuVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="SalesfolderMenu" />
-                </Parameters>
-              </Binding>
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openSalesFolder" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="DailyReportMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="ClipboardClock" />
-              <Resource target="Title" type="Label" id="dailyReportOverviewLabelId" defaultLabel="Time Card" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::CardController.getCockpitMenuVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="DailyReportMenu" />
-                </Parameters>
-              </Binding>
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openDailyReport" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
-              <Role name="TourUser" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="ReportingMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="Report" />
-              <Resource target="Title" type="Label" id="ReportingLabelId" defaultLabel="Reports" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openReporting" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
-              <Role name="TourUser" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="NotificationsMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="Speechbubble" />
-              <Resource target="Title" type="Label" id="NotificationsLabelId" defaultLabel="Notifications" />
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openNotifications" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="TourUser" />
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
             </VisibilityRoles>
           </NavigationMenuItem>
           <NavigationMenuItem name="CustomerContractsMenuItem">
@@ -283,42 +200,6 @@
             <VisibilityRoles allRoles="false">
               <Role name="ReservedForFutureUse_RetailUser" />
               <Role name="ReservedForFutureUse_PromotionApprover" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="TodoMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="ClipboardChecklist" />
-              <Resource target="Title" type="Label" id="TodoLabelId" defaultLabel="Tasks" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::CardController.getCockpitMenuVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="TasksMenu" />
-                </Parameters>
-              </Binding>
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openTodo" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
-            </VisibilityRoles>
-          </NavigationMenuItem>
-          <NavigationMenuItem name="IssueMenuItem">
-            <Bindings>
-              <Resource target="Image" type="Image" id="Bolt" />
-              <Resource target="Title" type="Label" id="IssueLabelId" defaultLabel="Customer Tasks" />
-              <Binding type="Visible" target="Visible" call="ProcessContext::CardController.getCockpitMenuVisibility">
-                <Parameters>
-                  <Input name="token" type="Literal" value="IssueMenu" />
-                </Parameters>
-              </Binding>
-            </Bindings>
-            <Events>
-              <ButtonPressedEvent event="openIssue" />
-            </Events>
-            <VisibilityRoles allRoles="false">
-              <Role name="RetailUser" />
-              <Role name="PromotionApprover" />
             </VisibilityRoles>
           </NavigationMenuItem>
           <NavigationMenuItem name="PersonalSettingsMenuItem">
@@ -406,9 +287,7 @@
               <Binding target="userName" type="Text" binding="ApplicationContext::User.name" bindingMode="ONE_WAY" />
               <Resource target="visitsLabel" type="Label" id="VisitsId" defaultLabel="Visits" />
               <Binding target="visitCount" type="Text" binding="ProcessContext::LuCallCount.callCount" bindingMode="ONE_WAY" />
-              <Resource target="customerTasksLabel" type="Label" id="CustomerTasksId" defaultLabel="Customer Tasks" />
               <Binding target="issuesCount" type="Text" binding="ProcessContext::LuIssueCount.issueCount" bindingMode="ONE_WAY" />
-              <Resource target="tasksLabel" type="Label" id="TasksId" defaultLabel="Tasks" />
               <Binding target="todosCount" type="Text" binding="ProcessContext::LuTodoCount.todoCount" bindingMode="ONE_WAY" />
               <Resource target="userMessage" type="Label" id="CardUserWelcome_MessageText" defaultLabel="Have a great day." />
               <Binding target="isTourUser" type="Bool" binding="ProcessContext::CardController.isTourUser" />
@@ -521,10 +400,11 @@
                 </Items>
               </ContextMenu>
               <Bindings>
-                <Binding target="typeWithStatusImage" type="Image" binding=".clbTypeStatusColored" bindingMode="ONE_WAY" />
+                <Binding target="typeWithStatusImage" type="Image" binding=".clbTypeStatusColoredNew" bindingMode="ONE_WAY" />
                 <Binding target="timeFrom" type="Text" binding=".timeFrom" bindingMode="ONE_WAY" />
                 <Binding target="customerName" type="Text" binding=".name" bindingMode="ONE_WAY" />
                 <Binding target="customerAddress" type="Text" binding=".address" bindingMode="ONE_WAY" />
+                <Binding target="customerRecordTypeName" type="Text" binding=".recordTypeName" bindingMode="ONE_WAY" />
               </Bindings>
             </Items>
             <Events>
@@ -532,6 +412,8 @@
                 <Params>
                   <Param name="pKey" value=".pKey" />
                   <Param name="customerOnDevice" value=".customerOnDevice" />
+                  <Param name="recordTypeName" value=".recordTypeName" />
+                  <Param name="clbMetaType" value=".clbMetaType" />
                 </Params>
               </ItemSelectedEvent>
               <ContextOpeningEvent event="CardVisits_contextMenuOpening">
@@ -542,6 +424,7 @@
                   <Param name="dateFrom" value=".dateFrom" />
                   <Param name="bpaMainPKey" value=".bpaMainPKey" />
                   <Param name="responsiblePKey" value=".responsiblePKey" />
+                  <Param name="clbMetaType" value=".clbMetaType" />
                 </Params>
               </ContextOpeningEvent>
               <ContextSelectedEvent event="CardVisits_contextMenuItemSelected">
@@ -552,6 +435,7 @@
                   <Param name="dateThru" value=".dateThru" />
                   <Param name="timeThru" value=".timeThru" />
                   <Param name="customerOnDevice" value=".customerOnDevice" />
+                  <Param name="recordTypeName" value=".recordTypeName" />
                 </Params>
               </ContextSelectedEvent>
             </Events>
@@ -572,243 +456,8 @@
           </CardEventSubcription>
         </CardContainer>
         <!-- Reporting Card -->
-        <CardContainer name="CardReporting">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardReporting" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="ShowMaximizeButton" call="ProcessContext::CardController.isCardMaximizable">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardReporting" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardReporting" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="ReportingCardTitle" defaultLabel="Reporting" />
-            <Resource target="Information" type="Label" id="ReportingCardInformation" defaultLabel="All customers" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.CollapseState_CardReporting" bindingMode="TWO_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardReporting_DataLoaded" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="false">
-            <Role name="RetailUser" />
-            <Role name="TourUser" />
-          </VisibilityRoles>
-          <Events>
-            <ButtonPressedEvent event="CardReportingSales_showMaximizedReport" />
-            <LoadContainerData event="CardReporting_loadData" />
-          </Events>
-          <UIPluginV2 name="CardReportingUiPlugin" uiPlugin="CardReportingUiPluginV2">
-            <Bindings>
-              <Binding target="mode" type="Text" binding="ProcessContext::Mode" bindingMode="ONE_WAY" />
-              <Binding target="unsuccessfulVisitRate" type="Text" binding="ProcessContext::CardReportingUnsuccessfulVisits_Rate" bindingMode="ONE_WAY" />
-              <Binding target="visitRate" type="Text" binding="ProcessContext::CardReportingVisitRate_Rate" bindingMode="ONE_WAY" />
-              <Binding target="selectedDate" type="Text" binding="ProcessContext::CardDate" bindingMode="ONE_WAY" />
-              <Binding target="currentDate" type="Text" binding="ProcessContext::CurrentDate" bindingMode="ONE_WAY" />
-              <List target="salesData" dataSource="ProcessContext::CardReportingSales_SalesData.Items[]">
-                <Binding target="pKey" type="Text" binding=".pKey" />
-                <Binding target="netSales" type="Text" binding=".netSales" />
-                <Binding target="year " type="Text" binding=".year" />
-                <Binding target="month" type="Text" binding=".month" />
-              </List>
-            </Bindings>
-          </UIPluginV2>
-          <CardEventSubcription>
-            <CardEvent name="onDateChange" />
-          </CardEventSubcription>
-        </CardContainer>
         <!-- Activities Card -->
-        <CardContainer name="CardActivities">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardActivities" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardActivities" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="ActivitiesCardTitle" defaultLabel="Activities" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardActivities_InformationText" bindingMode="ONE_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardActivities_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.collapseState_CardActivities" bindingMode="TWO_WAY" />
-            <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardActivities_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="false">
-            <Role name="RetailUser" />
-            <Role name="TourUser" />
-          </VisibilityRoles>
-          <Events>
-            <LoadContainerData event="CardActivities_loadData" />
-          </Events>
-          <CardEventSubcription>
-            <CardEvent name="onDateChange" />
-          </CardEventSubcription>
-          <NoDataMessage name="CardNoDataMessageUiPlugin">
-            <Bindings>
-              <Resource target="maintext" type="Label" id="CardActivities_NoDataMessageMainText" defaultLabel="No activities today," />
-              <Resource target="subtext" type="Label" id="CardActivities_NoDataMessageSubText" defaultLabel="you'll find new activities here as soon as they're available" />
-              <Resource id="NoActivity" target="infoIcon" type="Image" />
-            </Bindings>
-          </NoDataMessage>
-          <CockpitList name="Activities" hasBorder="false" dataSource="ProcessContext::CardActivities_ActivitiesList.Items[]">
-            <Items name="Items" itemPattern="CardActivitiesItems">
-              <ItemListLayout>
-                <Default>
-                  <Col width="1em" layoutType="Image" bindingId="Icon" />
-                  <Col flex="1">
-                    <Row layoutType="itemIdentifierCockpit" bindingId="Slogan" />
-                    <Row>
-                      <Col layoutType="itemSecondaryCockpit" bindingId="ValidFrom" />
-                      <Col layoutType="itemSecondaryCockpit" bindingId="Spacer" />
-                      <Col layoutType="itemSecondaryCockpit" bindingId="Hyphen" />
-                      <Col layoutType="itemSecondaryCockpit" bindingId="ValidThru" />
-                    </Row>
-                    <Row layoutType="itemSecondaryCockpit" bindingId="CallType" />
-                  </Col>
-                  <Col width="1em" layoutType="Image" bindingId="AlertIcon" />
-                  <Col width="1em" layoutType="Image" bindingId="PromotionIcon" />
-                </Default>
-                <Tablet>
-                  <Default>
-                    <Col width="1em" layoutType="Image" bindingId="Icon" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="Slogan" />
-                      <Row>
-                        <Col layoutType="itemSecondaryCockpit" bindingId="ValidFrom" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="Spacer" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="Hyphen" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="ValidThru" />
-                      </Row>
-                      <Row layoutType="itemSecondaryCockpit" bindingId="CallType" />
-                    </Col>
-                    <Col width="1em" layoutType="Image" bindingId="AlertIcon" />
-                    <Col width="1em" layoutType="Image" bindingId="PromotionIcon" />
-                  </Default>
-                </Tablet>
-                <Phone>
-                  <Default>
-                    <Col width="1em" layoutType="Image" bindingId="Icon" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="Slogan" />
-                      <Row>
-                        <Col layoutType="itemSecondaryCockpit" bindingId="ValidFrom" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="Spacer" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="Hyphen" />
-                        <Col layoutType="itemSecondaryCockpit" bindingId="ValidThru" />
-                      </Row>
-                      <Row layoutType="itemSecondaryCockpit" bindingId="CallType" />
-                    </Col>
-                    <Col width="1em" layoutType="Image" bindingId="AlertIcon" />
-                    <Col width="1em" layoutType="Image" bindingId="PromotionIcon" />
-                  </Default>
-                </Phone>
-              </ItemListLayout>
-              <Bindings>
-                <Binding target="Icon" type="Image" binding=".icon" bindingMode="ONE_WAY" />
-                <Binding target="Slogan" type="Text" binding=".slogan" bindingMode="ONE_WAY" />
-                <Binding target="ValidFrom" type="Date" binding=".validFrom" bindingMode="ONE_WAY" />
-                <Binding target="ValidThru" type="Date" binding=".validThru" bindingMode="ONE_WAY" />
-                <Binding target="CallType" type="Text" binding=".callType" bindingMode="ONE_WAY" />
-                <Resource target="Hyphen" type="Label" id="noId" defaultLabel="-" />
-                <Resource target="Spacer" type="Label" id="Spacer" defaultLabel="   " />
-                <Binding target="AlertIcon" type="Image" binding=".alertIcon" bindingMode="ONE_WAY" />
-                <Binding target="PromotionIcon" type="Image" binding=".promotionIcon" bindingMode="ONE_WAY" />
-              </Bindings>
-            </Items>
-          </CockpitList>
-          <LinkBar>
-            <ImageButton name="AllActivitiesLink">
-              <Bindings>
-                <Resource target="Text" type="Label" id="ShowAllActivitiesLink" defaultLabel="All Activities" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="Activity_HB" defaultImage="Activity" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardActivities_ShowAllActivitiesPressed" />
-              </Events>
-            </ImageButton>
-          </LinkBar>
-        </CardContainer>
         <!-- Visits Guide START -->
-        <CardContainer name="CardUserVisitsGuide">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardUserVisitsGuide" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardUserVisitsGuide" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="ShowMaximizeButton" call="ProcessContext::CardController.isCardMaximizable" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardUserVisitsGuide" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="UserVisitsGuideCardTitle" defaultLabel="Guidance" />
-            <Resource target="Information" type="Label" id="UserVisitsGuideCardInformation" defaultLabel="Next visit" />
-            <!-- Using the data loaded by visit card hence using CardVisits_DataLoaded binding-->
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardMap_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.collapseState_CardVisitsGuide" bindingMode="TWO_WAY" />
-          </Bindings>
-          <!--TODO : Should be same as  Card visits ?-->
-          <VisibilityRoles allRoles="false">
-            <Role name="RetailUser" />
-            <Role name="TourUser" />
-          </VisibilityRoles>
-          <Events>
-            <LoadContainerData event="CardVisitsGuideMap_loadData" />
-            <ButtonPressedEvent event="CardVisitsGuide_ShowMaximizedMap" />
-          </Events>
-          <CardEventSubcription>
-            <CardEvent name="onDateChange" />
-          </CardEventSubcription>
-          <ActionBar>
-            <ImageButton name="NavigateTo">
-              <Bindings>
-                <Resource target="Text" type="Label" id="NavigateToId" defaultLabel="Navigate to" />
-                <Resource target="Image" type="Image" id="Navigate" defaultImage="Navigate" />
-                <Binding type="Visible" target="Visible" call="ProcessContext::CardVisits_VisitList.navigateToButtonVisibility" bindingMode="ONE_WAY" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardVisitGuide_ShowGuideVisitMap" />
-              </Events>
-            </ImageButton>
-          </ActionBar>
-          <CockpitMap height="450px" dataSource="ProcessContext::CardMap_VisitList.Items[]" name="VisitsGuide" pKeyField="bpaMainPKey" latitudeField="latitude" longitudeField="longitude" idField="mapPinId" toolTipField="toolTipText">
-            <Bindings>
-              <Resource target="MarkerImage" type="Image" id="MarkerStore" defaultImage="MarkerStore" />
-              <Resource target="CurrentPositionImage" type="Image" id="MarkerUser" defaultImage="MarkerUser" />
-              <!--Binding target="DisplayTraffic" binding="ProcessContext::DisplayTraffic" bindingMode="ONE_WAY" /-->
-            </Bindings>
-            <Events>
-              <MarkerInfoClickedEvent event="Customer_MarkerClicked">
-                <Params>
-                  <Param name="CustomerPKey" value=".pkey" />
-                </Params>
-              </MarkerInfoClickedEvent>
-            </Events>
-          </CockpitMap>
-          <LinkBar>
-            <ImageButton name="ShowTourLink">
-              <Bindings>
-                <Resource target="Text" type="Label" id="ShowTourLink" defaultLabel="SHOW TOUR" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="Trip_HB" defaultImage="Trip_HB" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardVisitGuide_ShowAgendaDailyView" />
-              </Events>
-            </ImageButton>
-          </LinkBar>
-        </CardContainer>
         <!-- Mobile Links Card-->
         <CardContainer name="CardMobileLinks">
           <Bindings>
@@ -823,87 +472,6 @@
               </Parameters>
             </Binding>
             <Resource target="Title" type="Label" id="MobileLinksCardTitle" defaultLabel="CRM Analytics" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardMobileLinks_InformationText" bindingMode="ONE_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardMobileLinks_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.collapseState_CardMobileLinks" bindingMode="TWO_WAY" />
-            <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardMobileLinks_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="true" />
-          <Events>
-            <LoadContainerData event="CardMobileLinks_loadData" />
-          </Events>
-          <NoDataMessage name="CardNoDataMessageUiPlugin">
-            <Bindings>
-              <Resource target="maintext" type="Label" id="CardMobileLinks_NoDataMessageMainText" defaultLabel="Sorry, no dashboard available" />
-              <!--Place holder image will be updated-->
-              <Resource id="EmptyChart" target="infoIcon" type="Image" />
-            </Bindings>
-          </NoDataMessage>
-          <CockpitList name="MobileLinks" hasBorder="false" dataSource="ProcessContext::CardMobileLinks_List.Items[]">
-            <Items name="Items" itemPattern="CardMobileLinksItems">
-              <ItemListLayout>
-                <Default>
-                  <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
-                  <Col flex="1">
-                    <Row layoutType="itemIdentifierCockpit" bindingId="description" />
-                  </Col>
-                </Default>
-                <Tablet>
-                  <Default>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="description" />
-                    </Col>
-                  </Default>
-                  <Windows>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="description" />
-                    </Col>
-                  </Windows>
-                </Tablet>
-                <Phone>
-                  <Default>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="description" />
-                    </Col>
-                  </Default>
-                </Phone>
-              </ItemListLayout>
-              <Bindings>
-                <Binding target="description" type="Text" binding=".description" bindingMode="ONE_WAY" />
-                <Binding target="mediaPath" type="Blob" binding=".mediaPath" fileTypeBinding=".fileType" />
-              </Bindings>
-            </Items>
-            <Events>
-              <ItemSelectedEvent event="CardMobileLinks_itemSelected">
-                <Params>
-                  <Param name="schemeName" value=".schemeName" />
-                  <Param name="assetType" value=".assetType" />
-                  <Param name="assetId" value=".assetId" />
-                  <Param name="orgId" value=".orgId" />
-                  <Param name="loginHost" value=".loginHost" />
-                  <Param name="dashboardState" value=".dashboardState" />
-                </Params>
-              </ItemSelectedEvent>
-            </Events>
-          </CockpitList>
-        </CardContainer>
-        <!-- Quick Access Card-->
-        <CardContainer name="CardQuickAccess">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardQuickAccess" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardQuickAccess" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="QuickAccessCardTitle" defaultLabel="Quick Access" />
             <Binding target="Information" type="Text" binding="ProcessContext::CardQuickAccess_InformationText" bindingMode="ONE_WAY" />
             <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardQuickAccess_DataLoaded" bindingMode="ONE_WAY" />
             <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.collapseState_CardQuickAccess" bindingMode="TWO_WAY" />
@@ -916,6 +484,7 @@
           <NoDataMessage name="CardNoDataMessageUiPlugin">
             <Bindings>
               <Resource target="maintext" type="Label" id="CardQuickAccess_NoDataMessageMainText" defaultLabel="No quick links were defined for you yet" />
+              <!--Place holder image will be updated-->
               <Resource id="EmptyAccess" target="infoIcon" type="Image" />
             </Bindings>
           </NoDataMessage>
@@ -923,20 +492,20 @@
             <Items name="Items" itemPattern="CardQuickAccessItems">
               <ItemListLayout>
                 <Default>
-                  <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
+                  <Col width="1em" height="1.6em" layoutType="Image" bindingId="imageNavigate" />
                   <Col flex="1">
                     <Row layoutType="itemIdentifierCockpit" bindingId="description" />
                   </Col>
                 </Default>
                 <Tablet>
                   <Default>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
+                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="imageNavigate" />
                     <Col flex="1">
                       <Row layoutType="itemIdentifierCockpit" bindingId="description" />
                     </Col>
                   </Default>
                   <Windows>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
+                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="imageNavigate" />
                     <Col flex="1">
                       <Row layoutType="itemIdentifierCockpit" bindingId="description" />
                     </Col>
@@ -944,7 +513,7 @@
                 </Tablet>
                 <Phone>
                   <Default>
-                    <Col width="3em" height="3em" layoutType="Image" bindingId="mediaPath" />
+                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="imageNavigate" />
                     <Col flex="1">
                       <Row layoutType="itemIdentifierCockpit" bindingId="description" />
                     </Col>
@@ -952,6 +521,7 @@
                 </Phone>
               </ItemListLayout>
               <Bindings>
+                <Binding target="imageNavigate" type="Image" id="Navigate" defaultImage="Navigate" bindingMode="ONE_WAY" />
                 <Binding target="description" type="Text" binding=".description" bindingMode="ONE_WAY" />
                 <Binding target="mediaPath" type="Blob" binding=".mediaPath" fileTypeBinding=".fileType" />
               </Bindings>
@@ -966,120 +536,8 @@
             </Events>
           </CockpitList>
         </CardContainer>
+        <!-- Quick Access Card-->
         <!-- Notifications Card-->
-        <CardContainer name="CardUserNotifications">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardUserNotifications" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardUserNotifications" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="UserNotificationsCardTitle" defaultLabel="Notifications" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardNotifications_InformationText" bindingMode="ONE_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardNotifications_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.CollapseState_CardUserNotifications" bindingMode="TWO_WAY" />
-            <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardNotifications_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="true" />
-          <Events>
-            <LoadContainerData event="CardNotifications_loadData" />
-          </Events>
-          <NoDataMessage name="CardNoDataMessageUiPlugin">
-            <Bindings>
-              <Resource target="maintext" type="Label" id="CardNotifications_NoDataMessageMainText" defaultLabel="Congratulations," />
-              <Resource target="subtext" type="Label" id="CardNotifications_NoDataMessageSubText" defaultLabel="you have an empty inbox. :)" />
-              <Resource id="Trophy" target="infoIcon" type="Image" />
-            </Bindings>
-          </NoDataMessage>
-          <CockpitList name="Notifications" hasBorder="false" dataSource="ProcessContext::CardNotifications_List.Items[]">
-            <Items name="Items" itemPattern="CardNotificationsItems">
-              <ItemListLayout>
-                <Default>
-                  <Col flex="1">
-                    <Row layoutType="itemIdentifierCockpit" bindingId="subject" />
-                    <Row layoutType="itemSecondaryCockpit" bindingId="dueDateText" />
-                  </Col>
-                  <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityCardImage" />
-                </Default>
-                <Tablet>
-                  <Default>
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="subject" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="dueDateText" />
-                    </Col>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityCardImage" />
-                  </Default>
-                  <Windows>
-                    <Col width="20em">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="subject" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="dueDateText" />
-                    </Col>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityCardImage" />
-                  </Windows>
-                </Tablet>
-                <Phone>
-                  <Default>
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="subject" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="dueDateText" />
-                    </Col>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityCardImage" />
-                  </Default>
-                </Phone>
-              </ItemListLayout>
-              <ContextMenu>
-                <Bindings>
-                  <Binding target="DataSource" binding="ProcessContext::CardNotifications_ContextMenuList.Items[]" bindingMode="ONE_WAY" />
-                </Bindings>
-                <Items name="ContextMenuItems">
-                  <Bindings>
-                    <Binding target="Icon" type="Image" binding=".actionImg" />
-                    <Binding target="Text" type="Label" binding=".actionId" />
-                    <Binding type="Editable" target="Editable" binding=".actionEnabled" />
-                  </Bindings>
-                </Items>
-              </ContextMenu>
-              <Bindings>
-                <Binding target="subject" type="Text" binding=".subject" bindingMode="ONE_WAY" />
-                <Binding target="dueDateText" type="Text" binding=".dueDateText" bindingMode="ONE_WAY" />
-                <Binding target="priorityCardImage" type="Image" binding=".priorityCardImage" bindingMode="ONE_WAY" />
-              </Bindings>
-            </Items>
-            <Events>
-              <ItemSelectedEvent event="CardNotifications_itemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ItemSelectedEvent>
-              <ContextOpeningEvent event="CardNotifications_contextMenuOpening">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ContextOpeningEvent>
-              <ContextSelectedEvent event="CardNotifications_contextMenuItemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ContextSelectedEvent>
-            </Events>
-          </CockpitList>
-          <LinkBar>
-            <ImageButton name="AllNotificationsLink">
-              <Bindings>
-                <Resource target="Text" type="Label" id="ShowNotificationsLink" defaultLabel="All Notifications" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="Notification_HB" defaultImage="Notification_HB" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardNotifications_showAllNotifications" />
-              </Events>
-            </ImageButton>
-          </LinkBar>
-        </CardContainer>
         <!-- Customer Tasks Card -->
         <CardContainer name="CardCustomerTasks">
           <Bindings>
@@ -1094,7 +552,6 @@
               </Parameters>
             </Binding>
             <Resource target="Title" type="Label" id="CustomerTasksCardTitle" defaultLabel="Customer Tasks Today" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardCustomerTasks_InformationText" bindingMode="ONE_WAY" />
             <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardCustomerTasks_DataLoaded" bindingMode="ONE_WAY" />
             <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.CollapseState_CardCustomerTasks" bindingMode="TWO_WAY" />
             <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardCustomerTasks_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
@@ -1183,6 +640,7 @@
                 <Binding target="customerName" type="Text" binding=".customerName" bindingMode="ONE_WAY" />
                 <Binding target="classificationImage" type="Image" binding=".classificationImage" bindingMode="ONE_WAY" />
                 <Binding target="priorityImage" type="Image" binding=".priorityImage" bindingMode="ONE_WAY" />
+                <Binding target="dueDate" type="Text" binding=".dueDate" bindingMode="ONE_WAY" />
               </Bindings>
             </Items>
             <Events>
@@ -1225,276 +683,11 @@
           </LinkBar>
         </CardContainer>
         <!-- Tasks Card-->
-        <CardContainer name="CardTasks">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardTasks" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardTasks" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="TasksCardTitle" defaultLabel="Tasks Due Today" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardTasks_InformationText" bindingMode="ONE_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardTasks_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.CollapseState_CardTasks" bindingMode="TWO_WAY" />
-            <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardTasks_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="false">
-            <Role name="RetailUser" />
-          </VisibilityRoles>
-          <Events>
-            <LoadContainerData event="CardTasks_loadData" />
-          </Events>
-          <CardEventSubcription>
-            <CardEvent name="onDateChange" />
-          </CardEventSubcription>
-          <NoDataMessage name="CardNoDataMessageUiPlugin">
-            <Bindings>
-              <Binding target="maintext" type="Text" binding="ProcessContext::CardController.cardTasks_emptyMainMessage" bindingMode="ONE_WAY" />
-              <Binding target="subtext" type="Text" binding="ProcessContext::CardController.cardTasks_emptySubMessage" bindingMode="ONE_WAY" />
-              <Resource id="Done" target="infoIcon" type="Image" />
-            </Bindings>
-          </NoDataMessage>
-          <ActionBar>
-            <ImageButton name="AddNewTask">
-              <Bindings>
-                <Resource target="Text" type="Label" id="AddNewTaskId" defaultLabel="Add new Task" />
-                <Resource target="Image" type="Image" id="Plus" defaultImage="Plus" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardTasks_addNewTaskPressed" />
-              </Events>
-            </ImageButton>
-          </ActionBar>
-          <CockpitList name="Tasks" hasBorder="false" dataSource="ProcessContext::CardTasks_TasksList.Items[]">
-            <Items name="Items" itemPattern="CardTasksItems">
-              <ItemListLayout>
-                <Default>
-                  <Col width="1em" height="1.6em" layoutType="Image" bindingId="classificationImage" />
-                  <Col flex="1">
-                    <Row layoutType="itemIdentifierCockpit" bindingId="text" />
-                    <Row layoutType="itemSecondaryCockpit" bindingId="initiatorName" />
-                  </Col>
-                  <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityImage" />
-                </Default>
-                <Tablet>
-                  <Default>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="classificationImage" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="text" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="initiatorName" />
-                    </Col>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityImage" />
-                  </Default>
-                  <Windows>
-                    <Default>
-                      <Col width="1em" height="1.6em" layoutType="Image" bindingId="classificationImage" />
-                      <Col width="20em">
-                        <Row layoutType="itemIdentifierCockpit" bindingId="text" />
-                        <Row layoutType="itemSecondaryCockpit" bindingId="initiatorName" />
-                      </Col>
-                      <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityImage" />
-                    </Default>
-                  </Windows>
-                </Tablet>
-                <Phone>
-                  <Default>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="classificationImage" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="text" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="initiatorName" />
-                    </Col>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="priorityImage" />
-                  </Default>
-                </Phone>
-              </ItemListLayout>
-              <ContextMenu>
-                <Bindings>
-                  <Binding target="DataSource" binding="ProcessContext::CardTasks_ContextMenuList.Items[]" bindingMode="ONE_WAY" />
-                </Bindings>
-                <Items name="ContextMenuItems">
-                  <Bindings>
-                    <Binding target="Icon" type="Image" binding=".actionImg" />
-                    <Binding target="Text" type="Label" binding=".actionId" />
-                    <Binding type="Editable" target="Editable" binding=".actionEnabled" />
-                  </Bindings>
-                </Items>
-              </ContextMenu>
-              <Bindings>
-                <Binding target="text" type="Text" binding=".text" bindingMode="ONE_WAY" />
-                <Binding target="initiatorName" type="Text" binding=".initiatorName" bindingMode="ONE_WAY" />
-                <Binding target="classificationImage" type="Image" binding=".classificationImage" bindingMode="ONE_WAY" />
-                <Binding target="priorityImage" type="Image" binding=".priorityImage" bindingMode="ONE_WAY" />
-              </Bindings>
-            </Items>
-            <Events>
-              <ItemSelectedEvent event="CardTasks_itemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ItemSelectedEvent>
-              <ContextOpeningEvent event="CardTasks_contextMenuOpening">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                  <Param name="issuePhase" value=".issuePhase" />
-                  <Param name="responsiblePKey" value=".responsiblePKey" />
-                  <Param name="initiatorPKey" value=".initiatorPKey" />
-                  <Param name="isPrivate" value=".isPrivate" />
-                  <Param name="wfeWorkflowPKey" value=".wfeWorkflowPKey" />
-                  <Param name="actualStatePKey" value=".actualStatePKey" />
-                  <Param name="isActive" value=".isActive" />
-                </Params>
-              </ContextOpeningEvent>
-              <ContextSelectedEvent event="CardTasks_contextMenuItemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ContextSelectedEvent>
-            </Events>
-          </CockpitList>
-          <LinkBar>
-            <ImageButton name="AllTasksLink">
-              <Bindings>
-                <Resource target="Text" type="Label" id="AllTasksLink" defaultLabel="All Tasks" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="TaskList_HB" defaultImage="TaskList_HB" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="CardTasks_showAllTasks" />
-              </Events>
-            </ImageButton>
-          </LinkBar>
-        </CardContainer>
         <!-- Customer Overdue Card-->
-        <CardContainer name="CardCustomersOverdue">
-          <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardCustomersOverdue" />
-              </Parameters>
-            </Binding>
-            <Binding type="Text" target="IsCollapsible" call="ProcessContext::CardController.isCardCollapsible" bindingMode="ONE_WAY">
-              <Parameters>
-                <Input name="cardName" type="Literal" value="CardCustomersOverdue" />
-              </Parameters>
-            </Binding>
-            <Resource target="Title" type="Label" id="CustomersOverdueTitle" defaultLabel="Overdue Customers" />
-            <Binding target="Information" type="Text" binding="ProcessContext::CardCustomersOverdue_InformationText" bindingMode="ONE_WAY" />
-            <Binding target="IsReadyToLoad" type="Text" binding="ProcessContext::CardCustomersOverdue_DataLoaded" bindingMode="ONE_WAY" />
-            <Binding target="CollapseState" type="Text" binding="ProcessContext::CardController.CollapseState_CardCustomersOverdue" bindingMode="TWO_WAY" />
-            <Binding target="DisplayedSubcomponentName" type="Text" binding="ProcessContext::CardCustomersOverdue_DisplayedSubcomponentName" bindingMode="ONE_WAY" />
-          </Bindings>
-          <VisibilityRoles allRoles="false">
-            <Role name="RetailUser" />
-            <Role name="TourUser" />
-          </VisibilityRoles>
-          <Events>
-            <LoadContainerData event="CardCustomersOverdue_loadData" />
-          </Events>
-          <CardEventSubcription>
-            <CardEvent name="onDateChange" />
-          </CardEventSubcription>
-          <NoDataMessage name="CardNoDataMessageUiPlugin">
-            <Bindings>
-              <Binding target="maintext" type="Text" binding="ProcessContext::CardController.CardCustomersOverdue_emptyMainMessage" bindingMode="ONE_WAY" />
-              <Resource id="EmptyCustomerOverdue" target="infoIcon" type="Image" />
-            </Bindings>
-          </NoDataMessage>
-          <CockpitList name="OverdueCustomers" hasBorder="false" dataSource="ProcessContext::CardCustomersOverdue_List.Items[]">
-            <Items name="Items" itemPattern="CardCustomersOverdueItems">
-              <ItemListLayout>
-                <Default>
-                  <Col width="1em" height="1.6em" layoutType="Image" bindingId="overdueImage" />
-                  <Col flex="1">
-                    <Row layoutType="itemIdentifierCockpit" bindingId="customerName" />
-                    <Row layoutType="itemSecondaryCockpit" bindingId="customerAddress" />
-                  </Col>
-                </Default>
-                <Tablet>
-                  <Default>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="overdueImage" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="customerName" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="customerAddress" />
-                    </Col>
-                  </Default>
-                </Tablet>
-                <Phone>
-                  <Default>
-                    <Col width="1em" height="1.6em" layoutType="Image" bindingId="overdueImage" />
-                    <Col flex="1">
-                      <Row layoutType="itemIdentifierCockpit" bindingId="customerName" />
-                      <Row layoutType="itemSecondaryCockpit" bindingId="customerAddress" />
-                    </Col>
-                  </Default>
-                </Phone>
-              </ItemListLayout>
-              <ContextMenu>
-                <Bindings>
-                  <Binding target="DataSource" binding="ProcessContext::CardOverdueCustomers_ContextMenuList.Items[]" bindingMode="ONE_WAY" />
-                </Bindings>
-                <Items name="ContextMenuItems">
-                  <Bindings>
-                    <Binding target="Icon" type="Image" binding=".actionImg" />
-                    <Binding target="Text" type="Label" binding=".actionId" />
-                    <Binding type="Editable" target="Editable" binding=".actionEnabled" />
-                    <Binding type="Visible" target="Visible" binding=".actionVisible" />
-                  </Bindings>
-                </Items>
-              </ContextMenu>
-              <Bindings>
-                <Binding target="customerName" type="Text" binding=".customerName" bindingMode="ONE_WAY" />
-                <Binding target="customerAddress" type="Text" binding=".customerAddress" bindingMode="ONE_WAY" />
-                <Binding target="overdueImage" type="Image" binding=".overdueImage" bindingMode="ONE_WAY" />
-              </Bindings>
-            </Items>
-            <Events>
-              <ItemSelectedEvent event="CardCustomersOverdue_itemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ItemSelectedEvent>
-              <ContextOpeningEvent event="CardOverdueCustomers_contextMenuOpening">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ContextOpeningEvent>
-              <ContextSelectedEvent event="CardOverdueCustomers_contextMenuItemSelected">
-                <Params>
-                  <Param name="pKey" value=".pKey" />
-                </Params>
-              </ContextSelectedEvent>
-            </Events>
-          </CockpitList>
-          <LinkBar>
-            <ImageButton name="OverdueCustomersLink">
-              <Bindings>
-                <Binding type="Editable" target="Editable" binding="ProcessContext::IsEditable" />
-                <Resource target="Text" type="Label" id="OverdueCustomersLink" defaultLabel="All Overdue" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="Overdue_HB" defaultImage="Overdue_HB" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="openOverdueCustomerOverview" />
-              </Events>
-            </ImageButton>
-            <ImageButton name="AllCustomersLink">
-              <Bindings>
-                <Resource target="Text" type="Label" id="AllCustomersLink" defaultLabel="All Customers" bindingMode="ONE_WAY" />
-                <Resource target="Image" type="Image" id="UserTie" defaultImage="UserTie" />
-              </Bindings>
-              <Events>
-                <ButtonPressedEvent event="openCustomerOverview" />
-              </Events>
-            </ImageButton>
-          </LinkBar>
-        </CardContainer>
         <!-- Sync Card -->
         <SyncCardContainer name="cardSync">
           <Bindings>
-            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible " bindingMode="ONE_WAY">
+            <Binding type="Visible" target="Visible" call="ProcessContext::CardController.isCardVisible" bindingMode="ONE_WAY">
               <Parameters>
                 <Input name="cardName" type="Literal" value="CardSync" />
               </Parameters>

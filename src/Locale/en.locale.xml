@@ -709,8 +709,8 @@
       <Label id="CardVisits_NoDataMessageMainText" text="No visits planned today," translationStatus="7" />
       <Label id="CardVisits_NoDataMessageSubText" text="why don't you add one?" translationStatus="7" />
       <Label id="CardVisits_NoDataMessageMainDateText" text="No visits planned," translationStatus="7" />
-      <Label id="CardActivities_StoreCheck" text="Store Check" translationStatus="7" />
-      <Label id="CardActivities_CaptureSurvey" text="Capture Survey" translationStatus="7" />
+      <Label id="CardActivities_StoreCheck" text="Surveys" translationStatus="7" />
+      <Label id="CardActivities_CaptureSurvey" text="Product Distribution" translationStatus="7" />
       <Label id="CardActivities_CreateOrder" text="Create Order" translationStatus="7" />
       <Label id="CardActivities_TrackAssets" text="Track Assets" translationStatus="7" />
       <Label id="CardCustomerTasks_CreatedToday" text="Today" translationStatus="7" />
@@ -751,6 +751,12 @@
       <!-- Group Title for Operating Hours list -->
       <Label id="LoTimeSlot_TitlePrefix" text="Deviation to current time: " translationStatus="7" />
       <Label id="LoTimeSlot_GroupTextPostfix" text=" hrs" translationStatus="7" />
+      <Label id="ViewInvoice" text="View Invoice" translationStatus="7" />
+      <Label id="QtyEditNotAllowedSinceTypeNotOrderable" text="This is not a [insert order item type] product. Please change the order type before adjusting quantity." translationStatus="7" />
+      <Label id="SPPriceValidation" text="The Sp. Price should be no more than 10% below and 25% above the original price." translationStatus="7" />
+      <Label id="SPPriceValidationNoPrice" text="The Sp. Price should be greater than 0 and not more than $99.99." translationStatus="7" />
+      <Label id="QtyRewardMaxValidation" text="You have exceeded the max quantity allowed for this promotion." translationStatus="7" />
+      <Label id="QtyRewardMinValidation" text="You have gone below the minimum quantity allowed for this promotion." translationStatus="7" />
     </Global>
     <UserInterfaceContracts>
       <UserInterface id="ApplicationDashboardUI">
@@ -962,6 +968,8 @@
         <Label id="TimeFromTimeSlot" text="Start time" translationStatus="1" />
         <Label id="TimeSlotGroupId" text="Time Slot" translationStatus="1" />
         <Label id="TimeThruTimeSlot" text="End time" translationStatus="1" />
+        <Label id="AccountNumberId" text="Account Number" translationStatus="7" />
+        <Label id="ContactDecisionMaker1Id" text="Decision Maker" translationStatus="7" />
       </UserInterface>
       <UserInterface id="CustomerCreateCustomerWizardUI">
         <Label id="CreateCustomerTitleId" text="New Customer" translationStatus="7" />
@@ -1131,6 +1139,34 @@
         <Label id="TimeFromTimeSlot" text="Start time" translationStatus="1" />
         <Label id="TimeSlotGroupId" text="Time Slot" translationStatus="1" />
         <Label id="TimeThruTimeSlot" text="End time" translationStatus="1" />
+        <Label id="AccountNumberId" text="Account Number" translationStatus="7" />
+        <Label id="SubClassOfTradeId" text="Subclass Of Trade" translationStatus="7" />
+        <Label id="BillingStreetNoId" text="Billing Street No." translationStatus="7" />
+        <Label id="BillingZIPCityId" text="Billing ZIP City" translationStatus="7" />
+        <Label id="BillingCoordinates" text="Billing Latitude / Longitude" translationStatus="7" />
+        <Label id="BillingStreet" text="Billing Street No." translationStatus="7" />
+        <Label id="BillingCity" text="Billing ZIP City" translationStatus="7" />
+        <Label id="SalesDivisionId" text="Sales Division" translationStatus="7" />
+        <Label id="PrimaryWholesalerId" text="Primary Wholesaler" translationStatus="7" />
+        <Label id="PromotionalWholesalerId" text="Promotional Wholesaler" translationStatus="7" />
+        <Label id="SameAsShippingAddressId" text="Is Billing Address Same as Shipping Address?" translationStatus="7" />
+        <Label id="ClosureReasonId" text="Closure Reason" translationStatus="1" />
+        <Label id="CounterfeitHistory" text="Counterfeit History" translationStatus="1" />
+        <Label id="AccountNotes" text="Account Notes" translationStatus="1" />
+        <Label id="TobaccoLicenseExpirationDate" text="Tobacco License Expiration Date" translationStatus="1" />
+        <Label id="TDLStoreID" text="TDL Store ID" translationStatus="1" />
+        <Label id="PaymentTerm" text="Payment Term" translationStatus="1" />
+        <Label id="NavigateDeepLink" text="TSM Productivity Dashboard" translationStatus="1" />
+        <Label id="ContactTitleId" text="Title" translationStatus="1" />
+        <Label id="DecisionMaker" text="Decision Maker" translationStatus="1" />
+        <Label id="PrimaryContact" text="Primary Contact" translationStatus="1" />
+        <Label id="BillingStreetId" text="Billing Street" translationStatus="1" />
+        <Label id="BillingHouseNumberId" text="BHouse No." translationStatus="1" />
+        <Label id="BillingZipCodeId" text="Billing ZIP" translationStatus="1" />
+        <Label id="BillingCityId" text="Billing City" translationStatus="1" />
+        <Label id="BillingCountryStateId" text="Billing State" translationStatus="1" />
+        <Label id="ClearingHouseParticipantId" text="Clearing House Participant?" translationStatus="1" />
+        <Label id="ContactDecisionMaker1Id" text="Decision Maker" translationStatus="7" />
       </UserInterface>
       <UserInterface id="DeliveryRecipientLookup">
         <Label id="DeliveryRecipientLookupTitleId" text="Customers" translationStatus="7" />
@@ -1232,9 +1268,9 @@
         <Label id="EndOfDayReached" text="Visits could not be scheduled as end of the day was reached." translationStatus="7" />
       </UserInterface>
       <UserInterface id="CallCreateNewWizardUI">
-        <Label id="CallCreateNewTitleId" text="New Visit" translationStatus="7" />
-        <Label id="createNewCallId" text="Create" translationStatus="7" />
-        <Label id="callTypeId" text="Visit Type" translationStatus="7" />
+        <Label id="CallCreateNewTitleId" text="What type of visit would you like to start?" translationStatus="7" />
+        <Label id="createNewCallId" text="Create Visit" translationStatus="7" />
+        <Label id="callTypeId" text="Visit Template" translationStatus="7" />
         <Label id="VisitDateId" text="Date" translationStatus="7" />
         <Label id="TimeFrom" text="Time" translationStatus="7" />
         <Label id="CustomerName" text="Customer" translationStatus="7" />
@@ -1245,6 +1281,7 @@
         <Label id="JobListValidFrom" text="Valid From" translationStatus="7" />
         <Label id="JobListValidThru" text="Valid Thru" translationStatus="7" />
         <Label id="AllDay" text="All Day" translationStatus="7" />
+        <Label id="VisitTypeId" text="Visit Type" translationStatus="7" />
       </UserInterface>
       <UserInterface id="CallInfoTabUI">
         <Label id="CallInformation" text="Visit Information" translationStatus="7" />
@@ -1298,15 +1335,11 @@
         <Label id="ClbSurveyHeaderColumnIcon" text="Icon" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumnProduct" text="Product" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumnListedPlanned" text="P/L" translationStatus="7" />
-        <Label id="ClbSurveyHeaderColumn1" text="F" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumn2" text="Price" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumn3" text="Distrib." translationStatus="7" />
-        <Label id="ClbSurveyHeaderColumn4" text="F" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumn5" text="Price" translationStatus="7" />
         <Label id="ClbSurveyHeaderColumn6" text="Distrib." translationStatus="7" />
-        <Label id="surveyCol1PhoneHeader" text="F" translationStatus="7" />
         <Label id="surveyCol2PhoneHeader" text="Price" translationStatus="7" />
-        <Label id="surveyCol4PhoneHeader" text="F" translationStatus="7" />
         <Label id="surveyCol5PhoneHeader" text="Price" translationStatus="7" />
         <Label id="scanProductId" text="Scan Product" translationStatus="7" />
         <Label id="promotedProductsId" text="Promoted" translationStatus="7" />
@@ -1318,6 +1351,12 @@
         <Label id="GTINId" text="GTIN" translationStatus="7" />
         <Label id="CategoryId" text="Category" translationStatus="7" />
         <Label id="FilterCategoryId" text="Filter Category" translationStatus="7" />
+        <Label id="ClbSurveyColChangeHeader" text="Mod" translationStatus="7" />
+        <Label id="IdentificationId" text="Identification" translationStatus="7" />
+        <Label id="Attachments" text="Attachments" translationStatus="1" />
+        <Label id="WholesalerDetails" text="Wholesaler Details" translationStatus="1" />
+        <Label id="WholesalerDetailsId" text="Wholesaler Details" translationStatus="1" />
+        <Label id="WholesaleNumberId" text="Wholesale Order Code" translationStatus="7" />
       </UserInterface>
       <UserInterface id="CallActivitiesList">
         <Label id="CallTemplateId" text="Visit Template" translationStatus="7" />
@@ -1363,7 +1402,7 @@
       </UserInterface>
       <UserInterface id="OrderHeaderTab">
         <Label id="holdbackOrder" text="Hold Back" translationStatus="7" />
-        <Label id="releaseOrder" text="Release" translationStatus="7" />
+        <Label id="releaseOrder" text="Complete Order" translationStatus="7" />
         <Label id="IdentificationId" text="Identification" translationStatus="7" />
         <Label id="IdId" text="Id" translationStatus="7" />
         <Label id="CustomerOrderIdId" text="Customer Order ID" translationStatus="7" />
@@ -1385,7 +1424,7 @@
         <Label id="GrossTotalValue" text="Gross Total Value" translationStatus="7" />
         <Label id="printOrder" text="Print" translationStatus="7" />
         <Label id="PaymentReasonId" text="Reason Code" translationStatus="7" />
-        <Label id="previewOrderConfirmation" text="Preview" translationStatus="7" />
+        <Label id="previewOrderConfirmation" text="Generate Invoice" translationStatus="7" />
         <Label id="printOrderConfirmation" text="Print" translationStatus="7" />
         <Label id="InvoiceNumberId" text="Invoice Number" translationStatus="7" />
         <Label id="DocumentTypeId" text="Document Type" translationStatus="7" />
@@ -1401,6 +1440,13 @@
         <Label id="CalculateOrderId" text="Calculate" translationStatus="7" />
         <Label id="PaymentCollected" text="Payment Collected?" translationStatus="7" />
         <Label id="showPrintId" text="Show Print" translationStatus="7" />
+        <Label id="AuthorizingAgentId" text="Authorizing Agent" translationStatus="1" />
+        <Label id="AccountShippingAddressId" text="Account Shipping Address" translationStatus="1" />
+        <Label id="AccountPhoneId" text="Account Phone" translationStatus="1" />
+        <Label id="AccountStateTobaccoNumberId" text="Account State Tobacco Number" translationStatus="1" />
+        <Label id="AccountStateTaxNumberId" text="Account State Tax Number" translationStatus="1" />
+        <Label id="FEINId" text="FEIN" translationStatus="1" />
+        <Label id="AccountTerritoryId" text="Account Territory" translationStatus="1" />
       </UserInterface>
       <UserInterface id="OrderItemListTab">
         <Label id="addProductViaLookup" text="Add Product" translationStatus="7" />
@@ -1433,8 +1479,8 @@
         <Label id="UnitId" text="Unit" translationStatus="7" />
         <Label id="CurrentQtyId" text="Current Qty" translationStatus="7" />
         <Label id="ReasonId" text="Reason" translationStatus="7" />
-        <Label id="PriceId" text="Price" translationStatus="7" />
-        <Label id="ReceiptId" text="Receipt Value" translationStatus="7" />
+        <Label id="PriceId" text="Unit Price" translationStatus="7" />
+        <Label id="ReceiptId" text="Total" translationStatus="7" />
         <Label id="AdvSettingsGroupId" text="Advanced Settings" translationStatus="7" />
         <Label id="ItemTypeId" text="Type" translationStatus="7" />
         <Label id="CalculateSuggestedQuant" text="Apply Quantities" translationStatus="7" />
@@ -1448,6 +1494,15 @@
         <Label id="Spacer" text="    " translationStatus="7" />
         <Label id="Rewards" text="Rewards" translationStatus="7" />
         <Label id="FastOrder" text="Fast Order" translationStatus="7" />
+        <Label id="PromotionQuantityId" text="Suggest Quantity" translationStatus="7" />
+        <Label id="ReviewOrder" text="Review Order" translationStatus="1" />
+        <Label id="Wholesaler" text="Wholesaler" translationStatus="1" />
+        <Label id="WholesalerProductSKUId" text="Wholesale Order Code" translationStatus="1" />
+        <Label id="ItemResaleId" text="Resale" translationStatus="1" />
+        <Label id="WholesalerId" text="Wholesaler" translationStatus="1" />
+        <Label id="SKUNumberId" text="Wholesale Order Code" translationStatus="7" />
+        <Label id="SuggestQtyId" text="Suggested Qty" translationStatus="7" />
+        <Label id="MaxAllocationId" text="Max Allocation" translationStatus="7" />
       </UserInterface>
       <UserInterface id="OrderNotesTab">
         <Label id="HistoricNotesId" text="Historic Notes" translationStatus="7" />
@@ -1463,6 +1518,7 @@
         <Label id="deliveryDateId" text="Delivery Date" translationStatus="7" />
         <Label id="emptyLabelId" text=" " translationStatus="7" />
         <Label id="OnlyshowOpenOrdersId" text="Only Open" translationStatus="7" />
+        <Label id="ShowInvoice" text="Show Invoice" translationStatus="7" />
       </UserInterface>
       <UserInterface id="OrderOverview">
         <Label id="OrderOverviewId" text="Order Overview" translationStatus="7" />
@@ -3014,12 +3070,13 @@
         <Label id="CardAnalytics_NoDataMessageMainText" text="Sorry, no dashboard available" translationStatus="7" />
         <Label id="AnalyticsCardTitle" text="CRM Analytics" translationStatus="7" />
         <Label id="CardMobileLinks_NoDataMessageMainText" text="Sorry, no dashboard available" translationStatus="7" />
-        <Label id="MobileLinksCardTitle" text="CRM Analytics" translationStatus="7" />
+        <Label id="MobileLinksCardTitle" text="Dashboards" translationStatus="7" />
         <Label id="AllCustomersLink" text="All Customers" translationStatus="7" />
         <Label id="CustomersOverdueTitle" text="Overdue Customers" translationStatus="7" />
         <Label id="OverdueCustomersLink" text="All Overdue" translationStatus="7" />
         <Label id="QuickAccessCardTitle" text="Quick Access" translationStatus="7" />
         <Label id="CardQuickAccess_NoDataMessageMainText" text="No quick links were defined for you yet" translationStatus="7" />
+        <Label id="NavigateDeepLink" text="TSM Productivity Dashboard" translationStatus="1" />
       </UserInterface>
       <UserInterface id="UserNotificationFlyoutUI">
         <Label id="NotificationsTitleId" text="Notification Details" translationStatus="7" />
@@ -3055,7 +3112,7 @@
         <Label id="StoreWelcomeCardTitle" text="Details" translationStatus="7" />
       </UserInterface>
       <UserInterface id="CallStoreCockpitTabUI">
-        <Label id="completeCallId" text="Complete Visit" translationStatus="7" />
+        <Label id="completeCallId" text="End Visit" translationStatus="7" />
         <Label id="StoreCockpitId" text="Store Cockpit" translationStatus="7" />
         <Label id="ShowDetailsLink" text="Show Details" translationStatus="7" />
         <Label id="HeaderCardTitle" text="Customer Details" translationStatus="7" />
@@ -3077,8 +3134,8 @@
         <Label id="ReportingSurveyExceptionsCardInformation" text="This visit" translationStatus="7" />
         <Label id="CardCustomerTasks_NoDataMessageSubText" text="you can check out your task list to see what’s due tomorrow." translationStatus="7" />
         <Label id="CardSurveyExceptions_NoDataMessageMainText" text="No survey exception for this visit." translationStatus="7" />
-        <Label id="StoreCheckLabelId" text="Store Check" translationStatus="7" />
-        <Label id="SurveyLabelId" text="Survey" translationStatus="7" />
+        <Label id="StoreCheckLabelId" text="Surveys" translationStatus="7" />
+        <Label id="SurveyLabelId" text="Product Distribution" translationStatus="7" />
         <Label id="PromotionCalendarLabelId" text="Promotion Calendar" translationStatus="7" />
         <Label id="PromotionsLabelId" text="Promotions" translationStatus="7" />
         <Label id="SalesFolderLabelId" text="Sales Folder" translationStatus="7" />
@@ -3101,10 +3158,10 @@
         <Label id="AddNewVisitNoteId" text="Edit Note" translationStatus="7" />
         <Label id="ShowNotesLink" text="All Notes" translationStatus="7" />
         <Label id="CallNotesCardTitle" text="Visit Notes" translationStatus="7" />
-        <Label id="AnalyticsCardTitle" text="CRM Analytics" translationStatus="7" />
+        <Label id="AnalyticsCardTitle" text="Dashboards" translationStatus="7" />
         <Label id="CardAnalytics_NoDataMessageMainText" text="Sorry, no dashboard available" translationStatus="7" />
         <Label id="CardMobileLinks_NoDataMessageMainText" text="Sorry, no dashboard available" translationStatus="7" />
-        <Label id="MobileLinksCardTitle" text="CRM Analytics" translationStatus="7" />
+        <Label id="MobileLinksCardTitle" text="Dashboards" translationStatus="7" />
         <Label id="CardQuickAccess_NoDataMessageMainText" text="No quick links were defined for you yet" translationStatus="7" />
         <Label id="QuickAccessCardTitle" text="Quick Access" translationStatus="7" />
         <Label id="ActivityPerformanceCardTitle" text="Activity Performance" translationStatus="7" />
@@ -3122,6 +3179,9 @@
         <Label id="CreateFollowUpVisitId" text="Create Follow-up Visit" translationStatus="7" />
         <Label id="FollowUpVisitsCardTitle" text="Follow-Up Visits" translationStatus="7" />
         <Label id="CardLatestPicture_HasPicturesMainText" text="Some pictures are available for your review." translationStatus="7" />
+        <Label id="CardRelatedWholesaler_NoDataMessageMainText" text="No wholesalers for this customer" translationStatus="7" />
+        <Label id="startCallId" text="Start Visit" translationStatus="1" />
+        <Label id="ShowInvoice" text="Show Invoice" translationStatus="1" />
       </UserInterface>
       <UserInterface id="CallActivityCardUI">
         <Label id="ActivityId" text="Activity" translationStatus="7" />
@@ -3423,6 +3483,33 @@
         <Label id="PrdGTINLabel" text="GTIN" translationStatus="7" />
         <Label id="PrdNoLabel" text="Product Code" translationStatus="7" />
       </UserInterface>
+      <UserInterface id="CallMyOverviewRAListUI">
+        <Label id="AddWholesalerId" text="Add Wholesaler" translationStatus="7" />
+        <Label id="MainId" text="Main" translationStatus="7" />
+        <Label id="SetPrimaryId" text="Set Primary" translationStatus="7" />
+        <Label id="SetPromotionalId" text="Set Promotional" translationStatus="7" />
+        <Label id="WholesalerIdentificationTitle" text="Identification" translationStatus="7" />
+        <Label id="RetailerNameId" text="Retailer Name" translationStatus="7" />
+        <Label id="WholesalerNameId" text="Wholesaler Name" translationStatus="7" />
+        <Label id="RATypeId" text="Type" translationStatus="7" />
+        <Label id="SupplierIdId" text="Supplier Id" translationStatus="7" />
+        <Label id="SalesDivisionId" text="Sales Division" translationStatus="7" />
+      </UserInterface>
+      <UserInterface id="OrderMyItemWholesalerLookupUI">
+        <Label id="OrderItemWholesalerLookup" text="Wholesaler Lookup" translationStatus="1" />
+        <Label id="SKULabelId" text="Wholesale Order Code" translationStatus="7" />
+      </UserInterface>
+      <UserInterface id="ProductMyLookupUI">
+        <Label id="adProducts" text="Add" translationStatus="1" />
+        <Label id="ProductLookupTitleId" text="Products" translationStatus="1" />
+      </UserInterface>
+      <UserInterface id="OrderMyAddProductsUI">
+        <Label id="adProducts" text="Add" translationStatus="1" />
+        <Label id="AddProductId" text="Add Product" translationStatus="1" />
+      </UserInterface>
+      <UserInterface id="CustomerMySelectPrimaryWholesalerUI">
+        <Label id="OrderItemWholesalerLookup" text="Wholesaler Lookup" translationStatus="1" />
+      </UserInterface>
     </UserInterfaceContracts>
     <ConfirmationMessages>
       <Process id="Application.StartProcess">
@@ -3477,7 +3564,10 @@
       </Process>
       <Process id="Call.CompleteCallProcess">
         <Label id="CasClbCompleteHasOpenOrders" text="It is not possible to complete the visit because there are still open deliveries." translationStatus="7" />
-        <Label id="CasConfirmCallNonSalesDocCompleteMsg" text="There are still open orders assigned to the visit. Do you want to complete the visit?" translationStatus="7" />
+        <Label id="CasConfirmCallNonSalesDocCompleteMsg" text="There are still open orders assigned to the visit." translationStatus="7" />
+        <Label id="CasConfirmEndCall" text="You have not done Product Distribution, do you really want to End the visit?" translationStatus="7" />
+        <Label id="CasHasOpenQuestionsConfirmEndCall" text="You have not done Pricing Surveys, do you really want to End the visit?" translationStatus="7" />
+        <Label id="CasClbCompleteHasOpenTasks" text="It is not possible to complete the visit because there are still open customer tasks." translationStatus="7" />
       </Process>
       <Process id="Call.CompletePrivateTabProcess" />
       <Process id="Call.CreateNewCallProcess">
@@ -3509,6 +3599,7 @@
       </Process>
       <Process id="Order.CopyProcess">
         <Label id="CasTemplateNotValidForCopy" text="The order cannot be copied because the template is no longer valid for the current user." translationStatus="7" />
+        <Label id="CasMessageHasOpenedOrders" text="You already have one open order for this visit/customer. Do you want to navigate to the existing order?" translationStatus="7" />
       </Process>
       <Process id="Order.CancelWizardProcess">
         <Label id="CasConfirmCancelMsg" text="Do you want to cancel this document?" translationStatus="7" />
@@ -3661,6 +3752,7 @@
         <Label id="CasConfirmOrderDeleteMsg" text="Do you really want to delete the selected Order?" translationStatus="7" />
         <Label id="CasConfirmCustomerTaskDeleteMsg" text="Do you really want to delete the selected Customer Task?" translationStatus="7" />
         <Label id="CasConfirmCallDataNotOnDevice" text="The new call cannot be opened due to missing data. Please wait for the synchronisation process to complete." translationStatus="7" />
+        <Label id="CasMessageHasOpenedOrders" text="You already have one open order for this visit. Do you want to navigate to the existing order?" translationStatus="7" />
       </Process>
       <Process id="Application.CockpitProcess">
         <Label id="EndOfDayNotAllowedMessage" text="End of Day is not possible as there is no Running Tour available." translationStatus="7" />
@@ -3704,6 +3796,10 @@
       <Process id="Visit.ReviewImageProcess">
         <Label id="VisitConfirmImageDeletionMsg" text="Are you sure you want to delete the image?" translationStatus="7" />
       </Process>
+      <Process id="Call.MyStartCallProcess">
+        <Label id="CasClbStartHasInProgCall" text="You cannot start this visit because there are other in progress visits." translationStatus="1" />
+        <Label id="CasConfirmStartCall" text="Do you really want to start the visit?" translationStatus="1" />
+      </Process>
     </ConfirmationMessages>
     <ValidationMessages>
       <BusinessObject id="BoCustomer">
@@ -3723,6 +3819,18 @@
         <Label id="CasBpaPOSHasReferencedAsset" text="Deleting this POS is not allowed because there are assets relying on it." translationStatus="7" />
         <Label id="CasBpaMainCustomerEmailInvalid" text="Please provide a valid email for the customer." translationStatus="7" />
         <Label id="CasBpaMainContactPartnerEmailInvalid" text="Please provide a valid email for the contact partner." translationStatus="7" />
+        <Label id="CasBpaMainCustomerClosureReasonMustNotBeEmpty" text="You must provide a closure reason before proceeding." translationStatus="7" />
+        <Label id="CasBpaMainCustomerClosureReasonMustBeCorrect" text="You must provide a correct closure reason before proceeding." translationStatus="7" />
+        <Label id="CasBpaMainCustomerAddressMustNotBeEmpty" text="Please enter the Address of the customer." translationStatus="7" />
+        <Label id="CasBpaMainCustomerStatusMustNotBeEmpty" text="Please enter the Status of the customer." translationStatus="7" />
+        <Label id="CasBpaMainCustomerZipCodeMustNotBeEmpty" text="Please enter the Zip Code of the customer correctly." translationStatus="7" />
+        <Label id="CasConfirmEmptyPrimaryWholesalerMsg" text="You left Primary Wholesaler blank. Continue?" translationStatus="7" />
+        <Label id="CasConfirmErrorZipCodeMsg" text="Please enter a zip code within your territory." translationStatus="7" />
+        <Label id="CasConfirmClassOfTradeMsg" text="Please enter the Class Of Trade of the customer." translationStatus="7" />
+        <Label id="CasConfirmSubClassOfTradeMsg" text="Please enter the Subclass Of Trade of the customer." translationStatus="7" />
+        <Label id="CasBpaMainCustomerAddressMustNotRepeat" text="Duplicate account exists with this address. Please enter unique address." translationStatus="7" />
+        <Label id="CasBpaClassOfTradeDependencyMsg" text="Class of trade and subclass of trade field dependency errors.#newLine# Available options for #className#:#newLine# #subClassName#" translationStatus="7" />
+        <Label id="CasBpaClosureReasonDependencyMsg" text="Status and Closure Reason field dependency errors.#newLine# Available options for #statusName#:#newLine# #closureReasonName#" translationStatus="7" />
       </BusinessObject>
       <BusinessObject id="BoCall">
         <Label id="CasClbRemainingOpenOrders" text="There are still open orders." translationStatus="7" />
@@ -3755,6 +3863,10 @@
         <Label id="CasClbDateMustBeOnOrBeforeTodayDatePolicy" text="Looks like you’ve selected an invalid date. Select a date that's on or before today's date." translationStatus="1" />
         <Label id="CasClbDateMustBeOnOrAfterTodayDatePolicy" text="Looks like you’ve selected an invalid date. Select a date that's on or after today's date." translationStatus="1" />
         <Label id="CasClbDateMustBeTodayDatePolicy" text="Looks like you’ve selected an invalid date. Select today's date." translationStatus="1" />
+        <Label id="CasClbStateTobaccoRetailerLicenseIsMissing" text="State Tobacco Retailer License # is missing for this store. Please update in order to complete selling activities in this store." translationStatus="7" />
+        <Label id="CasClbStateSalesRetailRetailerLicenseIsMissing" text="State Sales/Retail Retailer License # is missing for this store. Please update in order to complete selling activities in this store." translationStatus="7" />
+        <Label id="CasClbStateLicensesAreMissing" text="You cannot complete any selling activities because State Tobacco Retailer License # or Sales/Retail Retailer License # is missing for this store." translationStatus="7" />
+        <Label id="CasClbPriceMustBeInBetweenMinAndMaxPolicy" text="Please enter a price that is within the allowed price range. The price must be in between #minValue# and #maxValue#." translationStatus="7" />
       </BusinessObject>
       <BusinessObject id="BoWizardCreateNewCall">
         <Label id="CasClbFillInAllValues" text="Please fill in all values." translationStatus="7" />
@@ -3797,6 +3909,13 @@
         <Label id="CasSdoCheckEmptyPaymentMethod" text="For collecting the order payment, a payment method needs to be specified." translationStatus="7" />
         <Label id="CasCheckPaymentCollected" text="Please confirm payment collected." translationStatus="7" />
         <Label id="CasSdoNoPPPLicense" text="You don't have the required permission to use the penny perfect pricing feature. Contact your salesforce administrator." translationStatus="7" />
+        <Label id="CasSdoMainProductMessageInfo" text="#productName# (#uoM#), #itemType#" translationStatus="7" />
+        <Label id="CasSdoMainAddCashSaleWithoutSpecialPriceNorBasePriceIsLimitedSummary" text="You cannot complete this order as the following order items have zero prices." translationStatus="7" />
+        <Label id="CasSdoMainAddPrebookDidNotSetWholesaler" text="Please select a wholesaler for your prebook order items before completing the order." translationStatus="7" />
+        <Label id="CasSdoMainAddCashSaleWithPromotionHasInvalidPriceSummary" text="You cannot complete this order as the following order items have zero or negative values." translationStatus="7" />
+        <Label id="CasSdoMainStoreLicenseIsMissing" text="Sale could not be completed as the store has outdated tax or tobacco license information. Please update." translationStatus="7" />
+        <Label id="CasSdoDeliveryDateLaterThanOrderDate" text="Delivery date cannot be earlier than the order date." translationStatus="7" />
+        <Label id="CasSdoMainCashSaleRestricted" text="You are not able to create a cash sale for this chain since it's a Cash Sale restricted store." translationStatus="7" />
       </BusinessObject>
       <BusinessObject id="BoWizardAddProduct">
         <Label id="CasSdoFillInAllValues" text="Please fill in all values." translationStatus="7" />
@@ -4002,7 +4121,7 @@
       </BusinessObject>
       <BusinessObject id="BoRewardProductValidation">
         <Label id="CasSdoFreeProductMaxValueExceeded" text="You have exceeded the max quantity #maxQuantityValue# allowed for the #productName#." translationStatus="7" />
-        <Label id="CasSdoFreeProductTotalMaxValueExceeded" text="You have exceeded the max quantity allowed for the reward." translationStatus="7" />
+        <Label id="CasSdoFreeProductTotalMaxValueExceeded" text="You have exceeded the max quantity allowed for this promotion." translationStatus="7" />
       </BusinessObject>
       <BusinessObject id="BoVisit">
         <Label id="VisitInstructionDescriptionMustNotBeEmpty" text="Please enter an instruction description." translationStatus="7" />
@@ -4215,6 +4334,7 @@
         <Label id="Customer_Substitution" text="Substituted" translationStatus="7" />
         <Label id="Customer_TradeOrg" text="Trade Org" translationStatus="7" />
         <Label id="Customer_Overdue" text="Overdue" translationStatus="7" />
+        <Label id="Customer_Status" text="Status" translationStatus="7" />
       </AdvancedSearchObject>
       <AdvancedSearchObject id="AsoOverdueCustomerOverview">
         <Label id="Customer_Id" text="Id" translationStatus="7" />
@@ -4996,5 +5116,15 @@
     <Image id="VisitTypeStatus_Visit_InProgress" alternativeId="Suitcase_F" />
     <Image id="VisitTypeStatus_Visit_Completed" alternativeId="SuitcaseDoneGrey24" />
     <Image id="VisitTypeStatus_Visit_Abandoned" alternativeId="SuitcaseCancelledGrey24" />
+    <Image id="ClbTypeStatus_Call_InProgress" alternativeId="SuitcaseItemBlueGrey24" />
+    <Image id="ClbTypeStatus_Call_InProgress_DD4411" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_467596" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_BBBB00" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_6688BB" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_551155" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_77AA99" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_008899" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbTypeStatus_Call_InProgress_EE9B38" alternativeId="SuitcaseItemBlueGrey24Inv" />
+    <Image id="ClbCalendarStatus_InProgress" alternativeId="ChevronRightGrey16Inv" />
   </Images>
 </Locale>

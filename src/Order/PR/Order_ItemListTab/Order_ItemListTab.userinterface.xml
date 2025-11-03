@@ -5,17 +5,6 @@
         <Binding target="title" binding="ProcessContext::MainBO.luOrderer.name" />
       </Bindings>
       <MenuItems>
-        <MenuItem directlyVisible="false" itemId="addProductViaLookup">
-          <Bindings>
-            <Resource target="Text" type="Label" id="addProductViaLookup" defaultLabel="Add Product" />
-            <Resource target="Icon" type="Image" id="PlusDarkGrey24" />
-            <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.isEditable" />
-            <Binding type="Editable" target="Editable" call="ProcessContext::MainBO.isAddProductEnabled" />
-          </Bindings>
-          <Events>
-            <ButtonPressedEvent event="addProductViaLookup" />
-          </Events>
-        </MenuItem>
         <MenuItem directlyVisible="true" itemId="CalculateOrder">
           <Bindings>
             <Resource target="Text" type="Label" id="CalculateOrderId" defaultLabel="Calculate" />
@@ -35,6 +24,36 @@
           </Bindings>
           <Events>
             <ButtonPressedEvent event="openFastOrder" />
+          </Events>
+        </MenuItem>
+        <MenuItem directlyVisible="true" itemId="reviewOrder">
+          <Bindings>
+            <Resource target="Text" type="Label" id="ReviewOrder" defaultLabel="Review Order" />
+            <Resource target="Icon" type="Image" id="Info" defaultImage="Info.png" />
+          </Bindings>
+          <Events>
+            <ButtonPressedEvent event="reviewOrder" />
+          </Events>
+        </MenuItem>
+        <MenuItem directlyVisible="false" itemId="generateInvoice">
+          <Bindings>
+            <Resource target="Text" type="Label" id="GenerateInvoiceId" defaultLabel="Generate Invoice" />
+            <Resource target="Icon" type="Image" id="PrintPreviewDarkGrey24" />
+            <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.isPrintPreviewVisible" />
+          </Bindings>
+          <Events>
+            <ButtonPressedEvent event="generateInvoice" />
+          </Events>
+        </MenuItem>
+        <MenuItem directlyVisible="true" itemId="addProductViaLookup">
+          <Bindings>
+            <Resource target="Text" type="Label" id="addProductViaLookup" defaultLabel="Add Product" />
+            <Resource target="Icon" type="Image" id="PlusDarkGrey24" defaultImage="PlusDarkGrey24.png" />
+            <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.isEditable" />
+            <Binding type="Editable" target="Editable" call="ProcessContext::MainBO.isAddProductEnabled" />
+          </Bindings>
+          <Events>
+            <ButtonPressedEvent event="addProductViaLookup" />
           </Events>
         </MenuItem>
         <MenuItem directlyVisible="true" itemId="ScanProduct">
@@ -88,6 +107,17 @@
           </Bindings>
           <Events>
             <ButtonPressedEvent event="disableRoundingOrderQuantityOn" />
+          </Events>
+        </MenuItem>
+        <MenuItem directlyVisible="false" itemId="CloneProduct">
+          <Bindings>
+            <Resource target="Text" type="Label" id="CloneProductId" defaultLabel="Clone Product" />
+            <Resource target="Icon" type="Image" id="CopyFromClipboard_SB" />
+            <Binding type="Visible" target="Visible" call="ProcessContext::MainBO.isEditable" />
+            <Binding type="Editable" target="Editable" call="ProcessContext::MainBO.isAddProductEnabled" />
+          </Bindings>
+          <Events>
+            <ButtonPressedEvent event="cloneProduct" />
           </Events>
         </MenuItem>
       </MenuItems>
@@ -220,7 +250,7 @@
         </ImageSelector>
       </Area>
       <Area areaName="viewArea" areaPattern="SingleElementArea">
-        <MultiSelectionBreadCrumbControl name="OrderItems" numberpadDefaultField="quantity" showPreviousNextEnter="true" searchBarPlacement="HeaderLine" searchable="true" direction="ASC" sortDirectionInGroup="ASC" dataSource="ProcessContext::MainBO.LoItems.Items[]" master="true">
+        <MultiSelectionBreadCrumbControl name="OrderItems" showPreviousNextEnter="true" searchBarPlacement="HeaderLine" searchable="true" direction="ASC" sortDirectionInGroup="ASC" dataSource="ProcessContext::MainBO.LoItems.Items[]" master="true">
           <Hierarchy name="OrderItemCategoryList" labelAttribute="label">
             <Bindings>
               <Binding target="RootLabel" type="Text" binding="ProcessContext::MainBO.boItemTabManager.rootLabel" bindingMode="ONE_TIME" />
@@ -248,32 +278,67 @@
             <SearchAttribute name="customerProductNumber" />
           </SearchAttributes>
           <Items name="Items" itemPattern="OrderItemItem">
+            <Bindings>
+              <Binding target="ProductName" type="Text" binding=".text1" bindingMode="ONE_WAY" />
+              <Binding target="ItemState" type="Image" binding=".itemState.imageId" bindingMode="ONE_WAY" />
+              <Binding target="Type" type="Text" binding=".shortType" bindingMode="ONE_WAY" />
+              <Binding target="Quantity" type="Text" binding=".quantity" bindingMode="ONE_WAY" />
+              <Binding target="OrderUnitInfo" type="Text" binding=".orderUnitInformation" bindingMode="ONE_WAY" />
+              <Binding target="UnitInfo" type="Text" binding=".unitInformation" bindingMode="ONE_WAY" />
+              <Binding target="Icon" type="Image" binding=".focusProductImage" bindingMode="ONE_WAY" />
+              <Binding target="SpecialPromotionIcon" type="Image" binding=".specialPromotionIcon" bindingMode="ONE_WAY" />
+              <Binding target="SpecialQuantity" type="Text" binding=".specialQuantity" bindingMode="ONE_WAY" />
+              <Resource target="Spacer" type="Label" id="Spacer" defaultLabel="    " />
+              <Binding target="PromotionWaveName" type="Text" binding=".promotionWaveName" bindingMode="ONE_WAY" />
+              <Binding target="SellingPriority" type="Image" binding=".sellingPriorityImage" bindingMode="ONE_WAY" />
+              <Binding target="SuggestedType" type="Image" binding=".suggestedType" bindingMode="ONE_WAY" />
+            </Bindings>
             <ItemListLayout>
               <Tablet>
                 <Default>
                   <Col width="0.1em">
                     <Row layoutType="Image" bindingId="Icon" />
-                    <Row layoutType="itemSecondary" bindingId="Spacer" />
-                    <Row layoutType="itemSecondary" bindingId="Spacer" />
+                    <!-- <Row layoutType="itemSecondary" bindingId="Spacer" /> -->
+                    <!-- <Row layoutType="itemSecondary" bindingId="Spacer" /> -->
                   </Col>
                   <Col flex="1">
                     <Row>
                       <Col width="0.3em" layoutType="itemSecondary" bindingId="Spacer" />
-                      <Col flex="1" layoutType="itemTitle" bindingId="ProductName" />
-                    </Row>
-                    <Row layoutType="itemCenter">
-                      <Col width="0.1em" layoutType="itemSecondary" bindingId="Spacer" />
-                      <Col width="6em">
-                        <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
-                        <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                      <Col flex="1">
+                        <Row bindingId="ProductName" layoutType="itemTitle" />
+                        <!-- <Row bindingId="PromotionWaveName" layoutType="itemSecondary" /> -->
                       </Col>
-                      <Col width="2em" layoutType="itemSecondary itemPaddingTop" bindingId="Type" />
-                      <Col width="2em" height="2em" layoutType="Image" bindingId="ItemState" />
-                      <Col width="1em" height="1em" layoutType="Image" bindingId="SpecialPromotionIcon" />
-                      <Col width="2em" layoutType="itemSecondary itemPaddingTop" bindingId="SpecialQuantity" />
                     </Row>
                   </Col>
-                  <Col width="9em" bindingId="Quantity" />
+                  <Col width="1.3em">
+                    <Row>
+                      <Col layoutType="Image" bindingId="SellingPriority" />
+                    </Row>
+                  </Col>
+                  <Col width="1.3em">
+                    <Row>
+                      <Col layoutType="Image" bindingId="SuggestedType" />
+                    </Row>
+                  </Col>
+                  <Col width="2em" height="2em" layoutType="Image" bindingId="ItemState" />
+                  <Col width="4em">
+                    <Row layoutType="itemCenter">
+                      <!-- <Col width="0.1em" layoutType="itemSecondary" bindingId="Spacer" /> -->
+                      <!-- <Col width="6em">
+                        <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                        <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                      </Col>-->
+                      <Col width="7em" layoutType="itemSecondary itemPaddingTop" bindingId="Type" />
+                      <!--<Col width="2em" height="2em" layoutType="Image" bindingId="ItemState" />-->
+                      <!--<Col width="1em" height="1em" layoutType="Image" bindingId="SpecialPromotionIcon" />-->
+                      <!--<Col width="2em" layoutType="itemSecondary itemPaddingTop" bindingId="SpecialQuantity" />-->
+                    </Row>
+                  </Col>
+                  <!-- <Col width="2em" bindingId="Quantity" /> -->
+                  <Col width="4em">
+                    <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                    <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                  </Col>
                 </Default>
               </Tablet>
               <Phone>
@@ -281,39 +346,39 @@
                   <Col width="0.1em">
                     <Row layoutType="Image" bindingId="Icon" />
                     <Row layoutType="itemSecondary" bindingId="Spacer" />
-                    <Row layoutType="itemSecondary" bindingId="Spacer" />
+                    <!-- <Row layoutType="itemSecondary" bindingId="Spacer" /> -->
                   </Col>
                   <Col flex="1">
                     <Row>
                       <Col layoutType="itemImportantValueSmall" bindingId="ProductName" />
                     </Row>
+                  </Col>
+                  <Col width="1.3em">
                     <Row>
-                      <Col>
-                        <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
-                        <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
-                      </Col>
-                      <Col layoutType="itemSecondary itemPaddingTop" bindingId="Type" />
-                      <Col layoutType="Image" bindingId="ItemState" />
-                      <Col layoutType="Image" bindingId="SpecialPromotionIcon" />
-                      <Col layoutType="itemSecondary itemPaddingTop" bindingId="SpecialQuantity" />
+                      <Col layoutType="Image" bindingId="SellingPriority" />
                     </Row>
                   </Col>
-                  <Col width="9em" bindingId="Quantity" />
+                  <Col width="3em">
+                    <Row layoutType="itemCenter">
+                      <!-- <Col width="0.1em" layoutType="itemSecondary" bindingId="Spacer" /> -->
+                      <!-- <Col width="6em">
+                        <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                        <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                      </Col>-->
+                      <Col width="7em" layoutType="itemSecondary itemPaddingTop" bindingId="Type" />
+                      <!--<Col width="2em" height="2em" layoutType="Image" bindingId="ItemState" />-->
+                      <!--<Col width="1em" height="1em" layoutType="Image" bindingId="SpecialPromotionIcon" />-->
+                      <!--<Col width="2em" layoutType="itemSecondary itemPaddingTop" bindingId="SpecialQuantity" />-->
+                    </Row>
+                  </Col>
+                  <!-- <Col width="2em" bindingId="Quantity" /> -->
+                  <Col width="3em">
+                    <Row bindingId="OrderUnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                    <Row bindingId="UnitInfo" layoutType="itemSecondary itemPaddingTop" />
+                  </Col>
                 </Default>
               </Phone>
             </ItemListLayout>
-            <Bindings>
-              <Binding target="ProductName" type="Text" binding=".text1" bindingMode="ONE_WAY" />
-              <Binding target="ItemState" type="Image" binding=".itemState.imageId" bindingMode="ONE_WAY" />
-              <Binding target="Type" type="Text" binding=".shortType" bindingMode="ONE_WAY" />
-              <Binding target="Quantity" type="Stepper" binding=".quantity" minValue="0" maxValue="9999" minBinding="minStepperValue" bindingMode="TWO_WAY" formatV2="4.0" stepperCorrelationId=".pKey" />
-              <Binding target="OrderUnitInfo" type="Text" binding=".orderUnitInformation" bindingMode="ONE_WAY" />
-              <Binding target="UnitInfo" type="Text" binding=".unitInformation" bindingMode="ONE_WAY" />
-              <Binding target="Icon" type="Image" binding=".focusProductImage" bindingMode="ONE_WAY" />
-              <Binding target="SpecialPromotionIcon" type="Image" binding=".specialPromotionIcon" bindingMode="ONE_WAY" />
-              <Binding target="SpecialQuantity" type="Text" binding=".specialQuantity" bindingMode="ONE_WAY" />
-              <Resource target="Spacer" type="Label" id="Spacer" defaultLabel="    " />
-            </Bindings>
           </Items>
           <Bindings>
             <Binding target="DynamicallyGroupBy" type="Text" binding="ProcessContext::GroupingAttribute" />
@@ -337,6 +402,7 @@
               <ListItemAttribute name="promotionPKey" />
               <ListItemAttribute name="sdoParentItemPKey" />
               <ListItemAttribute name="rewardPKey" />
+              <ListItemAttribute name="promotionWavePKey" />
             </GroupElementsBy>
             <PrimaryElementIndicator attributeName="isOrderUnit" />
           </GroupVisibleElementConfiguration>
@@ -352,41 +418,65 @@
             <Binding target="Title" binding="ProcessContext::MainBO.LoItems.Current.text1" bindingMode="ONE_WAY" />
           </Bindings>
           <!-- Id -->
+          <!-- Customer Product Number -->
+          <!-- Item Type -->
+          <!-- Delivery State -->
+          <!-- Focus Product Number -->
+          <!-- Stock -->
           <InputArea name="Id" disabled="true">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Number" id="IdId" />
               <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.prdId" bindingMode="ONE_WAY" />
             </Bindings>
           </InputArea>
-          <!-- Customer Product Number -->
+          <Lookup name="Wholesaler">
+            <Bindings>
+              <Resource target="Label" type="Label" id="Wholesaler" defaultLabel="Wholesaler" />
+              <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.wsNameDisplay" bindingMode="ONE_WAY" />
+            </Bindings>
+            <Events>
+              <LookupEvent event="openWholesalerLookup" />
+            </Events>
+          </Lookup>
+          <InputArea name="WholesalerProductSKU" disabled="true">
+            <Bindings>
+              <Resource target="Label" type="Label" defaultLabel="SKU" id="WholesalerProductSKUId" />
+              <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.tpbSku" bindingMode="ONE_WAY" />
+            </Bindings>
+          </InputArea>
           <InputArea name="CustomerProductNumber" disabled="true">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Customer Product Number" id="CustomerProductNumberId" />
               <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.customerProductNumber" bindingMode="ONE_WAY" />
             </Bindings>
           </InputArea>
-          <!-- Item Type -->
-          <InputArea name="Type" disabled="true">
+          <Lookup name="Type">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Type" id="ItemTypeId" />
               <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.type" bindingMode="ONE_WAY" />
             </Bindings>
-          </InputArea>
-          <!-- Delivery State -->
+            <Events>
+              <LookupEvent event="OpenOrderItemTemplateLookup" />
+            </Events>
+          </Lookup>
+          <CheckBox name="Resale">
+            <Bindings>
+              <Resource target="Label" type="Label" defaultLabel="Resale" id="ItemResaleId" />
+              <Binding target="checkedValue" binding="ProcessContext::MainBO.LoItems.Current.resale" bindingMode="TWO_WAY" />
+            </Bindings>
+          </CheckBox>
           <InputArea name="Availability" disabled="true">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Availability" id="AvailabilityId" />
               <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.deliveryState.shortText" bindingMode="ONE_WAY" />
             </Bindings>
           </InputArea>
-          <!-- Focus Product Number -->
           <InputArea name="FocusProductType" disabled="true">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Focus Product Type" id="FocusProductTypeId" />
               <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.focusProductType" bindingMode="ONE_WAY" />
             </Bindings>
           </InputArea>
-          <!-- Stock -->
           <Merger name="StockMerger" disabled="true" pattern="twoInputControls" labelHandling="Own" leftRatio="1" rightRatio="2">
             <Bindings>
               <Resource target="Label" type="Label" defaultLabel="Stock" id="StockId" />
@@ -396,12 +486,19 @@
                 <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.ivcBalance" bindingMode="ONE_WAY" />
               </Bindings>
             </InputArea>
-            <InputArea name="StockUnit" disabled="true">
-              <Bindings>
-                <Binding target="Value" binding="ProcessContext::MainBO.boItemTabManager.stockUnitText" bindingMode="ONE_WAY" />
-              </Bindings>
-            </InputArea>
           </Merger>
+          <InputArea name="SuggestQty" disabled="true">
+            <Bindings>
+              <Resource target="Label" type="Label" defaultLabel="Suggested Qty" id="SuggestQtyId" />
+              <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.suggestQty" bindingMode="ONE_WAY" />
+            </Bindings>
+          </InputArea>
+          <InputArea name="MaxAllocation" disabled="true">
+            <Bindings>
+              <Resource target="Label" type="Label" defaultLabel="Max Allocation" id="MaxAllocationId" />
+              <Binding target="Value" binding="ProcessContext::MainBO.LoItems.Current.maxAllocation" bindingMode="ONE_WAY" />
+            </Bindings>
+          </InputArea>
         </GroupElement>
         <!-- UoM -->
         <EmbeddedList name="OrderUoM" dataSource="ProcessContext::MainBO.boItemTabManager.loUnitOfMeasure.Items[]">
@@ -409,21 +506,29 @@
             <Resource target="Title" type="Label" id="UoMId" defaultLabel="Unit of Measures" />
           </Bindings>
           <Items name="OrderItemsUoM" itemPattern="OrderUoMPattern">
+            <Bindings>
+              <Binding target="UoM" type="Text" binding=".logicUnitsforDisplay" bindingMode="ONE_WAY" />
+              <Binding target="Price" type="Decimal" formatV2="10.2" binding=".basePriceReceipt" bindingMode="ONE_WAY" />
+              <Binding target="Receipt" type="Decimal" formatV2="10.2" binding=".valueReceipt" bindingMode="ONE_WAY" />
+              <Binding target="Quantity" type="Stepper" binding=".quantity" minValue="0" maxValue="9999" minBinding="minStepperValue" bindingMode="TWO_WAY" formatV2="4.0" stepperCorrelationId=".pKey" />
+              <Resource target="PriceLabel" type="Label" id="PriceId" defaultLabel="Price" />
+              <Resource target="ReceiptLabel" type="Label" id="ReceiptId" defaultLabel="Receipt Value" />
+            </Bindings>
             <ItemListLayout>
               <Default>
                 <Col>
                   <Row>
                     <Col width="8em">
                       <Row width="10em" layoutType="itemImportantValueSmall" bindingId="UoM" />
-                      <Row width="10em" layoutType="itemValueVerySmall" bindingId="OQty" />
+                      <!--<Row width="10em" layoutType="itemValueVerySmall" bindingId="OQty" />-->
                     </Col>
                     <Col flex="1" bindingId="Quantity" />
                   </Row>
                   <Row>
                     <Col layoutType="Image" width="0.2em" bindingId="Spacer" />
-                    <Col width="3em" layoutType="itemValueVerySmall" bindingId="PriceLabel" />
+                    <Col width="6.8em" layoutType="itemValueVerySmall" bindingId="PriceLabel" />
                     <Col width="4em" layoutType="itemValueVerySmall" bindingId="Price" />
-                    <Col width="6.8em" layoutType="itemValueVerySmall" bindingId="ReceiptLabel" />
+                    <Col width="3em" layoutType="itemValueVerySmall" bindingId="ReceiptLabel" />
                     <Col width="4.6em" layoutType="itemValueVerySmall" bindingId="Receipt" />
                   </Row>
                 </Col>
@@ -434,7 +539,7 @@
                     <Row>
                       <Col width="8em">
                         <Row width="10em" layoutType="itemImportantValueSmall" bindingId="UoM" />
-                        <Row width="10em" layoutType="itemValueVerySmall" bindingId="OQty" />
+                        <!--<Row width="10em" layoutType="itemValueVerySmall" bindingId="OQty" />-->
                       </Col>
                       <Col flex="1" bindingId="Quantity" />
                     </Row>
@@ -448,15 +553,6 @@
                 </Default>
               </Phone>
             </ItemListLayout>
-            <Bindings>
-              <Binding target="UoM" type="Text" binding=".logicUnitsforDisplay" bindingMode="ONE_WAY" />
-              <Binding target="OQty" type="Text" binding=".oQtyString" bindingMode="ONE_WAY" />
-              <Binding target="Price" type="Decimal" formatV2="10.2" binding=".basePriceReceipt" bindingMode="ONE_WAY" />
-              <Binding target="Receipt" type="Decimal" formatV2="10.2" binding=".valueReceipt" bindingMode="ONE_WAY" />
-              <Binding target="Quantity" type="Stepper" binding=".quantity" minValue="0" maxValue="9999" minBinding="minStepperValue" bindingMode="TWO_WAY" formatV2="4.0" stepperCorrelationId=".pKey" />
-              <Resource target="PriceLabel" type="Label" id="PriceId" defaultLabel="Price" />
-              <Resource target="ReceiptLabel" type="Label" id="ReceiptId" defaultLabel="Receipt Value" />
-            </Bindings>
           </Items>
         </EmbeddedList>
         <GroupElement name="AdvancedSettingsGroup">
@@ -464,7 +560,7 @@
             <Resource target="Title" type="Label" id="AdvSettingsGroupId" defaultLabel="Advanced Settings" />
           </Bindings>
           <!-- Reason  -->
-          <SelectionBox name="Reason" disabled="false">
+          <SelectionBox name="Reason" disabled="true">
             <Bindings>
               <Resource target="Label" type="Label" id="ReasonId" defaultLabel="Reason" />
               <Binding target="DataSource" binding="ProcessContext::MainBO.boItemTabManager.loModReasonSelectionBox" bindingMode="ONE_WAY" />
@@ -478,13 +574,6 @@
             </Items>
           </SelectionBox>
           <!-- Discount -->
-          <Stepper name="Discount" minValue="0" maxValue="100">
-            <Bindings>
-              <Resource target="Label" type="Label" defaultLabel="Discount" id="DiscountId" />
-              <Binding target="Value" type="Decimal" formatV2="3.1" binding="ProcessContext::MainBO.boItemTabManager.loUnitOfMeasure.Current.discount" bindingMode="TWO_WAY" />
-              <Binding target="StepSize" value="0.1" />
-            </Bindings>
-          </Stepper>
           <!-- Special Price -->
           <Stepper name="SpecialPrice" minValue="0">
             <Bindings>
@@ -504,28 +593,28 @@
             </Bindings>
           </InputArea>
         </GroupElement>
-        <EmbeddedList name="PromotionsForProduct" dataSource="ProcessContext::MainBO.boItemTabManager.loPromotionsForCurrentProduct.Items[]">
+        <EmbeddedList name="WholesalerList" dataSource="ProcessContext::wholesalersList.Items[]">
           <Bindings>
-            <Resource target="Title" type="Label" id="PromotionsForProductId" defaultLabel="Promotions" />
+            <Resource target="Title" type="Label" id="WholesalerId" defaultLabel="Wholesaler" />
           </Bindings>
-          <Items name="Items" itemPattern="PromotionForProductItem">
+          <Items name="wholesalerItems" itemPattern="wholesalerItem">
             <ItemListLayout>
               <Default>
                 <Col>
-                  <Row layoutType="itemTitle" bindingId="Slogan" />
+                  <Row layoutType="itemTitle" bindingId="Name" />
                   <Row>
-                    <Col width="6em" layoutType="itemValueSmall" bindingId="ValidFrom" />
-                    <Col width="2em" layoutType="itemLabel" bindingId="SeparatorLabel" />
-                    <Col width="6em" layoutType="itemValueSmall" bindingId="ValidThru" />
+                    <Col width="12em" layoutType="itemLabel" bindingId="SKULabel" />
+                    <Col layoutType="itemLabel" bindingId="Number" />
                   </Row>
                 </Col>
+                <Col layoutType="Image" width="1em" bindingId="Flag" />
               </Default>
             </ItemListLayout>
             <Bindings>
-              <Binding target="Slogan" type="Text" binding=".text" bindingMode="ONE_WAY" />
-              <Binding target="ValidFrom" type="Date" binding=".validFrom" bindingMode="ONE_WAY" />
-              <Binding target="ValidThru" type="Date" binding=".validThru" bindingMode="ONE_WAY" />
-              <Resource target="SeparatorLabel" type="Label" id="separatorLabelId" defaultLabel=" - " />
+              <Binding target="Name" type="Text" binding=".wholesaler" bindingMode="ONE_WAY" />
+              <Binding target="Number" type="Text" binding=".sku" bindingMode="ONE_WAY" />
+              <Binding target="Flag" type="Image" binding=".wholesalerClear" bindingMode="ONE_WAY" />
+              <Resource target="SKULabel" type="Label" id="SKUNumberId" defaultLabel="Wholesale Order Code" />
             </Bindings>
           </Items>
         </EmbeddedList>

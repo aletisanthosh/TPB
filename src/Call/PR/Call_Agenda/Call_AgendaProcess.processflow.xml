@@ -78,6 +78,9 @@
         <Declaration name="Map_ButtonPressed" type="String" />
         <Declaration name="Map_SubstitutedUsrPKey" type="String" />
         <Declaration name="Map_IsManagedCustomer" type="DomBool" />
+        <Declaration name="CurrentParentPKey" type="String" />
+        <Declaration name="VisitType" type="String" />
+        <Declaration name="wholesalerListForFetchAttachment" type="LoMyCallRelatedWholesaler" />
       </Declarations>
       <Parameters>
         <Input name="AgendaView" type="String" />
@@ -85,6 +88,11 @@
       </Parameters>
     </ProcessContext>
     <EntryActions>
+      <!-- SF/CASDIF Start-->
+      <!-- SF/CASDIF End-->
+      <Action name="CreateCurrentWholesalerList" actionType="CREATE" type="LoMyCallRelatedWholesaler">
+        <Return name="ProcessContext::wholesalerListForFetchAttachment" />
+      </Action>
       <Action name="AssignResponsible" actionType="LOGIC" call="ApplicationContext::User.getPKey">
         <Return name="ProcessContext::CurrentResponsiblePKey" />
       </Action>
@@ -140,11 +148,9 @@
       <Action name="InitializeDisplayRouteWithUserSetting" actionType="LOGIC" call="ApplicationContext::User.boUserSettings.getClbDisplayRouteInMapMobility">
         <Return name="ProcessContext::DisplayRoute" />
       </Action>
-      <!-- SF/CASDIF Start-->
       <Action name="CreateReplicationCallBacksBo" actionType="CREATE" type="BoSfReplicationCallbacks">
         <Return name="ProcessContext::SfReplicationCallbacks" />
       </Action>
-      <!-- SF/CASDIF End-->
       <Action name="InitializeCWWithUserSetting" actionType="LOGIC" call="ApplicationContext::User.boUserSettings.getClbShowCalendarWeekMobility">
         <Return name="ProcessContext::DisplayCalendarWeek" />
       </Action>
@@ -174,6 +180,9 @@
   </Entry>
   <Body>
     <Actions>
+      <!--without Else Case because Framework Fallback is to go back to the last View Action since we do not know whether this is triggered from Weekly or Daily View this is intended -->
+      <!-- Navigation -->
+      <!-- End of Navigation -->
       <Action name="SaveAgendaViewInProcessContextIfNotEmpty" actionType="DECISION" parameter="ProcessContext::AgendaView">
         <CaseEmpty action="ShowCalendarView_Decision_From_InputParam" />
         <CaseElse action="SaveAgendaViewInProcessContext" />
@@ -257,6 +266,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
       </Action>
       <Action name="GetCallsByCurrentDate" actionType="LOGIC" call="ProcessContext::OverviewList.getCallsByDate">
@@ -268,6 +280,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
       </Action>
       <Action name="TourOrDailyView" actionType="DECISION" parameter="ProcessContext::agendaMode">
@@ -423,6 +438,7 @@
       </Action>
       <Action name="ReloadOverviewList" actionType="LOAD" type="LoAgendaOverview">
         <Parameters>
+          <Input name="includeDailyReport" type="Literal" value="1" />
           <Input name="dateFromStart" value="ProcessContext::CallDate" />
           <Input name="dateFromEnd" value="ProcessContext::CallDate" />
         </Parameters>
@@ -444,6 +460,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
       </Action>
       <Action name="UpdateAdditonalPinsAfterCallCreationViaMap" actionType="LOGIC" call="ProcessContext::CustomerList.deleteAdditionalWaypoints">
@@ -532,6 +551,7 @@
           <Input name="responsiblePKey" value="Event.responsiblePKey" />
           <Input name="referenceDate" value="Event.dateFrom" />
           <Input name="bpaMainPKey" value="Event.bpaMainPKey" />
+          <Input name="clbMetaType" value="Event.clbMetaType" />
         </Parameters>
       </Action>
       <Action name="ContextMenu_CustomerOnDevice_Decision" actionType="DECISION" parameter="Event.customerOnDevice">
@@ -554,14 +574,37 @@
         <CaseElse action="ShowCalendarView_Decision" />
       </Action>
       <Action name="LoadCall_Decision" actionType="DECISION" parameter="Event.customerOnDevice">
-        <Case value="1" action="LoadCustomerPKey" />
+        <Case value="1" action="LoadCall_Type_Decision" />
         <CaseElse action="Message_CallDataNotOnDevice" />
+      </Action>
+      <Action name="LoadCall_Type_Decision" actionType="DECISION" parameter="Event.recordTypeName">
+        <Case value="R" action="LoadCustomerPKey" />
+        <Case value="WHL" action="CardVisits_LoadCall_OpenLink" />
+        <Case value="HQ" action="CardVisits_LoadCall_OpenLink" />
+      </Action>
+      <Action name="CardVisits_LoadCall_OpenLink" actionType="LOGIC" call="ProcessContext::OverviewList.myOpenToSfLink">
+        <Parameters>
+          <Input name="pkey" value="Event.pKey" />
+        </Parameters>
       </Action>
       <Action name="LoadCustomerPKey" actionType="LOGIC" call="ProcessContext::OverviewList.getCustomerPKey">
         <Parameters>
           <Input name="CallPKey" value="Event.pKey" />
         </Parameters>
         <Return name="ProcessContext::CurrentCustomerPKey" />
+        <TransitionTo action="LoadParentPKey" />
+      </Action>
+      <Action name="LoadParentPKey" actionType="LOGIC" call="ProcessContext::OverviewList.myGetParentPKey">
+        <Parameters>
+          <Input name="CallPKey" value="Event.pKey" />
+        </Parameters>
+        <Return name="ProcessContext::CurrentParentPKey" />
+        <TransitionTo action="LoadWholesalerList" />
+      </Action>
+      <Action name="LoadWholesalerList" actionType="LOGIC" call="ProcessContext::wholesalerListForFetchAttachment.myGetForOverView">
+        <Parameters>
+          <Input name="CallCustomerPKey" value="ProcessContext::CurrentCustomerPKey" />
+        </Parameters>
         <TransitionTo action="CheckIfDataIsAvailable" />
       </Action>
       <Action name="CheckIfDataIsAvailable" actionType="LOGIC" call="ProcessContext::SfReplicationCallbacks.isCallOnDemandDataAvailable">
@@ -570,9 +613,70 @@
           <Input name="customerPKey" value="ProcessContext::CurrentCustomerPKey" />
         </Parameters>
         <Return name="ProcessContext::CallDataAvailable" />
+        <TransitionTo action="CheckParentPKey" />
+      </Action>
+      <Action actionType="LOGIC" name="CheckParentPKey" call="Utils.isEmptyString">
+        <Parameters>
+          <Input name="ParentPKey" value="ProcessContext::CurrentParentPKey" />
+        </Parameters>
+        <Return name="ProcessContext::ParentPKeyAlready" />
+        <TransitionTo action="CheckParentPKey_Decision" />
+      </Action>
+      <Action name="CheckParentPKey_Decision" actionType="DECISION" parameter="ProcessContext::ParentPKeyAlready">
+        <Case value="true" action="SetParentDataAvailable" />
+        <Case value="false" action="CheckIfParentDataIsAvailable" />
+        <CaseElse action="SetParentDataAvailable" />
+      </Action>
+      <Action name="CheckIfParentDataIsAvailable" actionType="LOGIC" call="ProcessContext::SfReplicationCallbacks.isCallOnDemandDataAvailable">
+        <Parameters>
+          <Input name="CallPKey" value="Event.pKey" />
+          <Input name="customerPKey" value="ProcessContext::CurrentParentPKey" />
+        </Parameters>
+        <Return name="ProcessContext::CallParentDataAvailable" />
+        <TransitionTo action="CheckWholesalerLength" />
+      </Action>
+      <Action name="SetParentDataAvailable" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="1" type="Literal" />
+        </Parameters>
+        <Return name="ProcessContext::CallParentDataAvailable" />
+        <TransitionTo action="CheckWholesalerLength" />
+      </Action>
+      <Action actionType="LOGIC" name="CheckWholesalerLength" call="ProcessContext::wholesalerListForFetchAttachment.isEmpty">
+        <Return name="ProcessContext::WholesalrListEmpty" />
+        <TransitionTo action="CheckWholesalrList_Decision" />
+      </Action>
+      <Action name="CheckWholesalrList_Decision" actionType="DECISION" parameter="ProcessContext::WholesalrListEmpty">
+        <Case value="true" action="SetWholesalerDataAvailable" />
+        <Case value="false" action="CheckIfWholesalerDataIsAvailable" />
+        <CaseElse action="SetWholesalerDataAvailable" />
+      </Action>
+      <Action name="CheckIfWholesalerDataIsAvailable" actionType="LOGIC" call="ProcessContext::wholesalerListForFetchAttachment.myIsCallOnDemandDataAvailable">
+        <Parameters>
+          <Input name="CallPKey" value="Event.pKey" />
+          <Input name="SfReplicationCallbacks" value="ProcessContext::SfReplicationCallbacks" />
+        </Parameters>
+        <Return name="ProcessContext::CallWholesalerDataAvailable" />
+        <TransitionTo action="CallDataCheck_Decision" />
+      </Action>
+      <Action name="SetWholesalerDataAvailable" actionType="LOGIC" call="Utils.identity">
+        <Parameters>
+          <Input name="value" value="1" type="Literal" />
+        </Parameters>
+        <Return name="ProcessContext::CallWholesalerDataAvailable" />
         <TransitionTo action="CallDataCheck_Decision" />
       </Action>
       <Action name="CallDataCheck_Decision" actionType="DECISION" parameter="ProcessContext::CallDataAvailable">
+        <Case value="1" action="CallParentDataCheck_Decision" />
+        <Case value="2" action="LoadingCallData" />
+        <CaseElse action="AskForDataRequest" />
+      </Action>
+      <Action name="CallParentDataCheck_Decision" actionType="DECISION" parameter="ProcessContext::CallParentDataAvailable">
+        <Case value="1" action="CallWholesalerCheck_Decision" />
+        <Case value="2" action="LoadingCallData" />
+        <CaseElse action="AskForDataRequest" />
+      </Action>
+      <Action name="CallWholesalerCheck_Decision" actionType="DECISION" parameter="ProcessContext::CallWholesalerDataAvailable">
         <Case value="1" action="LoadCallFinal" />
         <Case value="2" action="LoadingCallData" />
         <CaseElse action="AskForDataRequest" />
@@ -594,6 +698,28 @@
         <Parameters>
           <Input name="callPKey" value="Event.pKey" />
           <Input name="customerPKey" value="ProcessContext::CurrentCustomerPKey" />
+        </Parameters>
+        <TransitionTo action="CallParentRequestDataCheck_Decision" />
+      </Action>
+      <Action name="CallParentRequestDataCheck_Decision" actionType="DECISION" parameter="ProcessContext::CallParentDataAvailable">
+        <Case value="1" action="CallWholesaleRequestDataCheck_Decision" />
+        <CaseElse action="RequestParentCallData" />
+      </Action>
+      <Action name="RequestParentCallData" actionType="LOGIC" call="ProcessContext::SfReplicationCallbacks.requestCallOnDemandDataAsync">
+        <Parameters>
+          <Input name="callPKey" value="Event.pKey" />
+          <Input name="customerPKey" value="ProcessContext::CurrentCustomerPKey" />
+        </Parameters>
+        <TransitionTo action="CallWholesaleRequestDataCheck_Decision" />
+      </Action>
+      <Action name="CallWholesaleRequestDataCheck_Decision" actionType="DECISION" parameter="ProcessContext::CallWholesalerDataAvailable">
+        <Case value="1" action="RefreshCurrentViewByView_Decision" />
+        <CaseElse action="RequestWholesalerCallData" />
+      </Action>
+      <Action name="RequestWholesalerCallData" actionType="LOGIC" call="ProcessContext::wholesalerListForFetchAttachment.myRequestCallOnDemandDataAsync">
+        <Parameters>
+          <Input name="CallPKey" value="Event.pKey" />
+          <Input name="SfReplicationCallbacks" value="ProcessContext::SfReplicationCallbacks" />
         </Parameters>
         <TransitionTo action="ShowCalendarView_Decision" />
       </Action>
@@ -828,6 +954,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
         <Return name="ProcessContext::currentDate" />
         <TransitionTo action="HideMapDetailsAfterCallCreation" />
@@ -847,7 +976,6 @@
         <Return name="ProcessContext::CustomerList" />
         <TransitionTo action="ChooseUser_Decision" />
       </Action>
-      <!--without Else Case because Framework Fallback is to go back to the last View Action since we do not know whether this is triggered from Weekly or Daily View this is intended -->
       <Action name="ChooseUser_Decision" actionType="DECISION" parameter="ProcessContext::ChooseUser">
         <Case value="undefined" action="SetHeaderDateTitle" />
       </Action>
@@ -860,6 +988,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentWeeklyViewStartDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentWeeklyViewEndDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
       </Action>
       <Action name="changeWeeklyTitle" actionType="LOGIC" call="ProcessContext::OverviewList.chooseAgendaTitle">
@@ -888,6 +1019,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
         <TransitionTo action="DailyView_Decision" />
       </Action>
@@ -899,6 +1033,9 @@
           <Input name="currentDateStart" value="ProcessContext::currentDate" />
           <Input name="currentDateEnd" value="ProcessContext::currentDate" />
           <Input name="currentResponsible" value="ProcessContext::CurrentResponsiblePKey" />
+          <Input name="numberOfListItems" value="Event.undefined" />
+          <Input name="cardMode" value="Event.undefined" />
+          <Input name="includeDailyReport" value="1" type="Literal" />
         </Parameters>
         <TransitionTo action="DailyView_Decision" />
       </Action>
@@ -974,6 +1111,7 @@
           <Return name="ProcessContext::SubstitutedUsrPKey" value="substitutedUsrPKey" />
           <Return name="ProcessContext::IsManagedCustomer" value="isManagedCustomer" />
           <Return name="ProcessContext::IsSubstituted" value="isSubstituted" />
+          <Return name="ProcessContext::VisitType" value="visitType" />
         </ReturnValues>
       </Action>
       <Action name="CreateNewCall_Decision" actionType="DECISION" parameter="ProcessContext::ButtonPressed">
@@ -1010,6 +1148,7 @@
           <Input name="isSubstituted" value="ProcessContext::IsSubstituted" />
           <!-- SF/CASDIF -->
           <Input name="boSfReplicationCallbacks" value="ProcessContext::SfReplicationCallbacks" />
+          <Input name="visitType" value="ProcessContext::VisitType" />
         </Parameters>
         <TransitionTo action="RefreshCurrentView_Decision" />
       </Action>
@@ -1546,13 +1685,11 @@
         </Parameters>
         <TransitionTo action="RefreshCurrentView_Decision" />
       </Action>
-      <!-- Navigation -->
       <Action actionType="LOGIC" name="NavigateToCustomer" call="ProcessContext::OverviewList.navigateToCustomer">
         <Parameters>
           <Input name="MainPKey" value="Event.pKey" />
         </Parameters>
       </Action>
-      <!-- End of Navigation -->
     </Actions>
   </Body>
   <ExternalEvents>

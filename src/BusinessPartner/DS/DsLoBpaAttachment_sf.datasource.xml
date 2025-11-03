@@ -9,6 +9,7 @@
     <Attribute name="fileName" table="SF_File" column="PathOnClient" />
     <Attribute name="usage" table="SF_File" column="Usage__c" />
     <DerivedAttribute name="attachmentBlobPKey" value="' '" />
+    <Attribute name="storeName" table="Account" column="Name" />
   </Attributes>
   <Entities>
     <Entity name="SF_File" alias="" idAttribute="Id" />
@@ -16,6 +17,13 @@
       <Join Type="inner">
         <SimpleJoin>
           <Condition leftSideValue="SF_File.Id" comparator="eq" rightSideType="Attribute" rightSideValue="SF_FileLink.FileId" />
+        </SimpleJoin>
+      </Join>
+    </Entity>
+    <Entity name="Account" alias="">
+      <Join Type="left outer">
+        <SimpleJoin>
+          <Condition leftSideValue="SF_FileLink.ParentId" comparator="eq" rightSideType="Attribute" rightSideValue="Account.Id" />
         </SimpleJoin>
       </Join>
     </Entity>

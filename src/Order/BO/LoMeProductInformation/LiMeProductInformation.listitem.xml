@@ -30,5 +30,10 @@
     <SimpleProperty name="criterion5" type="DomVariant" dataSourceProperty="criterion5" />
     <SimpleProperty name="criterion6" type="DomVariant" dataSourceProperty="criterion6" />
     <SimpleProperty name="category" type="DomPrdCategory" dataSourceProperty="category" />
+    <SimpleProperty name="groupSortOrder" type="DomDecimal" dataSourceProperty="groupSortOrder" />
+    <SimpleProperty name="sortOrder" type="DomDecimal" dataSourceProperty="sortOrder" />
+    <SimpleProperty name="cashSaleOrderable" type="DomBool" dataSourceProperty="cashSaleOrderable" />
+    <SimpleProperty name="prebookOrderable" type="DomBool" dataSourceProperty="prebookOrderable" />
+    <SimpleProperty name="returnable" type="DomBool" dataSourceProperty="returnable" />
   </SimpleProperties>
 </ListItem>
