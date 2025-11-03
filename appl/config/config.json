@@ -1,0 +1,15 @@
+{
+    "application": {
+        "sfConsumerKey": "",
+        "sfSubDomainURL": "https://test.salesforce.com/",
+        "uniqueID": "561a5ce7-af90-40d0-9a63-5d5a742d5e79"
+    },
+    "server": {
+        "port": 3000,
+        "referenceImagePath": "",
+        "logLevel": "INFO"
+    },
+    "generator": {
+        "logLevel": "ERROR"
+    }
+}
