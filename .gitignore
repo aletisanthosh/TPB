@@ -2,3 +2,4 @@
 .modeler-workspace
 /.vscode
 /contractSnippets
+.DS_Store
